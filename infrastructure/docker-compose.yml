@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16
+    environment: {POSTGRES_DB: pustaka, POSTGRES_USER: pustaka, POSTGRES_PASSWORD: pustaka}
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+  api:
+    build: {context: ../services/api, dockerfile: Dockerfile}
+    environment: {DATABASE_URL: "postgresql+psycopg2://pustaka:pustaka@postgres:5432/pustaka", JWT_SECRET: "change-me", REDIS_URL: "redis://redis:6379/0", CELERY_TASK_ALWAYS_EAGER: "false"}
+    ports: ["8000:8000"]
+    depends_on: [postgres, redis]
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+  worker:
+    build: {context: ../services/api, dockerfile: Dockerfile}
+    environment: {DATABASE_URL: "postgresql+psycopg2://pustaka:pustaka@postgres:5432/pustaka", JWT_SECRET: "change-me", REDIS_URL: "redis://redis:6379/0", CELERY_TASK_ALWAYS_EAGER: "false"}
+    depends_on: [postgres, redis]
+    command: celery -A workers.celery_app worker --loglevel=info
+  web:
+    image: node:20-alpine
+    working_dir: /app
+    ports: ["3000:3000"]
+    environment: {NEXT_PUBLIC_API_URL: "http://localhost:8000"}
+    command: sh -c "echo web placeholder"
+volumes: {pgdata: {}}
