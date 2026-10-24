@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from .db import Base, engine
 from . import models  # noqa
 from .config import settings
-from .routers import auth, public, admin, references, bookmarks, catalog_admin, catalog, queue
+from .routers import auth, public, admin, references, bookmarks, catalog_admin, catalog, queue, corpus
 
 if settings.environment == "production" and (len(settings.jwt_secret) < 32 or settings.jwt_secret in ("dev-secret-change-me", "change-me-in-production")):
     raise RuntimeError("JWT_SECRET produksi wajib unik dan minimal 32 karakter")
@@ -69,3 +69,4 @@ app.include_router(bookmarks.router)
 app.include_router(catalog_admin.router)
 app.include_router(catalog.router)
 app.include_router(queue.router)
+app.include_router(corpus.router)
