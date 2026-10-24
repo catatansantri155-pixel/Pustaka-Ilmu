@@ -56,6 +56,7 @@ export interface Topic {
 }
 
 export interface Issue {
+  description_id?: string | null;
   id: string;
   code?: string | null;
   title_id?: string | null;
@@ -256,6 +257,7 @@ export interface BackupCreateResponse {
 }
 
 export interface MaterialDetail extends MaterialSummary {
+  citations?: { id: string; text: string; source_url?: string | null; verification_status: string }[];
   arabic?: {
     full_text?: string | null;
     segments?: TextSegment[];

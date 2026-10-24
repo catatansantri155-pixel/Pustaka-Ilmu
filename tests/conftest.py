@@ -1,6 +1,6 @@
 import os, sys, tempfile
 os.environ["DATABASE_URL"] = f"sqlite:///{tempfile.mktemp(suffix='.db')}"
-os.environ["JWT_SECRET"] = "test-secret"
+os.environ["JWT_SECRET"] = "test-only-secret-with-at-least-32-characters"
 os.environ["ADMIN_PASSWORD"] = "admin12345"
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "services", "api"))
 import pytest

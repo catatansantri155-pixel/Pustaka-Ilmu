@@ -2,21 +2,23 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { PublicationResponse } from "@pustaka/shared-types";
-import { api } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState, StatusChip } from "@/components/ui";
 import { ActionFeedback, useMaterialActions } from "@/components/AdminMaterialActions";
 
 export default function PublicationPage() {
   const [data, setData] = useState<PublicationResponse | null>(null);
+  const [offset,setOffset] = useState(0);
+  const [total,setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   async function load() {
     setLoading(true); setError(null);
-    try { setData(await api.publication()); }
+    try { const r=await apiFetch<PublicationResponse & {total:number}>(`/api/admin/publication?offset=${offset}&limit=25`); setData(r); setTotal(r.total); }
     catch (e) { setError(e instanceof Error ? e.message : "Gagal memuat data publikasi."); }
     finally { setLoading(false); }
   }
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [offset]);
   const actions = useMaterialActions(() => { load(); });
   const items = data?.items || [];
 
@@ -30,6 +32,7 @@ export default function PublicationPage() {
       <p className="mt-1 text-sm text-stone-600">Status publikasi, hak, blocker gerbang kualitas, dan riwayat approval per materi.</p>
       {error ? <div className="mt-4"><ErrorState message={error} /></div> : null}
       <ActionFeedback message={actions.message} blockers={actions.blockers} />
+      <nav className="mt-4 flex items-center gap-3"><button className="btn-outline" disabled={!offset} onClick={()=>setOffset(o=>o-25)}>Sebelumnya</button><span>{total} materi</span><button className="btn-outline" disabled={offset+25>=total} onClick={()=>setOffset(o=>o+25)}>Berikutnya</button></nav>
       <div className="card mt-5 overflow-x-auto p-0">
         {items.length === 0 ? <EmptyState title="Belum ada materi" body="API publikasi belum mengembalikan materi apa pun." /> : (
           <table className="w-full min-w-[900px] text-left text-sm">

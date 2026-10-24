@@ -1,6 +1,9 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
+    environment: str = "development"
+    cors_origins: str = "http://localhost:3000,https://pustaka-ilmu.pages.dev"
+    auto_create_tables: bool = True
     database_url: str = "sqlite:///./pustaka.db"
     jwt_secret: str = "dev-secret-change-me"
     jwt_algorithm: str = "HS256"
@@ -14,8 +17,6 @@ class Settings(BaseSettings):
     rate_limit_per_minute: int = 300
     redis_url: str = "redis://localhost:6379/0"
     celery_task_always_eager: bool = True
-    class Config:
-        env_file = ".env"
-        extra = "ignore"
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 settings = Settings()

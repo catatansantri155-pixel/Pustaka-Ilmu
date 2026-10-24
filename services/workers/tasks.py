@@ -21,3 +21,14 @@ def translate_material_task(material_id):
         run = translate_material(db, m)
         return {"status": run.status}
     finally: db.close()
+
+@app.task(name="drain_content_queue")
+def drain_content_queue():
+    from app.services.queue import run_one
+    # Bounded work; beat will enqueue another drain on the next tick.
+    return [task_id for _ in range(5) if (task_id := run_one()) is not None]
+
+@app.task(name="backup_database")
+def backup_database():
+    from app.services.backup import create_backup
+    return create_backup()

@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from ..db import get_db
-from ..models import Scholar, Topic, Issue, IssueMaterial, Material, ArabicText, TextSegment, Translation, TranslationSegment, QualityFinding, ReferenceMatch, MaterialTopic, GlossaryTerm, CorrectionReport
+from ..models import Scholar, Topic, Issue, IssueMaterial, Citation, Material, ArabicText, TextSegment, Translation, TranslationSegment, QualityFinding, ReferenceMatch, MaterialTopic, GlossaryTerm, CorrectionReport
 from ..deps import get_optional_user, role_name
 from ..services.search import expand_query, normalize_text
 from ..services.ai_adapter import AI_LABEL
@@ -16,12 +16,8 @@ def scholar_brief(db, s):
     return {"id": s.id, "name_id": s.name_id, "name_ar": s.name_ar}
 
 def material_brief(db, m):
-    sch = db.query(Scholar).filter(Scholar.id == m.scholar_id).first() if m.scholar_id else None
-    topics = []
-    for mt in db.query(MaterialTopic).filter(MaterialTopic.material_id == m.id).all():
-        t = db.query(Topic).filter(Topic.id == mt.topic_id).first()
-        if t: topics.append(t.code)
-    return {"id": m.id, "title_id": m.title_id, "title_ar": m.title_ar, "scholar": scholar_brief(db, sch), "content_type": m.content_type, "status": m.status, "topics": topics, "is_demo": m.is_demo}
+    from ..services.catalog import brief_many
+    return brief_many(db, [m])[0]
 
 @router.get("/scholars")
 def list_scholars(db: Session = Depends(get_db)):
@@ -78,7 +74,10 @@ def create_correction_report(body: CorrectionIn, db: Session = Depends(get_db)):
     if len(msg) < 5 or len(msg) > 2000:
         raise HTTPException(422, "Isi laporan harus 5–2000 karakter")
     m = db.query(Material).filter(Material.id == body.material_id).first()
-    if not m: raise HTTPException(404, "Material tidak ditemukan")
+    if not m or m.status != "PUBLISHED_AI" or m.is_demo: raise HTTPException(404, "Material tidak ditemukan")
+    if body.segment_id:
+        belongs = db.query(TextSegment).join(ArabicText).filter(TextSegment.id == body.segment_id, ArabicText.material_id == m.id).first()
+        if not belongs: raise HTTPException(422, "Segmen bukan bagian dari materi ini")
     r = CorrectionReport(material_id=body.material_id, text_segment_id=body.segment_id or None,
                            reporter_name=(body.name or "")[:120], message=msg, status="PENDING")
     db.add(r); db.commit(); db.refresh(r)
@@ -110,8 +109,9 @@ def get_material(material_id: str, db: Session = Depends(get_db), user=Depends(g
         translation = {"status": tr.status, "segments": [{"text_segment_id": t.text_segment_id, "text_id": t.text_id} for t in tsegs]}
     findings = [{"rule": f.rule, "severity": f.severity, "message": f.message} for f in db.query(QualityFinding).filter(QualityFinding.material_id == m.id).all()]
     refs = [{"id": r.id, "matched_text": r.matched_text, "reference_type": r.reference_type, "status": r.status} for r in db.query(ReferenceMatch).filter(ReferenceMatch.material_id == m.id).all()]
+    citations = [{"id": c.id, "text": c.text, "source_url": c.evidence, "verification_status": "SOURCE_QUOTE_ONLY"} for c in db.query(Citation).filter_by(material_id=m.id)]
     base = material_brief(db, m)
-    base.update({"arabic": arabic, "translation": translation, "ai_label": m.ai_label or AI_LABEL, "source_url": m.source_url, "findings": findings, "references": refs})
+    base.update({"arabic": arabic, "translation": translation, "ai_label": m.ai_label or AI_LABEL, "source_url": m.source_url, "findings": findings, "references": refs, "citations": citations})
     return base
 
 def _search_fts(db: Session, q: str):

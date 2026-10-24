@@ -1,5 +1,7 @@
 # Pustaka Ilmu — Perpustakaan Fatwa & Khazanah Islam
 
+> **Pengembangan 24 Oktober 2026:** lihat [Tahap 1–4](docs/PENGEMBANGAN-TAHAP-1-4.md) dan [hasil verifikasi](docs/HASIL-VERIFIKASI-TAHAP-1-4.md). Kode mencakup stabilisasi, pengelolaan konten, pilot 30 draf, dan pagination/antrean. Catatan V1/V2 di bawah bersifat historis; jumlah koleksi produksi belum diverifikasi ulang.
+
 Aplikasi perpustakaan digital ilmu Islam: mobile-first PWA reader + web admin dashboard, Bahasa Indonesia, konten Arab + terjemahan Indonesia, strategi AI-first dengan publikasi terkendali admin. Fokus awal: **Thaharah**, dengan 3 ulama (Bin Baz, Ibnu Utsaimin, Al-Albani). Aplikasi ini adalah perpustakaan dan mesin penelusuran ilmu — bukan sistem yang mengeluarkan fatwa baru.
 
 > Status: **MVP end-to-end yang dapat dijalankan dan dilengkapi** (Fase 1–7 selesai versi dev; peta status per fase di [docs/TAHAPAN.md](docs/TAHAPAN.md), panduan deploy di [docs/DEPLOY-CLOUDFLARE.md](docs/DEPLOY-CLOUDFLARE.md)). Bukan mockup: frontend, backend, database, importer, audit, dan publication gate saling terhubung dan terverifikasi (lihat "Hasil Verifikasi"). Satu materi asli sudah terbit (`PUBLISHED_AI`) dan dataset Qur'an tervalidasi (6.236 ayat + terjemahan) sudah terimpor.

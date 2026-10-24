@@ -280,6 +280,7 @@ class PublicationApproval(TimestampMixin, Base):
     admin_id: Mapped[str] = mapped_column(ForeignKey("users.id"), nullable=True)
     decision: Mapped[str] = mapped_column(String, default="")  # APPROVED/REJECTED
     notes: Mapped[str] = mapped_column(Text, default="")
+    content_hash: Mapped[str] = mapped_column(String(64), default="", server_default="")
 
 class AuditLog(TimestampMixin, Base):
     __tablename__ = "audit_logs"
@@ -342,3 +343,34 @@ class ReadingHistory(TimestampMixin, Base):
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
     material_id: Mapped[str] = mapped_column(ForeignKey("materials.id"), index=True)
+
+class MaterialSearch(Base):
+    """Rebuildable search projection; original text is always retained separately."""
+    __tablename__ = "material_search"
+    material_id: Mapped[str] = mapped_column(ForeignKey("materials.id"), primary_key=True)
+    normalized_text: Mapped[str] = mapped_column(Text, default="")
+
+class ContentTask(TimestampMixin, Base):
+    __tablename__ = "content_tasks"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    dedup_key: Mapped[str] = mapped_column(String(64), unique=True)
+    kind: Mapped[str] = mapped_column(String)  # IMPORT / TRANSLATE
+    url: Mapped[str] = mapped_column(String, default="")
+    material_id: Mapped[str] = mapped_column(ForeignKey("materials.id"), nullable=True)
+    registry_id: Mapped[str] = mapped_column(ForeignKey("source_registry.id"), nullable=True)
+    scholar_id: Mapped[str] = mapped_column(ForeignKey("scholars.id"), nullable=True)
+    status: Mapped[str] = mapped_column(String, default="PENDING", index=True)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, default=3)
+    available_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, index=True)
+    error: Mapped[str] = mapped_column(Text, default="")
+
+class QualityReview(TimestampMixin, Base):
+    __tablename__ = "quality_reviews"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    material_id: Mapped[str] = mapped_column(ForeignKey("materials.id"), index=True)
+    content_hash: Mapped[str] = mapped_column(String(64))
+    rule: Mapped[str] = mapped_column(String)
+    segment_ref: Mapped[str] = mapped_column(String, default="")
+    reviewer_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    notes: Mapped[str] = mapped_column(Text)

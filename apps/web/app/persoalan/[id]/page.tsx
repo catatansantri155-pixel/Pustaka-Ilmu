@@ -1,11 +1,13 @@
 "use client";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import type { MaterialSummary } from "@pustaka/shared-types";
 import { api, topicName, type IssueDetail } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState, MaterialCard } from "@/components/ui";
 
-export default function IssuePage({ params }: { params: { id: string } }) {
+export default function IssuePage() {
+  const params = useParams<{ id: string }>();
   const [issue, setIssue] = useState<IssueDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

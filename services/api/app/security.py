@@ -13,7 +13,7 @@ def verify_password(pw: str, hashed: str) -> bool:
         return False
 
 def create_token(user_id: str, email: str, role: str) -> str:
-    payload = {"sub": user_id, "email": email, "role": role, "exp": datetime.now(timezone.utc) + timedelta(hours=settings.jwt_expire_hours)}
+    payload = {"type": "access", "sub": user_id, "email": email, "role": role, "exp": datetime.now(timezone.utc) + timedelta(hours=settings.jwt_expire_hours)}
     return jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
 
 def decode_token(token: str) -> dict:

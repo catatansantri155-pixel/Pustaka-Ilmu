@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, Form
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from sqlalchemy import text as sql_text
 from sqlalchemy.orm import Session
 from typing import Optional
@@ -8,7 +8,7 @@ from ..db import get_db
 from ..models import *
 from ..config import settings
 from ..deps import require_roles, log_audit
-from ..services.gate import evaluate_publication
+from ..services.gate import evaluate_publication, content_fingerprint, current_findings
 from ..services.importer import import_html, import_pdf
 from ..services.ai_adapter import translate_material
 from ..services.references import match_references
@@ -72,7 +72,7 @@ def list_admin_materials(db: Session = Depends(get_db), user=Depends(admin_dep))
 
 @router.get("/materials/{mid}")
 def get_admin_material(mid: str, db: Session = Depends(get_db), user=Depends(admin_dep)):
-    m = db.query(Material).filter(Material.id==mid).first()
+    m = db.query(Material).filter(Material.id==mid).with_for_update().first()
     if not m: raise HTTPException(404, "Material tidak ditemukan")
     findings = [{"id": f.id, "rule": f.rule, "severity": f.severity, "message": f.message} for f in db.query(QualityFinding).filter(QualityFinding.material_id==mid).all()]
     approvals = [{"id": a.id, "decision": a.decision, "notes": a.notes, "admin_id": a.admin_id} for a in db.query(PublicationApproval).filter(PublicationApproval.material_id==mid).all()]
@@ -90,14 +90,21 @@ def get_admin_material(mid: str, db: Session = Depends(get_db), user=Depends(adm
     if m.scholar_id:
         sch = db.query(Scholar).filter(Scholar.id==m.scholar_id).first()
         if sch: scholar = {"id": sch.id, "name_id": sch.name_id, "name_ar": sch.name_ar}
-    return {"id": m.id, "title_id": m.title_id, "title_ar": m.title_ar, "content_type": m.content_type, "status": m.status, "is_demo": m.is_demo, "rights_status": m.rights_status, "source_url": m.source_url, "scholar_id": m.scholar_id, "findings": findings, "approvals": approvals, "arabic": arabic, "translation": translation, "scholar": scholar}
+    return {"id": m.id, "title_id": m.title_id, "title_ar": m.title_ar, "content_type": m.content_type, "status": m.status, "is_demo": m.is_demo, "rights_status": m.rights_status, "source_url": m.source_url, "scholar_id": m.scholar_id, "findings": findings, "current_findings": current_findings(db, m), "approvals": approvals, "arabic": arabic, "translation": translation, "scholar": scholar}
 
 class SegmentPatchIn(BaseModel):
     text_id: str
 
+    @field_validator("text_id")
+    @classmethod
+    def nonempty(cls, value):
+        if not value.strip():
+            raise ValueError("Terjemahan tidak boleh kosong")
+        return value.strip()
+
 @router.patch("/materials/{mid}/segments/{text_segment_id}")
 def patch_segment(mid: str, text_segment_id: str, body: SegmentPatchIn, db: Session = Depends(get_db), user=Depends(admin_dep)):
-    m = db.query(Material).filter(Material.id==mid).first()
+    m = db.query(Material).filter(Material.id==mid).with_for_update().first()
     if not m: raise HTTPException(404, "Material tidak ditemukan")
     at = db.query(ArabicText).filter(ArabicText.material_id==mid).first()
     seg = None
@@ -107,7 +114,7 @@ def patch_segment(mid: str, text_segment_id: str, body: SegmentPatchIn, db: Sess
     tr = db.query(Translation).filter(Translation.material_id==mid).order_by(Translation.created_at.desc()).first()
     if not tr:
         tr = Translation(material_id=mid, status="DRAFT", prompt_version="id-ar-v1", model="")
-        db.add(tr); db.commit(); db.refresh(tr)
+        db.add(tr); db.flush()
     tseg = db.query(TranslationSegment).filter(TranslationSegment.translation_id==tr.id, TranslationSegment.text_segment_id==text_segment_id).first()
     if tseg:
         tseg.text_id = body.text_id
@@ -115,12 +122,17 @@ def patch_segment(mid: str, text_segment_id: str, body: SegmentPatchIn, db: Sess
     else:
         tseg = TranslationSegment(translation_id=tr.id, text_segment_id=text_segment_id, text_id=body.text_id, version=1)
         db.add(tseg)
-    db.commit(); db.refresh(tseg)
+    m.status = "ADMIN_REVIEW"
+    tr.status = "ADMIN_REVIEW"
+    db.flush()
     maxv = 0
     for v in db.query(MaterialVersion).filter(MaterialVersion.material_id==mid).all():
         maxv = max(maxv, v.version or 0)
     mv = MaterialVersion(material_id=mid, version=maxv+1, notes=f"Edit segmen {text_segment_id} oleh user {user.id}")
-    db.add(mv); db.commit(); db.refresh(mv)
+    db.add(mv)
+    from ..services.catalog import index_material
+    index_material(db, m)
+    db.commit(); db.refresh(mv)
     log_audit(db, user.id, "EDIT_SEGMENT", "material", mid, f"segment {text_segment_id} -> version {tseg.version}")
     return {"id": tseg.id, "text_segment_id": tseg.text_segment_id, "text_id": tseg.text_id, "version": tseg.version, "material_version": mv.version}
 
@@ -129,16 +141,16 @@ class NotesIn(BaseModel):
 
 @router.post("/materials/{mid}/approve")
 def approve(mid: str, body: NotesIn = NotesIn(), db: Session = Depends(get_db), user=Depends(editor_admin)):
-    m = db.query(Material).filter(Material.id==mid).first()
+    m = db.query(Material).filter(Material.id==mid).with_for_update().first()
     if not m: raise HTTPException(404, "Material tidak ditemukan")
-    a = PublicationApproval(material_id=mid, admin_id=user.id, decision="APPROVED", notes=body.notes or "")
+    a = PublicationApproval(material_id=mid, admin_id=user.id, decision="APPROVED", notes=body.notes or "", content_hash=content_fingerprint(db, m))
     db.add(a); db.commit(); db.refresh(a)
     log_audit(db, user.id, "APPROVE", "material", mid, body.notes or "")
     return {"id": a.id, "decision": a.decision}
 
 @router.post("/materials/{mid}/publish")
 def publish(mid: str, db: Session = Depends(get_db), user=Depends(editor_admin)):
-    m = db.query(Material).filter(Material.id==mid).first()
+    m = db.query(Material).filter(Material.id==mid).with_for_update().first()
     if not m: raise HTTPException(404, "Material tidak ditemukan")
     blockers = evaluate_publication(db, m)
     if blockers:
@@ -149,7 +161,7 @@ def publish(mid: str, db: Session = Depends(get_db), user=Depends(editor_admin))
 
 @router.post("/materials/{mid}/unpublish")
 def unpublish(mid: str, db: Session = Depends(get_db), user=Depends(editor_admin)):
-    m = db.query(Material).filter(Material.id==mid).first()
+    m = db.query(Material).filter(Material.id==mid).with_for_update().first()
     if not m: raise HTTPException(404, "Material tidak ditemukan")
     m.status = "ADMIN_REVIEW"; db.commit()
     log_audit(db, user.id, "UNPUBLISH", "material", mid, "")
@@ -157,7 +169,7 @@ def unpublish(mid: str, db: Session = Depends(get_db), user=Depends(editor_admin
 
 @router.post("/materials/{mid}/reject")
 def reject(mid: str, body: NotesIn = NotesIn(), db: Session = Depends(get_db), user=Depends(editor_admin)):
-    m = db.query(Material).filter(Material.id==mid).first()
+    m = db.query(Material).filter(Material.id==mid).with_for_update().first()
     if not m: raise HTTPException(404, "Material tidak ditemukan")
     m.status = "REJECTED"
     db.add(PublicationApproval(material_id=mid, admin_id=user.id, decision="REJECTED", notes=body.notes or ""))
@@ -179,7 +191,7 @@ def do_import(body: ImportIn, db: Session = Depends(get_db), user=Depends(admin_
 
 @router.post("/materials/{mid}/translate")
 def do_translate(mid: str, db: Session = Depends(get_db), user=Depends(admin_dep)):
-    m = db.query(Material).filter(Material.id==mid).first()
+    m = db.query(Material).filter(Material.id==mid).with_for_update().first()
     if not m: raise HTTPException(404, "Material tidak ditemukan")
     run = translate_material(db, m)
     log_audit(db, user.id, "TRANSLATE", "material", mid, run.status)
@@ -187,7 +199,7 @@ def do_translate(mid: str, db: Session = Depends(get_db), user=Depends(admin_dep
 
 @router.post("/materials/{mid}/match-references")
 def do_match(mid: str, db: Session = Depends(get_db), user=Depends(admin_dep)):
-    m = db.query(Material).filter(Material.id==mid).first()
+    m = db.query(Material).filter(Material.id==mid).with_for_update().first()
     if not m: raise HTTPException(404, "Material tidak ditemukan")
     created = match_references(db, m)
     log_audit(db, user.id, "MATCH_REFERENCES", "material", mid, str(len(created)))
@@ -230,15 +242,16 @@ def ai_runs(db: Session = Depends(get_db), user=Depends(admin_dep)):
     }
 
 @router.get("/publication")
-def publication(db: Session = Depends(get_db), user=Depends(admin_dep)):
+def publication(offset: int = Query(0, ge=0), limit: int = Query(25, ge=1, le=100), db: Session = Depends(get_db), user=Depends(admin_dep)):
     items = []
-    for m in db.query(Material).all():
+    q = db.query(Material)
+    for m in q.order_by(Material.created_at.desc(), Material.id).offset(offset).limit(limit):
         approvals = [{"id": a.id, "decision": a.decision, "admin_id": a.admin_id, "notes": a.notes, "created_at": _iso(a.created_at)} for a in db.query(PublicationApproval).filter(PublicationApproval.material_id==m.id).all()]
         if m.status == "PUBLISHED_AI":
             items.append({"material_id": m.id, "title_id": m.title_id, "status": m.status, "rights_status": m.rights_status, "is_demo": m.is_demo, "blockers": [], "published": True, "approvals": approvals})
         else:
             items.append({"material_id": m.id, "title_id": m.title_id, "status": m.status, "rights_status": m.rights_status, "is_demo": m.is_demo, "blockers": evaluate_publication(db, m), "approvals": approvals})
-    return {"items": items}
+    return {"items": items, "offset": offset, "limit": limit, "total": q.count()}
 
 @router.get("/reports/summary")
 def reports_summary(db: Session = Depends(get_db), user=Depends(admin_dep)):

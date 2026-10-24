@@ -13,6 +13,8 @@ def get_current_user(authorization: str = Header(None), db: Session = Depends(ge
         payload = decode_token(token)
     except pyjwt.PyJWTError:
         raise HTTPException(401, "Invalid token")
+    if payload.get("type") == "mfa":
+        raise HTTPException(401, "Token MFA bukan sesi akses")
     user = db.query(User).filter(User.id == payload.get("sub")).first()
     if not user or not user.is_active:
         raise HTTPException(401, "User not found")
@@ -25,7 +27,9 @@ def get_optional_user(authorization: str = Header(None), db: Session = Depends(g
         payload = decode_token(authorization.split(" ", 1)[1])
     except Exception:
         return None
-    return db.query(User).filter(User.id == payload.get("sub")).first()
+    if payload.get("type") == "mfa":
+        return None
+    return db.query(User).filter(User.id == payload.get("sub"), User.is_active == True).first()
 
 def role_name(db: Session, user: User) -> str:
     if user.role: return user.role.name

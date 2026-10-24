@@ -1,6 +1,10 @@
-FROM python:3.12-slim
+FROM python:3.12-slim-trixie
+RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt psycopg2-binary
-COPY app ./app
-CMD ["uvicorn","app.main:app","--host","0.0.0.0","--port","8000"]
+COPY services/api/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+COPY services/api/app ./app
+COPY services/workers ./workers
+ENV PYTHONUNBUFFERED=1
+EXPOSE 8000
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

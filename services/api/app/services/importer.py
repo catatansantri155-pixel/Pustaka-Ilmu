@@ -241,7 +241,7 @@ def import_pdf(db, data: bytes, filename: str, scholar_id=None, registry_id=None
         db.add(src)
         asset = SourceAsset(source_id=None, material_id=mat.id, url=filename, checksum=checksum, raw_text=text)
         db.add(asset); db.commit()
-        is_complete = len(text) >= 200
+        is_complete = False  # Kelengkapan harus diperiksa terhadap sumber asli.
         at = ArabicText(material_id=mat.id, full_text=text, is_complete=is_complete)
         db.add(at); db.commit(); db.refresh(at)
         for i, seg in enumerate(segment_arabic(text)):
@@ -249,6 +249,8 @@ def import_pdf(db, data: bytes, filename: str, scholar_id=None, registry_id=None
         mat.status = "EXTRACTED"
         job.status = "COMPLETED"; job.material_id = mat.id
         db.add(ProcessingJob(material_id=mat.id, job_type="PDF_IMPORT", status="COMPLETED"))
+        from .catalog import index_material
+        index_material(db, mat)
         db.commit()
         return {"job": job, "material": mat, "status": "COMPLETED", "duplicate_of": None}
     except Exception as e:
@@ -280,7 +282,7 @@ def import_html(db, url: str, scholar_id=None, registry_id=None, _fetch=None):
         db.add(src)
         asset = SourceAsset(source_id=None, material_id=mat.id, url=final_url, checksum=checksum, raw_text=text)
         db.add(asset); db.commit()
-        is_complete = len(text) >= 200
+        is_complete = False  # Kelengkapan harus diperiksa terhadap sumber asli.
         at = ArabicText(material_id=mat.id, full_text=text, is_complete=is_complete)
         db.add(at); db.commit(); db.refresh(at)
         for i, seg in enumerate(segment_arabic(text)):
@@ -288,6 +290,8 @@ def import_html(db, url: str, scholar_id=None, registry_id=None, _fetch=None):
         mat.status = "EXTRACTED"
         job.status = "COMPLETED"; job.material_id = mat.id
         db.add(ProcessingJob(material_id=mat.id, job_type="IMPORT", status="COMPLETED"))
+        from .catalog import index_material
+        index_material(db, mat)
         db.commit()
         return {"job": job, "material": mat, "status": "COMPLETED", "duplicate_of": None}
     except Exception as e:

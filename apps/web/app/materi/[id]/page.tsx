@@ -1,4 +1,5 @@
 "use client";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { GlossaryItem, MaterialDetail } from "@pustaka/shared-types";
@@ -15,7 +16,8 @@ function loadPref<T>(key: string, fallback: T): T {
 }
 function savePref(key: string, value: unknown) { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* abaikan */ } }
 
-export default function MaterialPage({ params }: { params: { id: string } }) {
+export default function MaterialPage() {
+  const params = useParams<{ id: string }>();
   const [m, setM] = useState<MaterialDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -214,6 +216,7 @@ export default function MaterialPage({ params }: { params: { id: string } }) {
 
       <footer className="card p-5 text-sm text-muted">
         <p className="font-semibold text-emerald-deep">Catatan Sumber</p>
+        {m.citations?.length ? <div className="mt-3 space-y-3"><p>Catatan sebagaimana tercantum pada sumber asli; rincian referensi belum diverifikasi secara terpisah.</p>{m.citations.map(c=><p key={c.id} dir="rtl" lang="ar" className="font-arabic text-right text-base">{c.text}</p>)}</div> : null}
         {m.source_url ? <p className="mt-1 break-all">Sumber asli: <a className="text-emerald underline" href={m.source_url} target="_blank" rel="noreferrer">{m.source_url}</a></p> : <p className="mt-1">Tautan sumber asli tidak disediakan API untuk materi ini.</p>}
         {m.translation?.status ? <p className="mt-1">Status terjemahan: {m.translation.status}</p> : null}
       </footer>

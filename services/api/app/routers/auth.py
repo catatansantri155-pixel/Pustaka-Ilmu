@@ -37,7 +37,7 @@ def _verify_totp(user: User, code: str) -> bool:
 @router.post("/login")
 def login(body: LoginIn, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == body.email).first()
-    if not user or not verify_password(body.password, user.password_hash):
+    if not user or not user.is_active or not verify_password(body.password, user.password_hash):
         raise HTTPException(401, "Email atau kata sandi salah")
     if getattr(user, "mfa_enabled", False):
         return {"mfa_required": True, "mfa_token": create_mfa_token(user.id)}
@@ -45,6 +45,8 @@ def login(body: LoginIn, db: Session = Depends(get_db)):
 
 @router.post("/mfa/enroll")
 def mfa_enroll(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if current_user.mfa_enabled:
+        raise HTTPException(409, "Nonaktifkan MFA dengan kode valid sebelum mendaftar ulang")
     secret = pyotp.random_base32()
     current_user.mfa_secret = secret
     current_user.mfa_enabled = False

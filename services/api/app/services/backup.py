@@ -31,7 +31,7 @@ def create_backup() -> dict:
     from ..db import engine
     backup_dir = get_backup_dir()
     backup_dir.mkdir(parents=True, exist_ok=True)
-    ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
     dialect = engine.dialect.name
     if dialect == "sqlite":
         db_path = engine.url.database
@@ -49,9 +49,15 @@ def create_backup() -> dict:
             src.close()
     elif dialect == "postgresql":
         dest = backup_dir / f"backup-{ts}.sql"
-        url = str(engine.url.render_as_string(hide_password=False))
-        with open(dest, "w") as fh:
-            subprocess.run(["pg_dump", url], stdout=fh, check=True)
+        url = engine.url.set(drivername="postgresql").render_as_string(hide_password=False)
+        temporary = dest.with_suffix(".sql.partial")
+        try:
+            with open(temporary, "w") as fh:
+                subprocess.run(["pg_dump", "--dbname", url], stdout=fh, check=True, timeout=300)
+            temporary.replace(dest)
+        except Exception:
+            temporary.unlink(missing_ok=True)
+            raise
     else:
         raise RuntimeError(f"Backup belum didukung untuk dialect: {dialect}")
     return {"file": dest.name, "path": str(dest), "size_bytes": dest.stat().st_size}

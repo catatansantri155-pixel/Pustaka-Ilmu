@@ -17,6 +17,7 @@ const ADMIN_NAV = [
   { href: "/admin/editor", label: "Bilingual Editor" },
   { href: "/admin/quality", label: "Quality Audit" },
   { href: "/admin/publication", label: "Publication" },
+  { href: "/admin/corrections", label: "Laporan Koreksi" },
   { href: "/admin/reports", label: "Reports" },
   { href: "/admin/ai-settings", label: "AI Settings" },
   { href: "/admin/settings", label: "System Settings" },

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { MaterialSummary } from "@pustaka/shared-types";
-import { api, materialTitle, scholarName } from "@/lib/api";
+import { api, apiFetch, materialTitle, scholarName } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui";
 import { ActionButtons, ActionFeedback, useMaterialActions } from "@/components/AdminMaterialActions";
 
@@ -13,8 +13,12 @@ export default function AdminMaterialsPage() {
   const [importUrl, setImportUrl] = useState("");
   const [importMsg, setImportMsg] = useState<string | null>(null);
   const [importBusy, setImportBusy] = useState(false);
-  async function load() { try { setItems(await api.adminMaterials()); } catch (e) { setError(e instanceof Error ? e.message : "Gagal memuat materi."); } finally { setLoading(false); } }
-  useEffect(() => { load(); }, []);
+  const [offset,setOffset] = useState(0);
+  const [total,setTotal] = useState(0);
+  const [q,setQ] = useState("");
+  const [draftQ,setDraftQ] = useState("");
+  async function load() { setLoading(true); setError(null); try { const r = await apiFetch<{items:MaterialSummary[];total:number}>(`/api/admin/catalog/materials?offset=${offset}&limit=25&q=${encodeURIComponent(q)}`); setItems(r.items); setTotal(r.total); } catch (e) { setError(e instanceof Error ? e.message : "Gagal memuat materi."); } finally { setLoading(false); } }
+  useEffect(() => { load(); }, [offset,q]);
   const actions = useMaterialActions(load);
   async function doImport(e: React.FormEvent) {
     e.preventDefault(); setImportBusy(true); setImportMsg(null);
@@ -25,6 +29,8 @@ export default function AdminMaterialsPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-emerald-deep">Materials</h1>
+      <form className="mt-4 flex gap-3" onSubmit={e=>{e.preventDefault();setQ(draftQ);setOffset(0);}}><input className="input flex-1" aria-label="Cari materi admin" value={draftQ} onChange={e=>setDraftQ(e.target.value)} placeholder="Cari materi…"/><button className="btn-outline">Cari</button></form>
+      <nav className="mt-4 flex items-center gap-3"><button className="btn-outline" disabled={!offset||loading} onClick={()=>setOffset(o=>o-25)}>Sebelumnya</button><span>{total} materi</span><button className="btn-outline" disabled={offset+25>=total||loading} onClick={()=>setOffset(o=>o+25)}>Berikutnya</button></nav>
       <form onSubmit={doImport} className="card mt-5 flex flex-col gap-3 p-5 sm:flex-row">
         <input className="input flex-1" placeholder="URL materi untuk diimpor…" value={importUrl} onChange={(e) => setImportUrl(e.target.value)} required type="url" aria-label="URL impor" />
         <button className="btn-primary" disabled={importBusy}>{importBusy ? "Mengimpor…" : "Import URL"}</button>

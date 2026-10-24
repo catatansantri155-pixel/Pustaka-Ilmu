@@ -1,13 +1,18 @@
 "use client";
+import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import type { MaterialDetail } from "@pustaka/shared-types";
 import { api, materialTitle, scholarName, topicName } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState, severityClass } from "@/components/ui";
 import { ActionButtons, ActionFeedback, useMaterialActions } from "@/components/AdminMaterialActions";
 
+import MaterialVerification from "@/components/MaterialVerification";
+import MaterialMetadata from "@/components/MaterialMetadata";
+
 type Pair = { ar?: string; textSegmentId: string; initialIdText: string; initialVersion?: number };
 
-export default function EditorDetailPage({ params }: { params: { id: string } }) {
+export default function EditorDetailPage() {
+  const params = useParams<{ id: string }>();
   const [m, setM] = useState<MaterialDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,6 +76,7 @@ export default function EditorDetailPage({ params }: { params: { id: string } })
         <button disabled={actions.busyId === m.id} className="btn-outline px-3 py-1.5 text-xs" onClick={() => actions.translate(m.id)}>Terjemahkan AI</button>
       </div>
       <ActionFeedback message={actions.message} blockers={actions.blockers} />
+      <div className="my-5"><MaterialMetadata id={m.id} onSaved={load} /><div className="mt-4"><MaterialVerification id={m.id} onSaved={load} /></div></div>
 
       <div className="mt-3 grid gap-2 rounded-2xl bg-white p-4 text-sm md:grid-cols-2">
         <span className="font-semibold text-emerald-deep">← Kolom kiri: Indonesia (dapat disunting)</span>

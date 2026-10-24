@@ -1,6 +1,6 @@
 import pytest
 from app.models import Material, ArabicText, TextSegment, Translation, TranslationSegment, PublicationApproval, Scholar, User
-from app.services.gate import evaluate_publication
+from app.services.gate import evaluate_publication, content_fingerprint
 from app.services.search import normalize_query, expand_query
 from app.services.audit import audit_translation
 from app.services.importer import compute_checksum, assert_safe_url
@@ -47,12 +47,12 @@ def _make_complete(db, suffix):
     sch = db.query(Scholar).first()
     m = Material(scholar_id=sch.id, title_id=f"Materi Wudu Lengkap {suffix}", title_ar="الوضوء", status="ADMIN_REVIEW", rights_status="CLEARED", source_url="https://example.com/fatwa")
     db.add(m); db.commit(); db.refresh(m)
-    at = ArabicText(material_id=m.id, full_text="نص عربي كامل للاختبار", is_complete=True); db.add(at); db.commit(); db.refresh(at)
+    at = ArabicText(material_id=m.id, full_text="نص عربي كامل", is_complete=True); db.add(at); db.commit(); db.refresh(at)
     s1 = TextSegment(arabic_text_id=at.id, order_index=0, text_ar="نص عربي كامل"); db.add(s1); db.commit(); db.refresh(s1)
     tr = Translation(material_id=m.id, model="test", prompt_version="id-ar-v1", status="TRANSLATED"); db.add(tr); db.commit(); db.refresh(tr)
     db.add(TranslationSegment(translation_id=tr.id, text_segment_id=s1.id, text_id="Teks Arab lengkap")); db.commit()
     admin = db.query(User).filter(User.email=="admin@pustaka.local").first()
-    db.add(PublicationApproval(material_id=m.id, admin_id=admin.id, decision="APPROVED")); db.commit()
+    db.add(PublicationApproval(material_id=m.id, admin_id=admin.id, decision="APPROVED", content_hash=content_fingerprint(db, m))); db.commit()
     return m
 
 def test_gate_passes_complete(db):

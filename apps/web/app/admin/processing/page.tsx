@@ -1,4 +1,5 @@
 "use client";
+import QueueUI from "./queue-ui";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { ProcessingResponse } from "@pustaka/shared-types";
@@ -32,6 +33,7 @@ export default function ProcessingPage() {
         <h1 className="text-2xl font-bold text-emerald-deep">Processing Queue</h1>
         <button className="btn-outline px-4 py-2 text-xs" onClick={load}>Muat Ulang</button>
       </div>
+      <QueueUI />
       <p className="mt-1 text-sm text-stone-600">Antrean akuisisi (impor URL) dan pemrosesan (ekstraksi, pembersihan, segmentasi) dari API admin.</p>
       {error ? <div className="mt-4"><ErrorState message={error} /></div> : null}
 

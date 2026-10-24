@@ -288,7 +288,7 @@ def test_public_glossary_and_issue_detail(client, db):
 
 def test_correction_report_validation(client, db):
     from app.models import Material, CorrectionReport
-    m = db.query(Material).first()
+    m = db.query(Material).filter(Material.status == "PUBLISHED_AI", Material.is_demo == False).first()
     assert m is not None
     r = client.post("/api/correction-reports", json={"material_id": m.id, "message": "abc"})
     assert r.status_code == 422

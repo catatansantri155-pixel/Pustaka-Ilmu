@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { MaterialSummary, Scholar, Topic } from "@pustaka/shared-types";
-import { api, getLocalReading, scholarName, topicName, type LocalReadingEntry } from "@/lib/api";
+import { api, apiFetch, getLocalReading, scholarName, topicName, type LocalReadingEntry } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState, MaterialCard } from "@/components/ui";
 
 // Kategori di luar fokus awal: koleksinya belum tersedia di database,
@@ -23,8 +23,8 @@ export default function HomePage() {
   const load = useCallback(async () => {
     setLoading(true); setError(null);
     try {
-      const [t, m, s] = await Promise.all([api.topics(), api.materials(), api.scholars()]);
-      setTopics(t); setMaterials(m); setScholars(s);
+      const [t, m, s] = await Promise.all([api.topics(), apiFetch<{items:MaterialSummary[]}>("/api/catalog/materials?limit=6", {auth:false}), api.scholars()]);
+      setTopics(t); setMaterials(m.items); setScholars(s);
     } catch (e) { setError(e instanceof Error ? e.message : "Gagal memuat data."); }
     finally { setLoading(false); }
   }, []);
@@ -93,7 +93,7 @@ export default function HomePage() {
             {topics.length === 0 ? <EmptyState title="Belum ada kategori yang diterbitkan" body="Kategori persoalan akan tampil di sini setelah data topik tersedia dari server." /> : (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {topics.map((t) => (
-                  <Link key={t.id} href={`/cari?q=${encodeURIComponent(topicName(t))}`} className="card p-4">
+                  <Link key={t.id} href={`/cari?topic_id=${encodeURIComponent(t.id)}`} className="card p-4">
                     {t.code ? <p className="text-xs font-bold text-gold">{t.code}</p> : null}
                     <p className="mt-1 font-semibold text-emerald-deep">{topicName(t)}</p>
                     {t.name_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 text-right text-base text-muted">{t.name_ar}</p> : null}
