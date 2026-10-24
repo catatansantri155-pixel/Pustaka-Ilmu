@@ -5,16 +5,15 @@ import { materialTitle, scholarName, topicName } from "@/lib/api";
 
 export function EmptyState({ title, body }: { title: string; body?: string }) {
   return (
-    <div className="card pattern-islamic-light px-6 py-10 text-center">
-      <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald/10 text-xl text-emerald">✦</div>
+    <div className="rounded-lg border border-line bg-surface px-5 py-7">
       <p className="font-semibold text-emerald-deep">{title}</p>
-      {body ? <p className="mx-auto mt-1 max-w-md text-sm text-stone-600">{body}</p> : null}
+      {body ? <p className="mt-2 max-w-prose text-sm text-muted">{body}</p> : null}
     </div>
   );
 }
 export function SkeletonCard() {
   return (
-    <div className="card animate-pulse p-5" aria-hidden>
+    <div className="card p-5" aria-hidden>
       <div className="h-4 w-24 rounded-full bg-surface" />
       <div className="mt-3 h-5 w-3/4 rounded bg-surface" />
       <div className="mt-2 h-4 w-full rounded bg-surface" />
@@ -27,7 +26,7 @@ export function LoadingState({ label = "Memuat data…" }: { label?: string }) {
   // jadi status ini selalu berakhir menjadi data, empty state, atau error state.
   return (
     <div role="status" aria-label={label} className="space-y-3">
-      <p className="sr-only">{label}</p>
+      <p className="text-sm text-muted">{label}</p>
       <SkeletonCard />
       <SkeletonCard />
     </div>
@@ -35,7 +34,7 @@ export function LoadingState({ label = "Memuat data…" }: { label?: string }) {
 }
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div className="rounded-3xl border border-red-200 bg-red-50 px-6 py-6 text-sm text-red-800">
+    <div role="alert" className="rounded-lg border border-red-200 bg-red-50 px-6 py-6 text-sm text-red-800">
       <p className="font-semibold">Data belum dapat dimuat.</p>
       <p className="mt-1">{message}</p>
       {onRetry ? (
@@ -48,15 +47,15 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 }
 export function MaterialCard({ m }: { m: MaterialSummary }) {
   return (
-    <Link href={`/materi/${m.id}`} className="card block p-5 transition hover:shadow-md">
+    <Link href={`/materi/${m.id}`} className="catalog-entry">
       <div className="flex flex-wrap gap-2">
         {m.topics?.slice(0, 2).map((t) => (
-          <span key={t.id} className="chip border-emerald/20 bg-emerald/5 text-emerald">{t.code ? `${t.code} · ` : ""}{topicName(t)}</span>
+          <span key={t.id} className="text-xs text-muted">{topicName(t)}</span>
         ))}
-        {m.content_type ? <span className="chip border-gold/40 bg-gold/10 text-emerald-deep">{m.content_type}</span> : null}
+        {m.content_type ? <span className="text-xs text-muted">{m.content_type}</span> : null}
         {m.is_demo ? <span className="chip border-amber-300 bg-amber-50 text-amber-800">Demo</span> : null}
       </div>
-      <h3 className="mt-3 font-bold text-emerald-deep">{materialTitle(m)}</h3>
+      <h3 className="mt-2 text-lg font-bold leading-snug text-emerald-deep">{materialTitle(m)}</h3>
       {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 text-right text-lg leading-relaxed text-stone-700">{m.title_ar}</p> : null}
       {m.summary ? <p className="mt-2 line-clamp-3 text-sm text-stone-600">{m.summary}</p> : null}
       <p className="mt-3 text-xs font-medium text-stone-500">{scholarName(m.scholar) || m.scholar_name || ""}{m.ai_label ? ` · ${m.ai_label}` : ""}</p>

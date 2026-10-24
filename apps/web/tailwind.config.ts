@@ -10,7 +10,7 @@ const config: Config = {
         emerald: { DEFAULT: "#176B53", deep: "#103D32" },
         gold: "#D6B979",
         ink: "#17201D",
-        muted: "#697570",
+        muted: "#52625B",
         line: "#E8EAE6",
         surface: "#F2F5F1",
       },

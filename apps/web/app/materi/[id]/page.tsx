@@ -112,14 +112,14 @@ export default function MaterialPage() {
       </header>
 
       <div className="card flex flex-wrap items-center gap-2 p-4">
-        <div className="flex overflow-hidden rounded-full border border-emerald/30" role="group" aria-label="Tampilan bahasa">
+        <div className="flex flex-wrap gap-1" role="group" aria-label="Tampilan bahasa">
           {([["gabung", "Arab + Indonesia"], ["arab", "Arab saja"], ["indo", "Indonesia saja"]] as Array<[DisplayMode, string]>).map(([v, label]) => (
-            <button key={v} onClick={() => { setDisplay(v); savePref("pustaka:reader:display", v); }} className={`px-3 py-2 text-xs font-semibold sm:text-sm ${display === v ? "bg-emerald text-white" : "bg-white text-emerald"}`}>{label}</button>
+            <button key={v} aria-pressed={display === v} onClick={() => { setDisplay(v); savePref("pustaka:reader:display", v); }} className={`rounded-md border border-emerald px-3 py-2 text-xs font-semibold sm:text-sm ${display === v ? "bg-emerald text-white" : "bg-white text-emerald"}`}>{label}</button>
           ))}
         </div>
-        <div className="flex overflow-hidden rounded-full border border-emerald/30" role="group" aria-label="Mode membaca">
-          <button onClick={() => { setMode("pemula"); savePref("pustaka:reader:mode", "pemula"); }} className={`px-4 py-2 text-sm font-semibold ${mode === "pemula" ? "bg-emerald text-white" : "bg-white text-emerald"}`}>Pemula</button>
-          <button onClick={() => { setMode("mendalam"); savePref("pustaka:reader:mode", "mendalam"); }} className={`px-4 py-2 text-sm font-semibold ${mode === "mendalam" ? "bg-emerald text-white" : "bg-white text-emerald"}`}>Mendalam</button>
+        <div className="flex flex-wrap gap-1" role="group" aria-label="Mode membaca">
+          <button aria-pressed={mode === "pemula"} onClick={() => { setMode("pemula"); savePref("pustaka:reader:mode", "pemula"); }} className={`rounded-md border border-emerald px-4 py-2 text-sm font-semibold ${mode === "pemula" ? "bg-emerald text-white" : "bg-white text-emerald"}`}>Pemula</button>
+          <button aria-pressed={mode === "mendalam"} onClick={() => { setMode("mendalam"); savePref("pustaka:reader:mode", "mendalam"); }} className={`rounded-md border border-emerald px-4 py-2 text-sm font-semibold ${mode === "mendalam" ? "bg-emerald text-white" : "bg-white text-emerald"}`}>Mendalam</button>
         </div>
         <div className="flex items-center gap-1" aria-label="Ukuran font Arab">
           <span className="text-xs text-muted">Arab</span>
@@ -131,20 +131,20 @@ export default function MaterialPage() {
           <button className="btn-outline px-3" onClick={() => { const v = Math.max(0, fontId - 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A−</button>
           <button className="btn-outline px-3" onClick={() => { const v = Math.min(3, fontId + 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A+</button>
         </div>
-        <button className="btn-outline" onClick={bookmark}>Bookmark</button>
+        <button className="btn-outline" onClick={bookmark}>Simpan materi</button>
         <button className="btn-outline" onClick={share}>Bagikan</button>
-        <button className="btn-outline" onClick={() => setReportOpen((v) => !v)}>Laporkan Kesalahan Terjemahan</button>
+        <button className="btn-outline" aria-expanded={reportOpen} aria-controls="correction-form" onClick={() => setReportOpen((v) => !v)}>Laporkan kesalahan terjemahan</button>
       </div>
-      {notice ? <div className="rounded-2xl border border-emerald/20 bg-emerald/5 px-4 py-3 text-sm text-emerald-deep">{notice} {notice.includes("masuk terlebih dahulu") ? <Link href="/admin/login" className="font-semibold underline">Masuk di sini</Link> : null}</div> : null}
+      {notice ? <div role="status" className="rounded-lg border border-emerald/20 bg-emerald/5 px-4 py-3 text-sm text-emerald-deep">{notice} {notice.includes("masuk terlebih dahulu") ? <Link href="/admin/login" className="font-semibold underline">Masuk di sini</Link> : null}</div> : null}
 
       {reportOpen ? (
-        <form onSubmit={submitReport} className="card space-y-3 p-5">
+        <form id="correction-form" onSubmit={submitReport} className="card space-y-3 p-5">
           <p className="font-semibold text-emerald-deep">Laporkan kemungkinan kesalahan terjemahan</p>
           <p className="text-sm text-muted">Laporan masuk antrean admin dan tidak langsung mengubah materi publik.</p>
           <textarea className="input min-h-24" value={reportText} onChange={(e) => setReportText(e.target.value)} placeholder="Tuliskan bagian yang Anda nilai keliru dan alasannya…" aria-label="Isi laporan koreksi" />
           <div className="flex items-center gap-3">
             <button className="btn-primary" type="submit" disabled={reporting}>{reporting ? "Mengirim…" : "Kirim Laporan"}</button>
-            {reportStatus ? <p className="text-sm text-emerald-deep">{reportStatus}</p> : null}
+            {reportStatus ? <p role="status" className="text-sm text-emerald-deep">{reportStatus}</p> : null}
           </div>
         </form>
       ) : null}
