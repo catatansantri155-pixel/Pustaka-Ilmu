@@ -210,9 +210,9 @@ export function scholarName(s?: Scholar | null): string {
   if (!s) return "";
   return s.name_id || s.name || "Ulama";
 }
-export function materialTitle(m?: { title_id?: string | null; title?: string | null } | null): string {
+export function materialTitle(m?: { title_id?: string | null; title?: string | null; title_ar?: string | null } | null): string {
   if (!m) return "(Tanpa judul)";
-  return m.title_id || m.title || "(Tanpa judul)";
+  return m.title_id || m.title || m.title_ar || "(Tanpa judul)";
 }
 export function topicName(t?: Topic | null): string {
   if (!t) return "";

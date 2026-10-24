@@ -1,5 +1,7 @@
 # Pustaka Ilmu — Perpustakaan Fatwa & Khazanah Islam
 
+> **Pertumbuhan per syaikh:** [inventaris 3.000 sumber dan target 100–1.000](docs/PERTUMBUHAN-KOLEKSI.md). Tersedia 100 sumber terverifikasi per syaikh, panel admin, serta alur batch; jumlah kandidat bukan jumlah materi terbit.
+
 > **Pengembangan 24 Oktober 2026:** lihat [Tahap 1–4](docs/PENGEMBANGAN-TAHAP-1-4.md) dan [hasil verifikasi](docs/HASIL-VERIFIKASI-TAHAP-1-4.md). Kode mencakup stabilisasi, pengelolaan konten, pilot 30 draf, dan pagination/antrean. Catatan V1/V2 di bawah bersifat historis; jumlah koleksi produksi belum diverifikasi ulang.
 
 Aplikasi perpustakaan digital ilmu Islam: mobile-first PWA reader + web admin dashboard, Bahasa Indonesia, konten Arab + terjemahan Indonesia, strategi AI-first dengan publikasi terkendali admin. Fokus awal: **Thaharah**, dengan 3 ulama (Bin Baz, Ibnu Utsaimin, Al-Albani). Aplikasi ini adalah perpustakaan dan mesin penelusuran ilmu — bukan sistem yang mengeluarkan fatwa baru.

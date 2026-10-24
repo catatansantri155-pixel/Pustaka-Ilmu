@@ -10,6 +10,7 @@ const ADMIN_NAV = [
   { href: "/admin/acquisition", label: "Acquisition" },
   { href: "/admin/processing", label: "Processing Queue" },
   { href: "/admin/ai-translation", label: "AI Translation" },
+  { href: "/admin/corpus", label: "Pertumbuhan Koleksi" },
   { href: "/admin/materials", label: "Materials" },
   { href: "/admin/scholars", label: "Scholars" },
   { href: "/admin/topics", label: "Topics" },

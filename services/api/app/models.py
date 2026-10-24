@@ -374,3 +374,35 @@ class QualityReview(TimestampMixin, Base):
     segment_ref: Mapped[str] = mapped_column(String, default="")
     reviewer_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
     notes: Mapped[str] = mapped_column(Text)
+
+class CorpusCandidate(TimestampMixin, Base):
+    """A discovered source is not a published material or a completed translation."""
+    __tablename__ = "corpus_candidates"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    source_key: Mapped[str] = mapped_column(String(180), unique=True, index=True)
+    scholar_key: Mapped[str] = mapped_column(String(30), index=True)
+    canonical_url: Mapped[str] = mapped_column(Text)
+    title_ar: Mapped[str] = mapped_column(Text, default="")
+    title_origin: Mapped[str] = mapped_column(String, default="URL_SLUG")
+    discovery_url: Mapped[str] = mapped_column(Text)
+    discovery_method: Mapped[str] = mapped_column(String)
+    topic_hint: Mapped[str] = mapped_column(String, default="")
+    topic_basis: Mapped[str] = mapped_column(String, default="UNCLASSIFIED")
+    scope: Mapped[str] = mapped_column(String, default="UNCLASSIFIED", index=True)
+    page_status: Mapped[str] = mapped_column(String, default="DISCOVERED", index=True)
+    body_status: Mapped[str] = mapped_column(String, default="NOT_CHECKED")
+    ingestion_status: Mapped[str] = mapped_column(String, default="METADATA_ONLY", index=True)
+    checked_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
+    content_checksum: Mapped[str] = mapped_column(String(64), default="")
+    source_reference: Mapped[str] = mapped_column(Text, default="")
+    text_ar: Mapped[str] = mapped_column(Text, default="")
+    rights_evidence: Mapped[str] = mapped_column(Text, default="")
+    error: Mapped[str] = mapped_column(Text, default="")
+    material_id: Mapped[str] = mapped_column(ForeignKey("materials.id"), nullable=True, index=True)
+
+
+class CorpusTarget(TimestampMixin, Base):
+    __tablename__ = "corpus_targets"
+    scholar_key: Mapped[str] = mapped_column(String(30), primary_key=True)
+    target: Mapped[int] = mapped_column(Integer, default=100)
+    paused: Mapped[bool] = mapped_column(Boolean, default=True)

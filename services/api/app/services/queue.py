@@ -7,9 +7,9 @@ from ..db import SessionLocal
 from ..models import ContentTask, Material, SourceRegistry
 
 
-def enqueue(db, *, kind, url="", material_id=None, registry_id=None, scholar_id=None):
-    identity = url if kind == "IMPORT" else material_id
-    if kind == "TRANSLATE":
+def enqueue(db, *, kind, url="", material_id=None, registry_id=None, scholar_id=None, commit=True):
+    identity = material_id if kind in ("TRANSLATE", "CORPUS_TRANSLATE") else url
+    if kind in ("TRANSLATE", "CORPUS_TRANSLATE"):
         from ..models import ArabicText, GlossaryTerm
         from ..config import settings
         from .ai_adapter import PROMPT_VERSION
@@ -23,6 +23,14 @@ def enqueue(db, *, kind, url="", material_id=None, registry_id=None, scholar_id=
         return existing
     row = ContentTask(dedup_key=key, kind=kind, url=url, material_id=material_id,
                       registry_id=registry_id, scholar_id=scholar_id)
+    if not commit:
+        try:
+            with db.begin_nested():
+                db.add(row)
+                db.flush()
+        except IntegrityError:
+            row = db.query(ContentTask).filter_by(dedup_key=key).one()
+        return row
     db.add(row)
     try:
         db.commit(); db.refresh(row)
@@ -57,7 +65,10 @@ def run_one():
             return None
         task_id = task.id
         try:
-            if task.kind == "IMPORT":
+            if task.kind.startswith("CORPUS_"):
+                from .corpus_worker import run_corpus_task
+                run_corpus_task(db, task)
+            elif task.kind == "IMPORT":
                 from .importer import import_html, assert_safe_url
                 registry = db.get(SourceRegistry, task.registry_id)
                 if not registry:
@@ -85,12 +96,24 @@ def run_one():
                 task.status = "COMPLETED"
             else:
                 raise ValueError("Jenis task tidak dikenal")
-            task.error = ""
+            if task.status == "COMPLETED":
+                task.error = ""
             db.commit()
         except Exception as exc:
             db.rollback()
             task = db.get(ContentTask, task_id)
             task.error = str(exc)[:2000]
+            if task.kind.startswith("CORPUS_"):
+                from .source_connectors import source_identity
+                from ..models import CorpusCandidate
+                _, identity = source_identity(task.url)
+                candidate = db.query(CorpusCandidate).filter_by(source_key=identity).first()
+                if candidate:
+                    candidate.error = task.error
+                    if task.kind == "CORPUS_VERIFY":
+                        candidate.page_status = "FAILED"
+                    else:
+                        candidate.ingestion_status = "FAILED"
             task.status = "FAILED" if task.attempts >= task.max_attempts else "RETRY"
             task.available_at = datetime.now(timezone.utc) + timedelta(seconds=min(3600, 30 * 2 ** task.attempts))
             db.commit()
