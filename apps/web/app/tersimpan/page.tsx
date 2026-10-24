@@ -14,6 +14,7 @@ export default function TersimpanPage() {
   const [notice, setNotice] = useState<string | null>(null);
 
   async function load() {
+    setLoading(true); setError(null);
     try { setItems(await api.bookmarks()); }
     catch (e) { setError(e instanceof Error ? e.message : "Gagal memuat bookmark."); }
     finally { setLoading(false); }
@@ -37,7 +38,7 @@ export default function TersimpanPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-extrabold text-emerald-deep">Tersimpan</h1>
-      {error ? <ErrorState message={error} /> : null}
+      {error ? <ErrorState message={error} onRetry={load} /> : null}
       {notice ? <p className="text-sm text-emerald">{notice}</p> : null}
       {loading ? <LoadingState /> : items.length === 0 ? <EmptyState title="Belum ada materi tersimpan" body="Simpan materi dengan tombol Bookmark pada halaman materi, dan materi itu akan tampil di sini." /> : (
         <div className="space-y-3">

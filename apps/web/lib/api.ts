@@ -62,15 +62,26 @@ function errorMessage(data: unknown, status: number): string {
   return `Permintaan gagal (HTTP ${status})`;
 }
 
-export async function apiFetch<T>(path: string, options: RequestInit & { auth?: boolean } = {}): Promise<T> {
-  const { auth = true, headers, ...rest } = options;
+export const API_TIMEOUT_MS = 12000;
+
+export async function apiFetch<T>(path: string, options: RequestInit & { auth?: boolean; timeoutMs?: number } = {}): Promise<T> {
+  const { auth = true, headers, timeoutMs = API_TIMEOUT_MS, signal, ...rest } = options;
   const h: Record<string, string> = { "Content-Type": "application/json", ...(headers as Record<string, string> | undefined) };
   if (auth) { const t = getToken(); if (t) h["Authorization"] = `Bearer ${t}`; }
+  // Timeout keras: halaman tidak boleh berhenti di "Memuat data…" tanpa batas.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  if (signal) signal.addEventListener("abort", () => controller.abort(), { once: true });
   let res: Response;
   try {
-    res = await fetch(`${API_BASE}${path}`, { ...rest, headers: h });
-  } catch {
+    res = await fetch(`${API_BASE}${path}`, { ...rest, headers: h, signal: controller.signal });
+  } catch (e) {
+    if (e instanceof DOMException && e.name === "AbortError") {
+      throw new ApiError(`Server API tidak merespons dalam ${Math.round(timeoutMs / 1000)} detik. Periksa koneksi Anda lalu coba lagi.`, 0);
+    }
     throw new ApiError("Tidak dapat terhubung ke server API. Pastikan backend berjalan.", 0);
+  } finally {
+    clearTimeout(timer);
   }
   if (res.status === 204) return undefined as T;
   const text = await res.text();
@@ -112,6 +123,10 @@ export const api = {
   scholars: () => list<Scholar>("/api/scholars"),
   topics: () => list<Topic>("/api/topics"),
   issues: () => list<Issue>("/api/issues"),
+  issue: (id: string) => apiFetch<IssueDetail>(`/api/issues/${encodeURIComponent(id)}`, { auth: false }),
+  glossaryPublic: () => list<GlossaryItem>("/api/glossary"),
+  reportCorrection: (body: { material_id: string; segment_id?: string; message: string; name?: string }) =>
+    apiFetch<{ id: string; status: string }>("/api/correction-reports", { method: "POST", auth: false, body: JSON.stringify(body) }),
   materials: () => list<MaterialSummary>("/api/materials"),
   material: (id: string) => apiFetch<MaterialDetail>(`/api/materials/${encodeURIComponent(id)}`, { auth: false }),
   search: async (q: string, scholarId?: string): Promise<SearchResult[]> => {
@@ -164,6 +179,32 @@ export const api = {
     return asList<ReferenceItem>(data);
   },
 };
+
+export interface IssueDetail {
+  id: string; code?: string; title_id?: string; description_id?: string; topic_id?: string | null;
+  topic?: { id: string; code?: string; name_id?: string; name_ar?: string } | null;
+  materials: Array<Record<string, unknown>>;
+  materials_status: string;
+}
+
+/** Riwayat bacaan lokal (localStorage) untuk "Lanjutkan membaca" di beranda. */
+export interface LocalReadingEntry { id: string; title: string; scholar?: string; at: number }
+const READING_KEY = "pustaka:reading-progress";
+export function recordLocalReading(entry: Omit<LocalReadingEntry, "at">): void {
+  try {
+    const raw = localStorage.getItem(READING_KEY);
+    const list: LocalReadingEntry[] = raw ? JSON.parse(raw) : [];
+    const next = [{ ...entry, at: Date.now() }, ...list.filter((x) => x.id !== entry.id)].slice(0, 10);
+    localStorage.setItem(READING_KEY, JSON.stringify(next));
+  } catch { /* localStorage tidak tersedia */ }
+}
+export function getLocalReading(): LocalReadingEntry[] {
+  try {
+    const raw = localStorage.getItem(READING_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list : [];
+  } catch { return []; }
+}
 
 export function scholarName(s?: Scholar | null): string {
   if (!s) return "";

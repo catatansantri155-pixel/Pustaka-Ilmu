@@ -9,12 +9,13 @@ export default function PustakaPage() {
   const [scholars, setScholars] = useState<Scholar[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  useEffect(() => { api.scholars().then(setScholars).catch((e) => setError(e instanceof Error ? e.message : "Gagal memuat.")).finally(() => setLoading(false)); }, []);
+  const [nonce, setNonce] = useState(0);
+  useEffect(() => { setLoading(true); setError(null); api.scholars().then(setScholars).catch((e) => setError(e instanceof Error ? e.message : "Gagal memuat.")).finally(() => setLoading(false)); }, [nonce]);
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-extrabold text-emerald-deep">Pustaka Ulama</h1>
       <p className="text-sm text-stone-600">Pilih seorang ulama untuk melihat profil dan materi terbit beliau.</p>
-      {error ? <ErrorState message={error} /> : null}
+      {error ? <ErrorState message={error} onRetry={() => setNonce((n) => n + 1)} /> : null}
       {loading ? <LoadingState /> : scholars.length === 0 ? <EmptyState title="Belum ada data ulama" body="Data ulama akan tampil di sini setelah tersedia dari server." /> : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {scholars.map((s) => (

@@ -2,25 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { --ivory: #FAF7F0; --emerald: #065F46; --emerald-deep: #064E3B; --gold: #C9A227; }
+/* Design tokens — Master Prompt V2.0 BAGIAN 4.2 */
+:root {
+  --green-deep: #103D32;
+  --emerald: #176B53;
+  --ivory: #FAF9F6;
+  --white: #FFFFFF;
+  --gold: #D6B979;
+  --ink: #17201D;
+  --muted: #697570;
+  --line: #E8EAE6;
+  --surface: #F2F5F1;
+}
 html { background: var(--ivory); }
-body { background: var(--ivory); color: #1c2420; font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
-.font-arabic { font-family: 'Amiri', serif; }
+body { background: var(--ivory); color: var(--ink); font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
+/* Teks Arab: Noto Naskh Arabic, line-height lebih lapang daripada Latin (BAGIAN 4.3) */
+.font-arabic { font-family: 'Noto Naskh Arabic', 'Amiri', serif; line-height: 2.1; }
 
 /* Eight-point star geometric pattern (SVG data-URI, no external images) */
 .pattern-islamic {
-  background-color: #064E3B;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23C9A227' stroke-opacity='0.28'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3Ccircle cx='36' cy='36' r='7'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: #103D32;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23D6B979' stroke-opacity='0.28'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3Ccircle cx='36' cy='36' r='7'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 72px 72px;
 }
 .pattern-islamic-light {
-  background-color: #FAF7F0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23065F46' stroke-opacity='0.10'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: #FAF9F6;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23176B53' stroke-opacity='0.10'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 72px 72px;
 }
-.card { @apply rounded-3xl border border-emerald-900/10 bg-white shadow-soft; }
+.card { @apply rounded-3xl border border-line bg-white shadow-soft; }
 .btn-primary { @apply inline-flex items-center justify-center rounded-full bg-emerald px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-deep disabled:opacity-50; }
 .btn-gold { @apply inline-flex items-center justify-center rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-emerald-deep hover:brightness-95 disabled:opacity-50; }
 .btn-outline { @apply inline-flex items-center justify-center rounded-full border border-emerald/30 bg-white px-4 py-2 text-sm font-semibold text-emerald hover:bg-emerald/5 disabled:opacity-50; }
-.input { @apply w-full rounded-2xl border border-emerald-900/15 bg-white px-4 py-2.5 text-sm outline-none focus:border-emerald focus:ring-2 focus:ring-emerald/20; }
+.input { @apply w-full rounded-2xl border border-line bg-white px-4 py-2.5 text-sm outline-none focus:border-emerald focus:ring-2 focus:ring-emerald/20; }
 .chip { @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium; }

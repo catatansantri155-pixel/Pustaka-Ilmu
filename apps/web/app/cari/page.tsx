@@ -1,5 +1,6 @@
 "use client";
 import { Suspense, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { Issue, MaterialSummary, Scholar } from "@pustaka/shared-types";
 import { api, scholarName, topicName } from "@/lib/api";
@@ -17,8 +18,9 @@ function CariInner() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(!!initial);
   const [error, setError] = useState<string | null>(null);
+  const [nonce, setNonce] = useState(0);
 
-  useEffect(() => { api.issues().then(setIssues).catch(() => {}); api.scholars().then(setScholars).catch(() => {}); }, []);
+  useEffect(() => { api.issues().then(setIssues).catch(() => {}); api.scholars().then(setScholars).catch(() => {}); }, [nonce]);
   useEffect(() => {
     if (!initial) return;
     setLoading(true); setError(null);
@@ -26,7 +28,17 @@ function CariInner() {
       .catch((e) => setError(e instanceof Error ? e.message : "Pencarian gagal."))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initial]);
+  }, [initial, nonce]);
+
+  function retry() {
+    if (searched || query) {
+      setLoading(true); setError(null);
+      api.search(query || initial).then((r) => { setResults(r); setSearched(true); })
+        .catch((e) => setError(e instanceof Error ? e.message : "Pencarian gagal."))
+        .finally(() => setLoading(false));
+    }
+    setNonce((n) => n + 1);
+  }
 
   const filtered = useMemo(() => {
     if (!scholarFilter) return results;
@@ -57,7 +69,7 @@ function CariInner() {
           </div>
         )}
       </section>
-      {error ? <ErrorState message={error} /> : null}
+      {error ? <ErrorState message={error} onRetry={retry} /> : null}
       {loading ? <LoadingState label="Mencari materi…" /> : searched ? (
         <section>
           <h2 className="mb-3 text-lg font-bold text-emerald-deep">Hasil{query ? ` untuk “${query}”` : ""}</h2>
@@ -82,11 +94,11 @@ function CariInner() {
         {issues.length === 0 ? <EmptyState title="Belum ada daftar persoalan" body="Daftar persoalan akan tampil di sini setelah data persoalan tersedia dari server." /> : (
           <div className="grid gap-3 sm:grid-cols-2">
             {issues.map((i) => (
-              <button key={i.id} onClick={() => { const t = i.title_id || i.title || i.question || ""; setQ(t); setQuery(t); setLoading(true); api.search(t).then((r) => { setResults(r); setSearched(true); }).catch((e) => setError(e instanceof Error ? e.message : "Pencarian gagal.")).finally(() => setLoading(false)); }} className="card p-4 text-left">
+              <Link key={i.id} href={`/persoalan/${i.id}`} className="card block p-4 text-left transition hover:shadow-md">
                 {i.code ? <p className="text-xs font-bold text-gold">{i.code}</p> : null}
                 <p className="font-semibold text-emerald-deep">{i.title_id || i.title || i.question}</p>
                 {i.description ? <p className="mt-1 text-sm text-stone-600">{i.description}</p> : null}
-              </button>
+              </Link>
             ))}
           </div>
         )}

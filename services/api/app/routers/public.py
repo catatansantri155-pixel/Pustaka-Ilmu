@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
+from typing import Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from ..db import get_db
-from ..models import Scholar, Topic, Issue, Material, ArabicText, TextSegment, Translation, TranslationSegment, QualityFinding, ReferenceMatch, MaterialTopic
+from ..models import Scholar, Topic, Issue, IssueMaterial, Material, ArabicText, TextSegment, Translation, TranslationSegment, QualityFinding, ReferenceMatch, MaterialTopic, GlossaryTerm, CorrectionReport
 from ..deps import get_optional_user, role_name
 from ..services.search import expand_query, normalize_text
 from ..services.ai_adapter import AI_LABEL
@@ -32,6 +34,55 @@ def list_topics(db: Session = Depends(get_db)):
 @router.get("/issues")
 def list_issues(db: Session = Depends(get_db)):
     return [{"id": i.id, "code": i.code, "title_id": i.title_id, "description_id": i.description_id, "topic_id": i.topic_id} for i in db.query(Issue).all()]
+
+@router.get("/issues/{issue_id}")
+def get_issue(issue_id: str, db: Session = Depends(get_db)):
+    i = db.query(Issue).filter(Issue.id == issue_id).first()
+    if not i: raise HTTPException(404, "Persoalan tidak ditemukan")
+    topic = None
+    if i.topic_id:
+        t = db.query(Topic).filter(Topic.id == i.topic_id).first()
+        if t: topic = {"id": t.id, "code": t.code, "name_id": t.name_id, "name_ar": t.name_ar}
+    mats = []
+    for im in db.query(IssueMaterial).filter(IssueMaterial.issue_id == i.id).all():
+        m = db.query(Material).filter(Material.id == im.material_id, Material.status == "PUBLISHED_AI").first()
+        if m: mats.append(material_brief(db, m))
+    return {
+        "id": i.id, "code": i.code, "title_id": i.title_id, "description_id": i.description_id,
+        "topic_id": i.topic_id, "topic": topic, "materials": mats,
+        "materials_status": "TERTAUT" if mats else "MENUNGGU_MATERI_SUMBER: belum ada materi terbit yang benar-benar membahas persoalan ini dan lolos gerbang publikasi.",
+    }
+
+@router.get("/glossary")
+def list_glossary(db: Session = Depends(get_db)):
+    return [{"id": g.id, "term_ar": g.term_ar, "term_id": g.term_id, "context": g.context} for g in db.query(GlossaryTerm).order_by(GlossaryTerm.term_id).all()]
+
+@router.get("/glossary/{term}")
+def get_glossary_term(term: str, db: Session = Depends(get_db)):
+    g = db.query(GlossaryTerm).filter(GlossaryTerm.id == term).first()
+    if not g:
+        g = db.query(GlossaryTerm).filter(or_(GlossaryTerm.term_id.ilike(term), GlossaryTerm.term_ar == term)).first()
+    if not g: raise HTTPException(404, "Istilah tidak ditemukan")
+    return {"id": g.id, "term_ar": g.term_ar, "term_id": g.term_id, "context": g.context}
+
+class CorrectionIn(BaseModel):
+    material_id: str
+    segment_id: Optional[str] = None
+    name: Optional[str] = ""
+    message: str
+
+@router.post("/correction-reports", status_code=201)
+def create_correction_report(body: CorrectionIn, db: Session = Depends(get_db)):
+    # Rate limit sederhana global /api/* sudah ditegakkan middleware di main.py.
+    msg = (body.message or "").strip()
+    if len(msg) < 5 or len(msg) > 2000:
+        raise HTTPException(422, "Isi laporan harus 5–2000 karakter")
+    m = db.query(Material).filter(Material.id == body.material_id).first()
+    if not m: raise HTTPException(404, "Material tidak ditemukan")
+    r = CorrectionReport(material_id=body.material_id, text_segment_id=body.segment_id or None,
+                           reporter_name=(body.name or "")[:120], message=msg, status="PENDING")
+    db.add(r); db.commit(); db.refresh(r)
+    return {"id": r.id, "status": r.status}
 
 @router.get("/materials")
 def list_materials(db: Session = Depends(get_db)):
@@ -90,14 +141,20 @@ def _search_fts(db: Session, q: str):
 def search(q: str = Query(""), db: Session = Depends(get_db)):
     if db.bind is not None and db.bind.dialect.name == "postgresql":
         fts_mats = _search_fts(db, q)
-        if fts_mats is not None:
+        if fts_mats:
             return {"query": q, "results": [material_brief(db, m) for m in fts_mats], "total": len(fts_mats)}
+        # FTS kosong -> lanjut ke fallback sinonim/normalisasi (V2 BAGIAN 14):
+        # tanpa ini, variasi ejaan (wudhu, salat) dan istilah Arab tidak pernah cocok.
     terms = expand_query(q)
     mats = db.query(Material).filter(Material.status == "PUBLISHED_AI").all()
     results = []
     for m in mats:
         at = db.query(ArabicText).filter(ArabicText.material_id == m.id).first()
-        hay = " ".join([m.title_id or "", m.title_ar or "", at.full_text if at else ""])
+        tr = db.query(Translation).filter(Translation.material_id == m.id).first()
+        id_text = ""
+        if tr:
+            id_text = " ".join(t.text_id or "" for t in db.query(TranslationSegment).filter(TranslationSegment.translation_id == tr.id).all())
+        hay = " ".join([m.title_id or "", m.title_ar or "", at.full_text if at else "", id_text])
         hay_n = normalize_text(hay); hay_l = hay.lower()
         if any(t.lower() in hay_l or normalize_text(t) in hay_n for t in terms if t):
             results.append(material_brief(db, m))

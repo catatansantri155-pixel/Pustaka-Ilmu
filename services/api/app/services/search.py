@@ -1,13 +1,21 @@
 import re
-TASHKEEL = re.compile(r'[\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]')
-SYNONYMS = {
-    "wudu": ["wudu","wudhu","وضوء","الوضوء"], "wudhu": ["wudu","wudhu","وضوء","الوضوء"], "وضوء": ["wudu","wudhu","وضوء"],
-    "shalat": ["shalat","salat","صلاة","صلاه"], "salat": ["shalat","salat","صلاة","صلاه"], "صلاة": ["shalat","salat","صلاة"],
-    "tayamum": ["tayamum","tayammum","تيمم"], "tayammum": ["tayamum","tayammum","تيمم"], "تيمم": ["tayamum","tayammum","تيمم"],
-    "najis": ["najis","نجاسة","نجاسه"], "نجاسة": ["najis","نجاسة"],
-    "haid": ["haid","حيض"], "حيض": ["haid","حيض"],
-    "ghusl": ["ghusl","mandi wajib","غسل"], "غسل": ["ghusl","mandi wajib","غسل"],
-}
+# Harakat/tashkeel + tatweel (U+0640) dihapus saat normalisasi.
+TASHKEEL = re.compile(r'[\u0640\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]')
+# Peta sinonim dua arah (Indonesia <-> Arab <-> variasi ejaan), Master Prompt V2 BAGIAN 14.
+_GROUPS = [
+    ["wudu", "wudhu", "وضوء", "الوضوء"],
+    ["shalat", "salat", "صلاة", "الصلاة"],
+    ["tayamum", "tayammum", "تيمم", "التيمم"],
+    ["najis", "نجاسة", "النجاسة"],
+    ["haid", "حيض", "الحيض"],
+    ["mandi wajib", "ghusl", "غسل", "الغسل"],
+    ["khuf", "خف", "الخف"],
+    ["istinja", "استنجاء", "الاستنجاء"],
+]
+SYNONYMS = {}
+for _g in _GROUPS:
+    for _k in _g:
+        SYNONYMS[_k] = _g
 def normalize_query(q: str) -> str:
     q = q.lower().strip()
     q = TASHKEEL.sub('', q)

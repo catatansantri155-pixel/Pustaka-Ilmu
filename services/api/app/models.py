@@ -307,6 +307,30 @@ class User(TimestampMixin, Base):
     mfa_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
     role = relationship("Role")
 
+class ScholarAlias(TimestampMixin, Base):
+    __tablename__ = "scholar_aliases"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    scholar_id: Mapped[str] = mapped_column(ForeignKey("scholars.id"), index=True)
+    alias: Mapped[str] = mapped_column(String, default="")
+    lang: Mapped[str] = mapped_column(String, default="ar")
+
+class UserNote(TimestampMixin, Base):
+    __tablename__ = "user_notes"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    material_id: Mapped[str] = mapped_column(ForeignKey("materials.id"), index=True)
+    text_segment_id: Mapped[str] = mapped_column(String, nullable=True)
+    note: Mapped[str] = mapped_column(Text, default="")
+
+class CorrectionReport(TimestampMixin, Base):
+    __tablename__ = "correction_reports"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    material_id: Mapped[str] = mapped_column(ForeignKey("materials.id"), index=True)
+    text_segment_id: Mapped[str] = mapped_column(String, nullable=True)
+    reporter_name: Mapped[str] = mapped_column(String, default="")
+    message: Mapped[str] = mapped_column(Text)
+    status: Mapped[str] = mapped_column(String, default="PENDING", index=True)
+
 class Bookmark(TimestampMixin, Base):
     __tablename__ = "bookmarks"
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)

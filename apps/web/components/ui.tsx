@@ -12,14 +12,37 @@ export function EmptyState({ title, body }: { title: string; body?: string }) {
     </div>
   );
 }
-export function LoadingState({ label = "Memuat data…" }: { label?: string }) {
-  return <div className="card px-6 py-10 text-center text-sm text-stone-500">{label}</div>;
+export function SkeletonCard() {
+  return (
+    <div className="card animate-pulse p-5" aria-hidden>
+      <div className="h-4 w-24 rounded-full bg-surface" />
+      <div className="mt-3 h-5 w-3/4 rounded bg-surface" />
+      <div className="mt-2 h-4 w-full rounded bg-surface" />
+      <div className="mt-2 h-4 w-2/3 rounded bg-surface" />
+    </div>
+  );
 }
-export function ErrorState({ message }: { message: string }) {
+export function LoadingState({ label = "Memuat data…" }: { label?: string }) {
+  // Skeleton terbatas: permintaan API mempunyai timeout keras (lib/api.ts),
+  // jadi status ini selalu berakhir menjadi data, empty state, atau error state.
+  return (
+    <div role="status" aria-label={label} className="space-y-3">
+      <p className="sr-only">{label}</p>
+      <SkeletonCard />
+      <SkeletonCard />
+    </div>
+  );
+}
+export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
     <div className="rounded-3xl border border-red-200 bg-red-50 px-6 py-6 text-sm text-red-800">
       <p className="font-semibold">Data belum dapat dimuat.</p>
       <p className="mt-1">{message}</p>
+      {onRetry ? (
+        <button type="button" onClick={onRetry} className="mt-4 inline-flex items-center justify-center rounded-full bg-red-700 px-5 py-2 text-sm font-semibold text-white hover:bg-red-800">
+          Coba lagi
+        </button>
+      ) : null}
     </div>
   );
 }

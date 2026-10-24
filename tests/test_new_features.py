@@ -266,3 +266,44 @@ def test_backup_endpoint(client, db, admin_headers, tmp_path, monkeypatch):
     r = client.get("/api/admin/system", headers=admin_headers)
     assert any(b["name"] == fname for b in r.json()["backups"])
 
+
+
+# (8) V2: endpoint publik glossary + detail persoalan + laporan koreksi
+def test_public_glossary_and_issue_detail(client, db):
+    from app.models import GlossaryTerm, Issue, Topic
+    t = db.query(Topic).first()
+    g = GlossaryTerm(term_ar="الوضوء", term_id="Wudu", context="Membasuh anggota wudu.")
+    iss = Issue(code="TEST-ISSUE-1", title_id="Apakah makan daging unta membatalkan wudu?", description_id="Ruang lingkup uji.", topic_id=t.id if t else None)
+    db.add_all([g, iss]); db.commit()
+    r = client.get("/api/glossary")
+    assert r.status_code == 200 and any(x["term_id"] == "Wudu" for x in r.json())
+    r = client.get("/api/glossary/Wudu")
+    assert r.status_code == 200 and r.json()["term_ar"] == "الوضوء"
+    r = client.get(f"/api/issues/{iss.id}")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["title_id"].startswith("Apakah makan daging unta")
+    assert body["materials"] == [] and "MENUNGGU_MATERI" in body["materials_status"]
+
+
+def test_correction_report_validation(client, db):
+    from app.models import Material, CorrectionReport
+    m = db.query(Material).first()
+    assert m is not None
+    r = client.post("/api/correction-reports", json={"material_id": m.id, "message": "abc"})
+    assert r.status_code == 422
+    r = client.post("/api/correction-reports", json={"material_id": "tidak-ada", "message": "laporan cukup panjang"})
+    assert r.status_code == 404
+    r = client.post("/api/correction-reports", json={"material_id": m.id, "message": "Terjemahan segmen pertama perlu dicek."})
+    assert r.status_code == 201 and r.json()["status"] == "PENDING"
+    assert db.query(CorrectionReport).filter(CorrectionReport.material_id == m.id).count() >= 1
+
+
+def test_search_synonyms_v2():
+    from app.services.search import expand_query, normalize_query
+    assert "خف" in expand_query("khuf")
+    assert "استنجاء" in expand_query("istinja")
+    assert "غسل" in expand_query("mandi wajib")
+    # tatweel + harakat dibuang, ة->ه, ى->ي
+    assert normalize_query("الوُضُــوء") == "الوضوء"
+    assert normalize_query("الصلاة") == "الصلاه"

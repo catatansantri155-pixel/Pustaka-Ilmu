@@ -12,8 +12,10 @@ export default function ScholarDetailPage({ params }: { params: { scholarId: str
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [localQ, setLocalQ] = useState("");
+  const [nonce, setNonce] = useState(0);
   useEffect(() => {
     (async () => {
+      setLoading(true); setError(null);
       try {
         const [allScholars, allMaterials] = await Promise.all([api.scholars(), api.materials()]);
         setScholar(allScholars.find((s) => s.id === params.scholarId) || null);
@@ -21,7 +23,7 @@ export default function ScholarDetailPage({ params }: { params: { scholarId: str
       } catch (e) { setError(e instanceof Error ? e.message : "Gagal memuat."); }
       finally { setLoading(false); }
     })();
-  }, [params.scholarId]);
+  }, [params.scholarId, nonce]);
   const mine = useMemo(() => materials.filter((m) => m.scholar_id === params.scholarId || m.scholar?.id === params.scholarId), [materials, params.scholarId]);
   const shown = useMemo(() => {
     if (!localQ.trim()) return mine;
@@ -31,7 +33,7 @@ export default function ScholarDetailPage({ params }: { params: { scholarId: str
   if (loading) return <LoadingState />;
   return (
     <div className="space-y-6">
-      {error ? <ErrorState message={error} /> : null}
+      {error ? <ErrorState message={error} onRetry={() => setNonce((n) => n + 1)} /> : null}
       {!scholar ? <EmptyState title="Ulama tidak ditemukan" body="Profil ulama ini belum tersedia dari server." /> : (
         <>
           <section className="card pattern-islamic-light p-6">

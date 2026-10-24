@@ -8,7 +8,7 @@ const NAV = [
   { href: "/cari", label: "Cari", icon: "⌕" },
   { href: "/pustaka", label: "Pustaka", icon: "▤" },
   { href: "/audio", label: "Audio", icon: "♪" },
-  { href: "/tersimpan", label: "Tersimpan", icon: "⚑" },
+  { href: "/tersimpan", label: "Simpan", icon: "⚑" },
 ];
 
 export default function ReaderShell({ children }: { children: ReactNode }) {
@@ -33,7 +33,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-4 md:px-6 md:pb-10">{children}</main>
-      <nav className="fixed inset-x-0 bottom-3 z-50 flex justify-center md:hidden" aria-label="Navigasi utama">
+      <nav className="fixed inset-x-0 bottom-3 z-50 flex justify-center pb-[env(safe-area-inset-bottom)] md:hidden" aria-label="Navigasi utama">
         <div className="flex items-center gap-1 rounded-full border border-emerald-900/10 bg-white/95 p-1.5 shadow-soft backdrop-blur">
           {NAV.map((n) => (
             <Link key={n.href} href={n.href} className={`flex min-w-[60px] flex-col items-center rounded-full px-2 py-1.5 text-[11px] font-semibold ${active(n.href) ? "bg-emerald text-white" : "text-emerald-deep"}`}>
