@@ -5,6 +5,9 @@ import type { Bookmark } from "@pustaka/shared-types";
 import { api, materialTitle } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui";
+import TopicCover from "@/components/TopicCover";
+import { imageForMaterial } from "@/lib/topicImages";
+import { IconBookmark, IconX } from "@/components/icons";
 
 export default function TersimpanPage() {
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -29,7 +32,7 @@ export default function TersimpanPage() {
   if (loggedIn === false) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-extrabold text-emerald-deep">Tersimpan</h1>
+        <h1 className="flex items-center gap-2.5 text-xl font-extrabold text-emerald-deep"><IconBookmark className="h-6 w-6 text-emerald" /> Tersimpan</h1>
         <EmptyState title="Masuk untuk melihat materi tersimpan" body="Daftar bookmark hanya tersedia setelah Anda masuk." />
         <div className="text-center"><Link href="/admin/login" className="btn-primary">Masuk</Link></div>
       </div>
@@ -37,18 +40,21 @@ export default function TersimpanPage() {
   }
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-extrabold text-emerald-deep">Tersimpan</h1>
+      <h1 className="flex items-center gap-2.5 text-xl font-extrabold text-emerald-deep"><IconBookmark className="h-6 w-6 text-emerald" /> Tersimpan</h1>
       {error ? <ErrorState message={error} onRetry={load} /> : null}
-      {notice ? <p className="text-sm text-emerald">{notice}</p> : null}
-      {loading ? <LoadingState /> : items.length === 0 ? <EmptyState title="Belum ada materi tersimpan" body="Simpan materi dengan tombol Bookmark pada halaman materi, dan materi itu akan tampil di sini." /> : (
+      {notice ? <p role="status" className="text-sm text-emerald">{notice}</p> : null}
+      {loading ? <LoadingState /> : items.length === 0 ? <EmptyState title="Belum ada materi tersimpan" body="Simpan materi dengan tombol Simpan pada halaman materi, dan materi itu akan tampil di sini." /> : (
         <div className="space-y-3">
           {items.map((b) => {
             const mid = b.material_id || b.material?.id || "";
             const title = b.material ? materialTitle(b.material) : `Materi ${mid}`;
             return (
-              <div key={b.id} className="card flex items-center justify-between gap-3 p-4">
-                <Link href={`/materi/${mid}`} className="font-semibold text-emerald-deep">{title}</Link>
-                <button className="btn-outline shrink-0" onClick={() => remove(b)}>Hapus</button>
+              <div key={b.id} className="card flex items-center gap-4 p-3.5">
+                <Link href={`/materi/${mid}`} className="flex min-w-0 flex-1 items-center gap-4">
+                  <TopicCover image={imageForMaterial(b.material)} className="h-14 w-14 shrink-0 rounded-2xl sm:h-16 sm:w-20" />
+                  <span className="min-w-0 truncate font-semibold text-emerald-deep">{title}</span>
+                </Link>
+                <button className="btn-outline shrink-0" onClick={() => remove(b)}><IconX className="h-4 w-4" /> Hapus</button>
               </div>
             );
           })}

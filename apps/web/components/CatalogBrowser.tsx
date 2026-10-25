@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import type { MaterialSummary, Scholar, Topic } from "@pustaka/shared-types";
 import { api, apiFetch, scholarName } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState, MaterialCard } from "@/components/ui";
+import { IconChevronDown, IconSearch } from "@/components/icons";
 export type CatalogPage={items:MaterialSummary[];total:number;offset:number;limit:number;has_more:boolean};
 export default function CatalogBrowser({initialQuery="",scholarId,contentType,topicId}:{initialQuery?:string;scholarId?:string;contentType?:string;topicId?:string}){
   const [draft,setDraft]=useState(initialQuery),[query,setQuery]=useState(initialQuery),[offset,setOffset]=useState(0);
@@ -21,11 +22,11 @@ export default function CatalogBrowser({initialQuery="",scholarId,contentType,to
   },[query,offset,scholarId,selectedScholar,selectedTopic,contentType]);
   useEffect(()=>{load();},[load]);
   return <section className="space-y-5"><form className="flex gap-2" onSubmit={e=>{e.preventDefault();setQuery(draft);setOffset(0);}}>
-    <input className="input min-w-0 flex-1" aria-label="Cari materi" placeholder="Cari hukum, istilah, atau judul materi…" value={draft} onChange={e=>setDraft(e.target.value)}/><button className="btn-primary" type="submit">Cari</button></form>
+    <div className="relative min-w-0 flex-1"><IconSearch className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted"/><input className="input input-search min-w-0" aria-label="Cari materi" placeholder="Cari hukum, istilah, atau judul materi…" value={draft} onChange={e=>setDraft(e.target.value)}/></div><button className="btn-primary shrink-0" type="submit"><IconSearch className="h-4 w-4 sm:hidden"/><span className="hidden sm:inline">Cari</span></button></form>
     <div className="grid gap-4 sm:grid-cols-2">{!scholarId&&<label className="min-w-0 text-sm font-medium">Ulama<select className="input mt-2" value={selectedScholar} onChange={e=>{setSelectedScholar(e.target.value);setOffset(0);}}><option value="">Semua Ulama</option>{scholars.map(s=><option key={s.id} value={s.id}>{scholarName(s)}</option>)}</select></label>}
     <label className="min-w-0 text-sm font-medium">Topik<select className="input mt-2" value={selectedTopic} onChange={e=>{setSelectedTopic(e.target.value);setOffset(0);}}><option value="">Semua Topik</option>{topics.map(t=><option key={t.id} value={t.id}>{t.name_id||t.code}</option>)}</select></label></div>
     {error?<ErrorState message={error} onRetry={load}/>:loading?<LoadingState label="Memuat katalog…"/>:page&&<><p className="text-sm text-muted">{page.total} materi ditemukan{query?` untuk “${query}”`:""}</p>
-      {page.items.length===0?<EmptyState title="Belum ada materi yang sesuai" body="Coba kata kunci atau filter lain. Hanya materi yang sudah diterbitkan yang ditampilkan."/>:<div className="grid gap-x-10 md:grid-cols-2">{page.items.map(m=><MaterialCard key={m.id} m={m}/>)}</div>}
-      <nav aria-label="Halaman katalog" className="flex items-center justify-between gap-3"><button className="btn-outline" disabled={offset===0} onClick={()=>setOffset(o=>Math.max(0,o-24))}>Sebelumnya</button><span className="text-sm">Halaman {Math.floor(offset/24)+1} / {Math.max(1,Math.ceil(page.total/24))}</span><button className="btn-outline" disabled={!page.has_more} onClick={()=>setOffset(o=>o+24)}>Berikutnya</button></nav></>}
+      {page.items.length===0?<EmptyState title="Belum ada materi yang sesuai" body="Coba kata kunci atau filter lain. Hanya materi yang sudah diterbitkan yang ditampilkan."/>:<div className="grid gap-4 md:grid-cols-2">{page.items.map(m=><MaterialCard key={m.id} m={m}/>)}</div>}
+      <nav aria-label="Halaman katalog" className="flex items-center justify-between gap-3"><button className="btn-outline" disabled={offset===0} onClick={()=>setOffset(o=>Math.max(0,o-24))}><IconChevronDown className="h-4 w-4 rotate-90"/>Sebelumnya</button><span className="text-sm text-muted">Halaman {Math.floor(offset/24)+1} / {Math.max(1,Math.ceil(page.total/24))}</span><button className="btn-outline" disabled={!page.has_more} onClick={()=>setOffset(o=>o+24)}>Berikutnya<IconChevronDown className="h-4 w-4 -rotate-90"/></button></nav></>}
   </section>;
 }
