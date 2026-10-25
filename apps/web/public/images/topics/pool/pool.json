@@ -1,0 +1,562 @@
+[
+  {
+    "file": "air-2.jpg",
+    "topic": "THA-01",
+    "subject": "Air terjun bertingkat di hutan tropis",
+    "source": "Pexels",
+    "photographer": "Stephane Hurbe",
+    "photoUrl": "https://www.pexels.com/photo/green-trees-beside-the-waterfalls-12360414/"
+  },
+  {
+    "file": "air-3.jpg",
+    "topic": "THA-01",
+    "subject": "Dua aliran air terjun di sela batu besar",
+    "source": "Pexels",
+    "photographer": "Shahid Sultan",
+    "photoUrl": "https://www.pexels.com/photo/serene-twin-waterfalls-in-lush-forest-setting-33015839/"
+  },
+  {
+    "file": "air-4.jpg",
+    "topic": "THA-01",
+    "subject": "Aliran sungai jernih di atas bebatuan berlumut",
+    "source": "Pexels",
+    "photographer": "Horst Joachims",
+    "photoUrl": "https://www.pexels.com/photo/rocks-on-body-of-water-13044290/"
+  },
+  {
+    "file": "air-5.jpg",
+    "topic": "THA-01",
+    "subject": "Permukaan air beriak dari dekat",
+    "source": "Pexels",
+    "photographer": "Spencer Gurley Films",
+    "photoUrl": "https://www.pexels.com/photo/macro-photo-of-water-flow-1472692/"
+  },
+  {
+    "file": "air-6.jpg",
+    "topic": "THA-01",
+    "subject": "Busa ombak laut dilihat dari atas",
+    "source": "Pexels",
+    "photographer": "Shreyaan Vashishtha",
+    "photoUrl": "https://www.pexels.com/photo/water-foam-on-coast-17512580/"
+  },
+  {
+    "file": "air-7.jpg",
+    "topic": "THA-01",
+    "subject": "Tetesan embun di atas daun hijau",
+    "source": "Pexels",
+    "photographer": "ClickerHappy",
+    "photoUrl": "https://www.pexels.com/photo/selective-focus-photo-of-tear-drop-717412/"
+  },
+  {
+    "file": "air-8.jpg",
+    "topic": "THA-01",
+    "subject": "Air terjun lebar di antara tebing hijau",
+    "source": "Pexels",
+    "photographer": "Markus Partoll",
+    "photoUrl": "https://www.pexels.com/photo/a-waterfalls-cascading-on-river-10130127/"
+  },
+  {
+    "file": "bejana-2.jpg",
+    "topic": "THA-02",
+    "subject": "Bejana tanah liat di antara daun hijau",
+    "source": "Pexels",
+    "photographer": "Gül Işık",
+    "photoUrl": "https://www.pexels.com/photo/empty-clay-flower-pots-17962521/"
+  },
+  {
+    "file": "bejana-3.jpg",
+    "topic": "THA-02",
+    "subject": "Dua vas keramik bertekstur",
+    "source": "Pexels",
+    "photographer": "Ivan S",
+    "photoUrl": "https://www.pexels.com/photo/ceramic-vases-on-a-white-surface-7119222/"
+  },
+  {
+    "file": "bejana-4.jpg",
+    "topic": "THA-02",
+    "subject": "Teko tembaga bertumpuk berlatar pegunungan",
+    "source": "Pexels",
+    "photographer": "Ali Şenol",
+    "photoUrl": "https://www.pexels.com/photo/a-stack-of-teapots-on-a-teapot-warmer-11532730/"
+  },
+  {
+    "file": "bejana-5.jpg",
+    "topic": "THA-02",
+    "subject": "Botol-botol kaca bening",
+    "source": "Pexels",
+    "photographer": "RDNE Stock project",
+    "photoUrl": "https://www.pexels.com/photo/clear-glass-bottles-on-white-surface-8903685/"
+  },
+  {
+    "file": "bejana-6.jpg",
+    "topic": "THA-02",
+    "subject": "Dua kendi keramik dua warna di atas nampan kayu",
+    "source": "Pexels",
+    "photographer": "Vinícius Borralho",
+    "photoUrl": "https://www.pexels.com/photo/minimalist-ceramic-vases-on-wooden-tray-33126633/"
+  },
+  {
+    "file": "bejana-7.jpg",
+    "topic": "THA-02",
+    "subject": "Teko tanah liat berukir bunga di atas kain goni",
+    "source": "Pexels",
+    "photographer": "Feyza Tuğba",
+    "photoUrl": "https://www.pexels.com/photo/vintage-porcelain-teapot-on-a-cloth-15841781/"
+  },
+  {
+    "file": "bejana-8.jpg",
+    "topic": "THA-02",
+    "subject": "Tumpukan pot tanah liat dari dekat",
+    "source": "Pexels",
+    "photographer": "Anna Khomutova",
+    "photoUrl": "https://www.pexels.com/photo/vertical-shot-of-pile-of-ceramic-flower-pots-5780833/"
+  },
+  {
+    "file": "istinja-2.jpg",
+    "topic": "THA-03",
+    "subject": "Deretan wastafel dengan bayangan cahaya jendela",
+    "source": "Pexels",
+    "photographer": "Sinitta Leunen",
+    "photoUrl": "https://www.pexels.com/photo/white-ceramic-sink-with-stainless-faucet-6218888/"
+  },
+  {
+    "file": "istinja-3.jpg",
+    "topic": "THA-03",
+    "subject": "Wastafel putih modern dengan dispenser sabun",
+    "source": "Pexels",
+    "photographer": "Jaycee300s",
+    "photoUrl": "https://www.pexels.com/photo/sink-in-bathroom-18071786/"
+  },
+  {
+    "file": "istinja-4.jpg",
+    "topic": "THA-03",
+    "subject": "Keran emas dan wastafel dengan hiasan kapas",
+    "source": "Pexels",
+    "photographer": "https://kaboompics.com/",
+    "photoUrl": "https://www.pexels.com/photo/white-ceramic-sink-with-golden-faucet-4194987/"
+  },
+  {
+    "file": "istinja-5.jpg",
+    "topic": "THA-03",
+    "subject": "Keran semprot di dinding kayu dengan bak cuci bundar",
+    "source": "Pexels",
+    "photographer": "cottonbro studio",
+    "photoUrl": "https://www.pexels.com/photo/faucet-of-the-bathroom-7086225/"
+  },
+  {
+    "file": "istinja-6.jpg",
+    "topic": "THA-03",
+    "subject": "Dua wastafel dengan keran hitam",
+    "source": "Pexels",
+    "photographer": "Curtis Adams",
+    "photoUrl": "https://www.pexels.com/photo/two-sinks-in-bathroom-15062117/"
+  },
+  {
+    "file": "istinja-7.jpg",
+    "topic": "THA-03",
+    "subject": "Wastafel bundar di dinding batu",
+    "source": "Pexels",
+    "photographer": "Mathias Reding",
+    "photoUrl": "https://www.pexels.com/photo/photo-of-a-bathroom-sink-11299685/"
+  },
+  {
+    "file": "istinja-8.jpg",
+    "topic": "THA-03",
+    "subject": "Keran nikel di wastafel keramik dari dekat",
+    "source": "Pexels",
+    "photographer": "Samuel Peter",
+    "photoUrl": "https://www.pexels.com/photo/stainless-steel-faucet-on-white-ceramic-sink-12196323/"
+  },
+  {
+    "file": "wudu-2.jpg",
+    "topic": "THA-04",
+    "subject": "Pancuran batu tua dengan dua keran kuningan",
+    "source": "Pexels",
+    "photographer": "Raymond Petrik",
+    "photoUrl": "https://www.pexels.com/photo/rustic-old-faucet-with-dripping-water-in-sink-31493645/"
+  },
+  {
+    "file": "wudu-3.jpg",
+    "topic": "THA-04",
+    "subject": "Air mengalir deras dari keran",
+    "source": "Pexels",
+    "photographer": "Steve A Johnson",
+    "photoUrl": "https://www.pexels.com/photo/stainless-faucet-861414/"
+  },
+  {
+    "file": "wudu-4.jpg",
+    "topic": "THA-04",
+    "subject": "Keran kuningan antik bergaya Utsmani menetes",
+    "source": "Pexels",
+    "photographer": "Beren Atalay Yıldırım",
+    "photoUrl": "https://www.pexels.com/photo/gold-faucet-drinking-fountain-4910020/"
+  },
+  {
+    "file": "wudu-5.jpg",
+    "topic": "THA-04",
+    "subject": "Keran luar ruangan dengan tetesan air",
+    "source": "Pexels",
+    "photographer": "Rajesh S Balouria",
+    "photoUrl": "https://www.pexels.com/photo/close-up-of-dripping-outdoor-water-tap-32042965/"
+  },
+  {
+    "file": "wudu-6.jpg",
+    "topic": "THA-04",
+    "subject": "Deretan keran tempat wudu hitam putih",
+    "source": "Pexels",
+    "photographer": "PS Photography",
+    "photoUrl": "https://www.pexels.com/photo/water-drops-from-faucet-67184/"
+  },
+  {
+    "file": "wudu-7.jpg",
+    "topic": "THA-04",
+    "subject": "Keran emas mengalirkan air ke wastafel",
+    "source": "Pexels",
+    "photographer": "https://kaboompics.com/",
+    "photoUrl": "https://www.pexels.com/photo/gold-faucet-in-close-up-photography-4194982/"
+  },
+  {
+    "file": "wudu-8.jpg",
+    "topic": "THA-04",
+    "subject": "Sepasang keran klasik di atas bak gelap",
+    "source": "Pexels",
+    "photographer": "Mathias Reding",
+    "photoUrl": "https://www.pexels.com/photo/close-up-shot-of-two-silver-faucets-in-the-sink-12040632/"
+  },
+  {
+    "file": "pembatal-2.jpg",
+    "topic": "THA-05",
+    "subject": "Tetesan air menggantung di mulut keran krom",
+    "source": "Pexels",
+    "photographer": "Nithin PA",
+    "photoUrl": "https://www.pexels.com/photo/close-up-photo-of-water-drop-2583028/"
+  },
+  {
+    "file": "pembatal-3.jpg",
+    "topic": "THA-05",
+    "subject": "Keran kuningan tua dengan tetesan air",
+    "source": "Pexels",
+    "photographer": "RENDAN CATIPAY",
+    "photoUrl": "https://www.pexels.com/photo/brass-faucet-with-water-droplet-7086799/"
+  },
+  {
+    "file": "pembatal-4.jpg",
+    "topic": "THA-05",
+    "subject": "Keran pipa dengan tetesan di latar hitam",
+    "source": "Pexels",
+    "photographer": "Kritsada Seekham",
+    "photoUrl": "https://www.pexels.com/photo/close-up-photo-of-tap-faucet-7836293/"
+  },
+  {
+    "file": "pembatal-5.jpg",
+    "topic": "THA-05",
+    "subject": "Keran kuningan menetes berlatar kuning",
+    "source": "Pexels",
+    "photographer": "Luis Quintero",
+    "photoUrl": "https://www.pexels.com/photo/photo-of-gray-faucet-2339722/"
+  },
+  {
+    "file": "pembatal-6.jpg",
+    "topic": "THA-05",
+    "subject": "Gagang keran krom bertuliskan dingin dari dekat",
+    "source": "Pexels",
+    "photographer": "Michael Obstoj",
+    "photoUrl": "https://www.pexels.com/photo/close-up-of-chrome-bathroom-faucet-with-cold-handle-30560253/"
+  },
+  {
+    "file": "pembatal-7.jpg",
+    "topic": "THA-05",
+    "subject": "Keran gelap menetes di dekat jendela",
+    "source": "Pexels",
+    "photographer": "Wallace Chuck",
+    "photoUrl": "https://www.pexels.com/photo/photo-of-faucet-3787025/"
+  },
+  {
+    "file": "pembatal-8.jpg",
+    "topic": "THA-05",
+    "subject": "Tetesan air jatuh dari keran hitam putih",
+    "source": "Pexels",
+    "photographer": "Pranjall Kumar",
+    "photoUrl": "https://www.pexels.com/photo/tap-with-dropping-water-8719044/"
+  },
+  {
+    "file": "khuf-2.jpg",
+    "topic": "THA-06",
+    "subject": "Sepatu bot kulit hitam di anak tangga putih",
+    "source": "Pexels",
+    "photographer": "NUDE Nahum",
+    "photoUrl": "https://www.pexels.com/photo/elegant-display-of-black-boots-on-stairs-37827331/"
+  },
+  {
+    "file": "khuf-3.jpg",
+    "topic": "THA-06",
+    "subject": "Deretan sepatu bot koboi kulit berukir",
+    "source": "Pexels",
+    "photographer": "Dominique BOULAY",
+    "photoUrl": "https://www.pexels.com/photo/photograph-of-leather-boots-13106333/"
+  },
+  {
+    "file": "khuf-4.jpg",
+    "topic": "THA-06",
+    "subject": "Sepatu kulit cokelat muda di atas batu",
+    "source": "Pexels",
+    "photographer": "Euwan Marbaniang",
+    "photoUrl": "https://www.pexels.com/photo/close-up-of-elegant-shoes-12210270/"
+  },
+  {
+    "file": "khuf-5.jpg",
+    "topic": "THA-06",
+    "subject": "Sepatu kulit cokelat di atas meja kayu",
+    "source": "Pexels",
+    "photographer": "Ermin Ribić",
+    "photoUrl": "https://www.pexels.com/photo/elegant-brown-leather-shoes-on-wooden-table-33039735/"
+  },
+  {
+    "file": "khuf-6.jpg",
+    "topic": "THA-06",
+    "subject": "Sepatu kulit gelap di atas tunggul kayu",
+    "source": "Pexels",
+    "photographer": "Elnur Memmednebiyev",
+    "photoUrl": "https://www.pexels.com/photo/a-close-up-shot-of-a-pair-of-brown-leather-shoes-9992898/"
+  },
+  {
+    "file": "khuf-7.jpg",
+    "topic": "THA-06",
+    "subject": "Sepasang sepatu kulit hitam dari atas",
+    "source": "Pexels",
+    "photographer": "Ali Pli",
+    "photoUrl": "https://www.pexels.com/photo/pair-of-black-elegant-shoes-on-white-backgr-15557045/"
+  },
+  {
+    "file": "khuf-8.jpg",
+    "topic": "THA-06",
+    "subject": "Sepatu kulit cokelat brogue di etalase",
+    "source": "Pexels",
+    "photographer": "Tima Miroshnichenko",
+    "photoUrl": "https://www.pexels.com/photo/close-up-photo-of-a-brown-leather-shoes-6765524/"
+  },
+  {
+    "file": "mandi-2.jpg",
+    "topic": "THA-07",
+    "subject": "Pancuran hujan mengalir saat senja",
+    "source": "Pexels",
+    "photographer": "Augustinus Martinus Noppé",
+    "photoUrl": "https://www.pexels.com/photo/close-up-shot-of-a-shower-head-14334053/"
+  },
+  {
+    "file": "mandi-3.jpg",
+    "topic": "THA-07",
+    "subject": "Deretan pancuran langit-langit mengalirkan air",
+    "source": "Pexels",
+    "photographer": "Ron Lach",
+    "photoUrl": "https://www.pexels.com/photo/water-pouring-from-shower-faucets-on-a-ceiling-9166305/"
+  },
+  {
+    "file": "mandi-4.jpg",
+    "topic": "THA-07",
+    "subject": "Pancuran luar ruangan berlatar perbukitan",
+    "source": "Pexels",
+    "photographer": "Nicole Queiroz",
+    "photoUrl": "https://www.pexels.com/photo/a-water-pouring-from-an-outdoor-shower-10772429/"
+  },
+  {
+    "file": "mandi-5.jpg",
+    "topic": "THA-07",
+    "subject": "Kabin pancuran perunggu berubin marmer gelap",
+    "source": "Pexels",
+    "photographer": "Алан Албегов",
+    "photoUrl": "https://www.pexels.com/photo/interior-design-of-shower-cabin-20771842/"
+  },
+  {
+    "file": "mandi-6.jpg",
+    "topic": "THA-07",
+    "subject": "Bak mandi putih dengan pancuran genggam",
+    "source": "Pexels",
+    "photographer": "Max Vakhtbovych",
+    "photoUrl": "https://www.pexels.com/photo/bathroom-interior-with-bathtub-under-shower-on-tile-wall-6899351/"
+  },
+  {
+    "file": "mandi-7.jpg",
+    "topic": "THA-07",
+    "subject": "Ruang cuci tua dengan bak kayu dan dua pancuran dinding",
+    "source": "Pexels",
+    "photographer": "Rachel Claire",
+    "photoUrl": "https://www.pexels.com/photo/old-wooden-tub-in-room-with-showers-5864296/"
+  },
+  {
+    "file": "mandi-8.jpg",
+    "topic": "THA-07",
+    "subject": "Kabin pancuran modern berubin krem",
+    "source": "Pexels",
+    "photographer": "Misbaa eri",
+    "photoUrl": "https://www.pexels.com/photo/modern-minimalist-bathroom-interior-design-37734662/"
+  },
+  {
+    "file": "tayamum-2.jpg",
+    "topic": "THA-08",
+    "subject": "Bukit pasir saat fajar berlangit dramatis",
+    "source": "Pexels",
+    "photographer": "Sharad Bhat",
+    "photoUrl": "https://www.pexels.com/photo/brown-sand-3974145/"
+  },
+  {
+    "file": "tayamum-3.jpg",
+    "topic": "THA-08",
+    "subject": "Tekstur riak pasir dari dekat",
+    "source": "Pexels",
+    "photographer": "Jonathan Borba",
+    "photoUrl": "https://www.pexels.com/photo/wrinkles-on-a-dune-19130036/"
+  },
+  {
+    "file": "tayamum-4.jpg",
+    "topic": "THA-08",
+    "subject": "Tanah kering retak dari dekat",
+    "source": "Pexels",
+    "photographer": "Yuri Elizegi",
+    "photoUrl": "https://www.pexels.com/photo/close-up-of-cracked-dried-earth-texture-34040846/"
+  },
+  {
+    "file": "tayamum-5.jpg",
+    "topic": "THA-08",
+    "subject": "Hamparan tanah retak keabu-abuan",
+    "source": "Pexels",
+    "photographer": "Denis Tuev",
+    "photoUrl": "https://www.pexels.com/photo/cracks-on-the-dry-ground-8991677/"
+  },
+  {
+    "file": "tayamum-6.jpg",
+    "topic": "THA-08",
+    "subject": "Jalan gurun tertelan pasir",
+    "source": "Pexels",
+    "photographer": "MART PRODUCTION",
+    "photoUrl": "https://www.pexels.com/photo/roads-covered-in-sand-8869338/"
+  },
+  {
+    "file": "tayamum-7.jpg",
+    "topic": "THA-08",
+    "subject": "Pola gelombang pasir keemasan dari atas",
+    "source": "Pexels",
+    "photographer": "Zetong Li",
+    "photoUrl": "https://www.pexels.com/photo/aerial-view-of-a-desert-surface-16726602/"
+  },
+  {
+    "file": "tayamum-8.jpg",
+    "topic": "THA-08",
+    "subject": "Lekuk bukit pasir terang dan bayangan",
+    "source": "Pexels",
+    "photographer": "chris clark",
+    "photoUrl": "https://www.pexels.com/photo/dry-sandy-dunes-of-hor-desert-in-daytime-5604853/"
+  },
+  {
+    "file": "najis-2.jpg",
+    "topic": "THA-09",
+    "subject": "Percikan tetesan air terang dari dekat",
+    "source": "Pexels",
+    "photographer": "Danila Popov",
+    "photoUrl": "https://www.pexels.com/photo/water-droplets-close-up-photo-9457489/"
+  },
+  {
+    "file": "najis-3.jpg",
+    "topic": "THA-09",
+    "subject": "Air memercik di atas batu gelap",
+    "source": "Pexels",
+    "photographer": "Andreea Airinei",
+    "photoUrl": "https://www.pexels.com/photo/water-splashing-on-a-rock-10448630/"
+  },
+  {
+    "file": "najis-4.jpg",
+    "topic": "THA-09",
+    "subject": "Genangan hujan beriak di atas kerikil",
+    "source": "Pexels",
+    "photographer": "Eva Bronzini",
+    "photoUrl": "https://www.pexels.com/photo/a-puddle-of-water-5939105/"
+  },
+  {
+    "file": "najis-5.jpg",
+    "topic": "THA-09",
+    "subject": "Tetesan air membentuk riak melingkar",
+    "source": "Pexels",
+    "photographer": "Mir Burhan",
+    "photoUrl": "https://www.pexels.com/photo/circles-from-falling-water-drops-21134472/"
+  },
+  {
+    "file": "najis-6.jpg",
+    "topic": "THA-09",
+    "subject": "Tetesan air melayang di latar hitam",
+    "source": "Pexels",
+    "photographer": "cottonbro studio",
+    "photoUrl": "https://www.pexels.com/photo/high-speed-photography-of-waterdrops-9667643/"
+  },
+  {
+    "file": "najis-7.jpg",
+    "topic": "THA-09",
+    "subject": "Riak percikan air biru dari atas",
+    "source": "Pexels",
+    "photographer": "Zineb Dehbi",
+    "photoUrl": "https://www.pexels.com/photo/ripples-in-clear-blue-water-in-essaouira-38066878/"
+  },
+  {
+    "file": "najis-8.jpg",
+    "topic": "THA-09",
+    "subject": "Genangan memantulkan pepohonan saat hujan",
+    "source": "Pexels",
+    "photographer": "Kate Graur",
+    "photoUrl": "https://www.pexels.com/photo/puddle-on-asphalt-road-reflecting-fence-on-rainy-day-5425690/"
+  },
+  {
+    "file": "haid-2.jpg",
+    "topic": "THA-10",
+    "subject": "Menara Masjid Hassan II dibingkai lengkung bintang",
+    "source": "Pexels",
+    "photographer": "Anouar Rahmouni",
+    "photoUrl": "https://www.pexels.com/photo/art-culture-morocco-islam-20657116/"
+  },
+  {
+    "file": "haid-3.jpg",
+    "topic": "THA-10",
+    "subject": "Kubah emas interior masjid dari bawah",
+    "source": "Pexels",
+    "photographer": "Mohamed Abdelnaby",
+    "photoUrl": "https://www.pexels.com/photo/stunning-interior-dome-of-historic-mosque-39654235/"
+  },
+  {
+    "file": "haid-4.jpg",
+    "topic": "THA-10",
+    "subject": "Deretan lengkung belang Masjid Cordoba yang kosong",
+    "source": "Pexels",
+    "photographer": "Mike van Schoonderwalt",
+    "photoUrl": "https://www.pexels.com/photo/colonnade-with-arches-5504013/"
+  },
+  {
+    "file": "haid-5.jpg",
+    "topic": "THA-10",
+    "subject": "Masjid putih emas dengan dua menara",
+    "source": "Pexels",
+    "photographer": "Ira",
+    "photoUrl": "https://www.pexels.com/photo/a-white-and-gold-mosque-under-blue-sky-7396360/"
+  },
+  {
+    "file": "haid-6.jpg",
+    "topic": "THA-10",
+    "subject": "Kubah putih Masjid Sheikh Zayed saat senja",
+    "source": "Pexels",
+    "photographer": "Reyyan",
+    "photoUrl": "https://www.pexels.com/photo/sheikh-zayed-grand-mosque-at-sunset-in-abu-dhabi-32183963/"
+  },
+  {
+    "file": "haid-7.jpg",
+    "topic": "THA-10",
+    "subject": "Kubah masjid hijau dari dekat",
+    "source": "Pexels",
+    "photographer": "Jauhar Musthofal Qulub",
+    "photoUrl": "https://www.pexels.com/photo/architectural-close-up-of-green-mosque-dome-36444838/"
+  },
+  {
+    "file": "haid-8.jpg",
+    "topic": "THA-10",
+    "subject": "Menara masjid putih bermotif menjulang",
+    "source": "Pexels",
+    "photographer": "Usman Yousaf",
+    "photoUrl": "https://www.pexels.com/photo/a-towering-white-minaret-5285703/"
+  }
+]
