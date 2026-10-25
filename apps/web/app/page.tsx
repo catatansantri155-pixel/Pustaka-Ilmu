@@ -6,6 +6,7 @@ import type { MaterialSummary, Scholar, Topic } from "@pustaka/shared-types";
 import { api, apiFetch, getLocalReading, scholarName, topicName, type LocalReadingEntry } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState, MaterialCard } from "@/components/ui";
 import TopicCover from "@/components/TopicCover";
+import ScholarEmblem from "@/components/ScholarEmblem";
 import { HOME_HERO, imageForTopic, topicArabic } from "@/lib/topicImages";
 import { IconArrowRight, IconChevronRight, IconClock, IconSearch } from "@/components/icons";
 
@@ -126,7 +127,7 @@ export default function HomePage() {
             <div className="mt-4 space-y-2.5">
               {scholars.map(s => (
                 <Link key={s.id} href={`/pustaka/${s.id}`} className="card group flex items-center gap-4 p-4">
-                  <span className="font-arabic flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-deep text-lg text-gold" aria-hidden>{(s.name_ar || scholarName(s)).slice(0, 2)}</span>
+                  <ScholarEmblem scholar={s} size="sm" />
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-semibold text-emerald-deep group-hover:underline">{scholarName(s)}</span>
                     {s.name_ar && <span dir="rtl" lang="ar" className="font-arabic block truncate text-right text-base text-muted">{s.name_ar}</span>}
