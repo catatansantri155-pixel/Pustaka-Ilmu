@@ -86,7 +86,12 @@ def create_correction_report(body: CorrectionIn, db: Session = Depends(get_db)):
 @router.get("/materials")
 def list_materials(db: Session = Depends(get_db)):
     mats = db.query(Material).filter(Material.status == "PUBLISHED_AI").all()
-    return [material_brief(db, m) for m in mats]
+    # brief_many memang dirancang untuk dipanggil SEKALI dengan seluruh daftar
+    # (3 query terbatas). Memanggilnya per-materi (pola lama material_brief)
+    # menghasilkan ~3 query x jumlah materi — pada 501 materi = ±1.500 round
+    # trip berurutan lewat tunnel, endpoint melebihi timeout klien mana pun.
+    from ..services.catalog import brief_many
+    return brief_many(db, mats)
 
 @router.get("/materials/{material_id}")
 def get_material(material_id: str, db: Session = Depends(get_db), user=Depends(get_optional_user)):
