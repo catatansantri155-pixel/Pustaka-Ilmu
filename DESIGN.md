@@ -1,5 +1,13 @@
 # Arah desain Pustaka Ilmu
 
+> **Pembaruan PR #3 (umpan balik pengguna atas UI live pasca-PR #2):** arah minimalis PR #2 dinilai pengguna menghilangkan ikon profesional, kesan aplikasi mobile, dan foto per pembahasan. PR #3 memulihkan arah visual yang pernah disetujui pengguna (22 Okt 2026 — prototipe v2: terang, hangat, fotografis; kartu radius besar, bayangan lembut, kolom pencarian membulat/pill, kartu gambar besar, navigasi bawah pill melayang) dan mempertahankannya tetap rapi, bukan dekorasi acak. Yang berlaku sekarang:
+> - Set ikon SVG internal konsisten (`components/icons.tsx`, gaya goresan) di navigasi, tombol, kartu, dan status kosong/error. Tanpa dependensi baru.
+> - Shell mobile-native: navigasi bawah pill melayang (Beranda, Cari, Topik, Ulama, Tersimpan) + top bar desktop berikon; kartu `rounded-3xl` berbayangan lembut; tombol & pencarian pill.
+> - Foto sampul per topik (`lib/topicImages.ts`, berkas lokal terverifikasi di `public/images/topics/`, atribusi di footer): kartu katalog, hero halaman materi, kartu topik. Cadangan bergaya (gradasi + ikon + kata Arab) hanya bila foto gagal dimuat.
+> - Tipografi diperkecil di semua halaman publik (judul turun ±satu tingkat; isi pembaca ±15,2px bawaan, line-height 1,8, paragraf dirender dengan jarak nyata) dan jarak antarbagian dilonggarkan; kontrol A+/A− pembaca tetap bekerja dari basis baru.
+> - Kemenangan aksesibilitas PR #2 dipertahankan: skip link, outline fokus, `aria-current`, kontras ≥4,5:1, reduced-motion.
+> Dokumen di bawah ini adalah catatan arah PR #2 dan tetap berlaku untuk identitas warna, font, dan batas integritas konten.
+
 Acuan produk: `docs/MASTER-PROMPT-V2.md`, bagian 4. Referensi peninjauan: [Anti Slop v3.2.22](https://github.com/miqdadbadjuber/anti-slop/tree/v3.2.22), khususnya core, UI, human, layoutmobile, dan copywriting. Anti Slop adalah filter kualitas, bukan tema atau paket komponen aplikasi. Tidak ada dependensi runtime baru atau installer global yang dijalankan.
 
 ## Identitas dan kebutuhan pembaca

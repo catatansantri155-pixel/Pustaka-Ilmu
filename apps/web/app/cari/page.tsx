@@ -6,6 +6,7 @@ import type { Issue } from "@pustaka/shared-types";
 import { api } from "@/lib/api";
 import CatalogBrowser from "@/components/CatalogBrowser";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui";
+import { IconChevronRight, IconLayers } from "@/components/icons";
 function Search() {
   const params = useSearchParams();
   const [issues, setIssues] = useState<Issue[]>([]);
@@ -19,10 +20,10 @@ function Search() {
   }, []);
   useEffect(() => { load(); }, [load]);
   return <div className="space-y-10">
-    <header><h1 className="text-3xl font-bold text-emerald-deep">Cari pembahasan</h1><p className="mt-3 text-sm text-muted">Gunakan kata kunci, lalu pilih ulama atau topik untuk mempersempit hasil.</p></header>
+    <header><h1 className="text-2xl font-extrabold text-emerald-deep">Cari pembahasan</h1><p className="mt-2 text-sm leading-relaxed text-muted">Gunakan kata kunci, lalu pilih ulama atau topik untuk mempersempit hasil.</p></header>
     <CatalogBrowser initialQuery={params.get("q") || ""} topicId={params.get("topic_id") || undefined} />
-    <section><h2 className="section-heading mb-4">Daftar persoalan</h2>
-      {error ? <ErrorState message={error} onRetry={load} /> : loading ? <LoadingState label="Memuat daftar persoalan…" /> : issues.length === 0 ? <EmptyState title="Daftar persoalan belum tersedia" body="Kamu tetap dapat mencari materi melalui kolom pencarian di atas." /> : <div className="divide-y divide-line">{issues.map(i => <Link className="block space-y-2 py-5 hover:underline" key={i.id} href={`/persoalan/${i.id}`}><span className="block text-xs text-muted">{i.code}</span><strong>{i.title_id}</strong>{i.description_id && <p className="text-sm text-muted">{i.description_id}</p>}</Link>)}</div>}
+    <section><h2 className="section-heading mb-4 flex items-center gap-2"><IconLayers className="h-5 w-5 text-emerald" /> Daftar persoalan</h2>
+      {error ? <ErrorState message={error} onRetry={load} /> : loading ? <LoadingState label="Memuat daftar persoalan…" /> : issues.length === 0 ? <EmptyState title="Daftar persoalan belum tersedia" body="Kamu tetap dapat mencari materi melalui kolom pencarian di atas." /> : <div className="space-y-2.5">{issues.map(i => <Link className="card group flex items-center gap-4 p-4" key={i.id} href={`/persoalan/${i.id}`}><span className="min-w-0 flex-1"><span className="block text-[11px] font-semibold uppercase tracking-wide text-emerald">{i.code}</span><strong className="mt-0.5 block text-[15px] text-emerald-deep group-hover:underline">{i.title_id}</strong>{i.description_id && <span className="mt-1 line-clamp-2 block text-sm leading-relaxed text-muted">{i.description_id}</span>}</span><IconChevronRight className="h-5 w-5 shrink-0 text-emerald transition group-hover:translate-x-0.5" /></Link>)}</div>}
     </section>
   </div>;
 }

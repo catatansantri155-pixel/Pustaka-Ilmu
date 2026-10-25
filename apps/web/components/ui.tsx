@@ -2,22 +2,31 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { MaterialSummary } from "@pustaka/shared-types";
 import { materialTitle, scholarName, topicName } from "@/lib/api";
+import { imageForMaterial } from "@/lib/topicImages";
+import TopicCover from "@/components/TopicCover";
+import { IconAlert, IconBookOpen, IconChevronRight } from "@/components/icons";
 
 export function EmptyState({ title, body }: { title: string; body?: string }) {
   return (
-    <div className="rounded-lg border border-line bg-surface px-5 py-7">
-      <p className="font-semibold text-emerald-deep">{title}</p>
-      {body ? <p className="mt-2 max-w-prose text-sm text-muted">{body}</p> : null}
+    <div className="rounded-3xl border border-dashed border-emerald/30 bg-surface px-5 py-7 text-center">
+      <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-white text-emerald shadow-soft">
+        <IconBookOpen className="h-6 w-6" />
+      </span>
+      <p className="mt-3 font-semibold text-emerald-deep">{title}</p>
+      {body ? <p className="mx-auto mt-1.5 max-w-prose text-sm leading-relaxed text-muted">{body}</p> : null}
     </div>
   );
 }
 export function SkeletonCard() {
   return (
-    <div className="card p-5" aria-hidden>
-      <div className="h-4 w-24 rounded-full bg-surface" />
-      <div className="mt-3 h-5 w-3/4 rounded bg-surface" />
-      <div className="mt-2 h-4 w-full rounded bg-surface" />
-      <div className="mt-2 h-4 w-2/3 rounded bg-surface" />
+    <div className="card flex gap-4 p-4" aria-hidden>
+      <div className="h-24 w-24 shrink-0 rounded-2xl bg-surface sm:h-28 sm:w-32" />
+      <div className="min-w-0 flex-1 py-1">
+        <div className="h-3.5 w-24 rounded-full bg-surface" />
+        <div className="mt-3 h-4 w-3/4 rounded bg-surface" />
+        <div className="mt-2 h-3.5 w-full rounded bg-surface" />
+        <div className="mt-2 h-3.5 w-2/3 rounded bg-surface" />
+      </div>
     </div>
   );
 }
@@ -34,11 +43,13 @@ export function LoadingState({ label = "Memuat data…" }: { label?: string }) {
 }
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div role="alert" className="rounded-lg border border-red-200 bg-red-50 px-6 py-6 text-sm text-red-800">
-      <p className="font-semibold">Data belum dapat dimuat.</p>
-      <p className="mt-1">{message}</p>
+    <div role="alert" className="rounded-3xl border border-red-200 bg-red-50 px-6 py-6 text-sm text-red-800">
+      <p className="flex items-center gap-2 font-semibold">
+        <IconAlert className="h-5 w-5 shrink-0" /> Data belum dapat dimuat.
+      </p>
+      <p className="mt-1.5 leading-relaxed">{message}</p>
       {onRetry ? (
-        <button type="button" onClick={onRetry} className="mt-4 inline-flex items-center justify-center rounded-full bg-red-700 px-5 py-2 text-sm font-semibold text-white hover:bg-red-800">
+        <button type="button" onClick={onRetry} className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-red-700 px-5 py-2 text-sm font-semibold text-white hover:bg-red-800">
           Coba lagi
         </button>
       ) : null}
@@ -46,19 +57,28 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
   );
 }
 export function MaterialCard({ m }: { m: MaterialSummary }) {
+  const img = imageForMaterial(m);
   return (
-    <Link href={`/materi/${m.id}`} className="catalog-entry">
-      <div className="flex flex-wrap gap-2">
-        {m.topics?.slice(0, 2).map((t) => (
-          <span key={t.id} className="text-xs text-muted">{topicName(t)}</span>
-        ))}
-        {m.content_type ? <span className="text-xs text-muted">{m.content_type}</span> : null}
-        {m.is_demo ? <span className="chip border-amber-300 bg-amber-50 text-amber-800">Demo</span> : null}
+    <Link href={`/materi/${m.id}`} className="catalog-entry group">
+      <div className="flex gap-4 p-3.5 sm:gap-5 sm:p-4">
+        <TopicCover image={img} className="h-24 w-24 shrink-0 rounded-2xl sm:h-28 sm:w-36" />
+        <div className="min-w-0 flex-1 py-0.5">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            {m.topics?.slice(0, 2).map((t) => (
+              <span key={t.id} className="text-[11px] font-semibold uppercase tracking-wide text-emerald">{topicName(t)}</span>
+            ))}
+            {m.content_type ? <span className="text-[11px] font-medium uppercase tracking-wide text-muted">{m.content_type}</span> : null}
+            {m.is_demo ? <span className="chip border-amber-300 bg-amber-50 text-amber-800">Demo</span> : null}
+          </div>
+          <h3 className="mt-1.5 text-base font-bold leading-snug text-emerald-deep">{materialTitle(m)}</h3>
+          {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 truncate text-right text-base text-stone-700">{m.title_ar}</p> : null}
+          {m.summary ? <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-stone-600">{m.summary}</p> : null}
+          <p className="mt-2.5 flex items-center gap-1 text-xs font-medium text-stone-500">
+            <span className="min-w-0 truncate">{scholarName(m.scholar) || m.scholar_name || ""}{m.ai_label ? ` · ${m.ai_label}` : ""}</span>
+            <IconChevronRight className="ml-auto h-4 w-4 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
+          </p>
+        </div>
       </div>
-      <h3 className="mt-2 text-lg font-bold leading-snug text-emerald-deep">{materialTitle(m)}</h3>
-      {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 text-right text-lg leading-relaxed text-stone-700">{m.title_ar}</p> : null}
-      {m.summary ? <p className="mt-2 line-clamp-3 text-sm text-stone-600">{m.summary}</p> : null}
-      <p className="mt-3 text-xs font-medium text-stone-500">{scholarName(m.scholar) || m.scholar_name || ""}{m.ai_label ? ` · ${m.ai_label}` : ""}</p>
     </Link>
   );
 }

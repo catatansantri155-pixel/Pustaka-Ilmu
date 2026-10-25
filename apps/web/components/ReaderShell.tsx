@@ -1,45 +1,115 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode, SVGProps } from "react";
+import {
+  IconBook, IconBookmark, IconGrid, IconHeadphones, IconHome, IconLayers,
+  IconSearch, IconUsers,
+} from "@/components/icons";
+import { PHOTO_CREDITS } from "@/lib/topicImages";
 
-const NAV = [
-  { href: "/", label: "Beranda" },
-  { href: "/cari", label: "Cari" },
-  { href: "/pustaka", label: "Pustaka" },
-  { href: "/audio", label: "Audio" },
-  { href: "/tersimpan", label: "Tersimpan" },
+type IconType = ComponentType<SVGProps<SVGSVGElement>>;
+
+const NAV_MAIN: Array<{ href: string; label: string; icon: IconType }> = [
+  { href: "/", label: "Beranda", icon: IconHome },
+  { href: "/cari", label: "Cari", icon: IconSearch },
+  { href: "/#topik", label: "Topik", icon: IconLayers },
+  { href: "/pustaka", label: "Ulama", icon: IconUsers },
+  { href: "/tersimpan", label: "Tersimpan", icon: IconBookmark },
+];
+const NAV_EXTRA: Array<{ href: string; label: string; icon: IconType }> = [
+  { href: "/cari", label: "Katalog", icon: IconGrid },
+  { href: "/audio", label: "Audio", icon: IconHeadphones },
 ];
 
 export default function ReaderShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() || "/";
   const isAdmin = pathname.startsWith("/admin");
   if (isAdmin) return <>{children}</>;
-  const active = (href: string) => href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const active = (href: string) => {
+    if (href === "/") return pathname === "/";
+    if (href.startsWith("/#")) return false;
+    return pathname.startsWith(href);
+  };
+  const desktopNav = [...NAV_MAIN.slice(0, 2), NAV_EXTRA[0], ...NAV_MAIN.slice(2), NAV_EXTRA[1]];
   return (
     <div className="reader-shell min-h-screen bg-ivory">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
-      <header className="border-b border-line bg-ivory">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-6">
-          <Link href="/" className="inline-flex min-h-11 items-center text-lg font-bold text-emerald-deep">
-            Pustaka Ilmu
+
+      <header className="sticky top-0 z-40 border-b border-line/70 bg-ivory/90 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 md:px-6">
+          <Link href="/" className="inline-flex min-h-11 items-center gap-2.5" aria-label="Pustaka Ilmu — Beranda">
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-deep text-gold shadow-soft">
+              <IconBook className="h-5 w-5" />
+            </span>
+            <span className="leading-tight">
+              <span className="block text-base font-extrabold tracking-tight text-emerald-deep">Pustaka Ilmu</span>
+              <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">Perpustakaan Fatwa &amp; Khazanah</span>
+            </span>
           </Link>
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Navigasi utama">
-            {NAV.map((n) => (
-              <Link key={n.href} href={n.href} aria-current={active(n.href) ? "page" : undefined} className={`inline-flex min-h-11 items-center border-b-2 px-3 text-sm ${active(n.href) ? "border-emerald font-bold text-emerald-deep" : "border-transparent text-muted hover:text-emerald-deep"}`}>{n.label}</Link>
-            ))}
+          <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigasi utama">
+            {desktopNav.map((n) => {
+              const Icon = n.icon;
+              const isActive = active(n.href);
+              return (
+                <Link
+                  key={n.label}
+                  href={n.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 text-sm transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep hover:bg-surface"}`}
+                >
+                  <Icon className="h-[18px] w-[18px]" />
+                  {n.label}
+                </Link>
+              );
+            })}
           </nav>
-          <Link href="/admin/login" className="inline-flex min-h-11 items-center px-2 text-sm text-muted underline underline-offset-4">Admin</Link>
+          <Link href="/admin/login" className="inline-flex min-h-11 shrink-0 items-center rounded-full px-3 text-sm font-medium text-muted underline underline-offset-4 hover:text-emerald-deep">Admin</Link>
         </div>
       </header>
-      <main id="konten-utama" tabIndex={-1} className="mx-auto w-full max-w-6xl px-4 pb-28 pt-8 md:px-6 md:pb-16 md:pt-12">{children}</main>
-      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-ivory pb-[env(safe-area-inset-bottom)] md:hidden" aria-label="Navigasi utama ponsel">
-        <div className="grid grid-cols-5 gap-1 px-2 py-2">
-          {NAV.map((n) => (
-            <Link key={n.href} href={n.href} aria-current={active(n.href) ? "page" : undefined} className={`flex min-h-11 min-w-0 items-center justify-center rounded px-1 py-2 text-xs ${active(n.href) ? "bg-emerald font-bold text-white" : "text-emerald-deep"}`}>
-              {n.label}
-            </Link>
-          ))}
+
+      <main id="konten-utama" tabIndex={-1} className="mx-auto w-full max-w-6xl px-4 pb-32 pt-6 md:px-6 md:pb-14 md:pt-10">{children}</main>
+
+      <footer className="mx-auto w-full max-w-6xl px-4 pb-32 md:px-6 md:pb-10">
+        <div className="border-t border-line pt-5 text-xs leading-relaxed text-muted">
+          <p className="font-semibold text-emerald-deep">Pustaka Ilmu</p>
+          <p className="mt-1">Perpustakaan fatwa dan khazanah Islam — teks Arab beserta terjemahan Indonesia. Catatan sumber tersedia pada setiap materi.</p>
+          <p className="mt-3">
+            Foto sampul adalah foto asli (bukan hasil generate) dari{" "}
+            {PHOTO_CREDITS.map((c, i) => (
+              <span key={c.src}>
+                {i > 0 ? ", " : ""}
+                <a href={c.creditUrl} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-emerald-deep">
+                  {c.creditSource} · {c.creditName}
+                </a>
+              </span>
+            ))}
+            .
+          </p>
+        </div>
+      </footer>
+
+      {/* Navigasi bawah melayang (mobile) — gaya aplikasi native */}
+      <nav
+        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto max-w-md rounded-full border border-line bg-white/95 shadow-pill backdrop-blur lg:hidden"
+        aria-label="Navigasi utama ponsel"
+      >
+        <div className="grid grid-cols-5 px-1.5 py-1.5">
+          {NAV_MAIN.map((n) => {
+            const Icon = n.icon;
+            const isActive = active(n.href);
+            return (
+              <Link
+                key={n.label}
+                href={n.href}
+                aria-current={isActive ? "page" : undefined}
+                className={`flex min-h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[11px] leading-tight transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep"}`}
+              >
+                <Icon className="h-5 w-5 shrink-0" />
+                <span className="max-w-full truncate">{n.label}</span>
+              </Link>
+            );
+          })}
         </div>
       </nav>
     </div>

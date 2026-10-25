@@ -18,7 +18,11 @@ const config: Config = {
         sans: ["'Plus Jakarta Sans'", "ui-sans-serif", "system-ui", "sans-serif"],
         arabic: ["'Noto Naskh Arabic'", "'Amiri'", "serif"],
       },
-      boxShadow: { soft: "0 2px 16px rgba(16,61,50,0.07)" },
+      boxShadow: {
+        soft: "0 2px 16px rgba(16,61,50,0.07)",
+        lift: "0 14px 34px rgba(16,61,50,0.14)",
+        pill: "0 10px 30px rgba(16,61,50,0.18)",
+      },
     },
   },
   plugins: [],

@@ -31,10 +31,10 @@ export default function ScholarDetailPage() {
         <>
           <section className="card pattern-islamic-light p-6">
             <div className="flex items-start gap-4">
-              <span className="font-arabic flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-emerald-deep text-3xl text-gold" aria-hidden>{(scholar.name_ar || scholarName(scholar)).slice(0, 2)}</span>
+              <span className="font-arabic flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl bg-emerald-deep text-2xl text-gold" aria-hidden>{(scholar.name_ar || scholarName(scholar)).slice(0, 2)}</span>
               <div>
-                <h1 className="text-2xl font-extrabold text-emerald-deep">{scholarName(scholar)}</h1>
-                {scholar.name_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 text-right text-xl text-stone-700">{scholar.name_ar}</p> : null}
+                <h1 className="text-xl font-extrabold text-emerald-deep">{scholarName(scholar)}</h1>
+                {scholar.name_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 text-right text-lg text-stone-700">{scholar.name_ar}</p> : null}
                 {(scholar.death_year || scholar.death_year_hijri || scholar.died) ? <p className="mt-1 text-sm text-stone-500">Wafat: {String(scholar.death_year || scholar.death_year_hijri || scholar.died)}</p> : null}
               </div>
             </div>
