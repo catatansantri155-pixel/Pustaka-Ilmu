@@ -3,13 +3,14 @@ import type { MaterialSummary, Topic } from "@pustaka/shared-types";
 /**
  * Peta topik → foto sampul (PR #3).
  *
- * Foto asli non-figuratif bernada hangat, diverifikasi satu per satu
- * (berkas lokal di public/images/topics/, bukan hotlink).
- * - 8 foto pertama kali dipakai pada prototipe v2 yang disetujui pengguna
- *   (22 Okt 2026): hero rehal & wudu & air dari Pexels; arsitektur/interior
- *   masjid & gurun dari Unsplash.
- * - mandi.jpg dan najis.jpg diunduh langsung dari CDN Pexels untuk PR #3
- *   dan diverifikasi sebagai berkas gambar valid.
+ * ATURAN USER (25 Okt 2026): foto TIDAK BOLEH memuat makhluk bernyawa
+ * (manusia — termasuk tangan/anggota tubuh — maupun hewan) dan TIDAK BOLEH
+ * ada foto duplikat antar-topik. Semua foto di bawah adalah benda, air,
+ * arsitektur, atau lanskap; diverifikasi visual satu per satu oleh asisten
+ * sebelum tayang (berkas lokal di public/images/topics/, bukan hotlink).
+ * - rehal.webp (hero), tayamum.webp, mandi.jpg dipertahankan dari set awal
+ *   karena lolos aturan (mushaf di rehal; bukit pasir; kepala pancuran).
+ * - 8 foto lain diganti total pada 25 Okt 2026 dari Pexels (lihat kredit).
  * Atribusi lengkap dirender di footer aplikasi (ReaderShell).
  */
 export interface TopicImage {
@@ -30,57 +31,57 @@ const U = "https://unsplash.com";
 export const TOPIC_IMAGES: Record<string, TopicImage> = {
   "THA-01": {
     src: "/images/topics/air.webp",
-    alt: "Foto air dituang ke dalam gelas",
+    alt: "Foto permukaan air jernih di atas kerikil",
     ar: "الماء",
-    creditName: "Ksenia Chernaya",
-    creditUrl: `${P}a-person-pouring-water-in-the-glass-7299859/`,
+    creditName: "Doğan Alpaslan Demir",
+    creditUrl: `${P}close-up-of-a-clear-water-surface-with-pebbles-at-the-bottom-25288197/`,
     creditSource: "Pexels",
-    position: "50% 35%",
+    position: "50% 50%",
   },
   "THA-02": {
     src: "/images/topics/bejana.webp",
-    alt: "Foto pilar berlapis emas dan lengkung masjid",
+    alt: "Foto bejana tanah liat antik di atas meja",
     ar: "الآنية",
-    creditName: "Ridzuan Naina",
-    creditUrl: U,
-    creditSource: "Unsplash",
-    position: "20% 50%",
+    creditName: "caffeine",
+    creditUrl: `${P}a-group-of-three-clay-pots-sitting-on-a-table-28379912/`,
+    creditSource: "Pexels",
+    position: "50% 40%",
   },
   "THA-03": {
     src: "/images/topics/istinja.webp",
-    alt: "Foto interior masjid berkubah kayu",
+    alt: "Foto wastafel keramik putih dengan keran logam",
     ar: "الاستنجاء",
-    creditName: "Rumman Amin",
-    creditUrl: U,
-    creditSource: "Unsplash",
-    position: "50% 30%",
+    creditName: "Curtis Adams",
+    creditUrl: `${P}stainless-steel-faucet-on-white-ceramic-sink-10486250/`,
+    creditSource: "Pexels",
+    position: "50% 50%",
   },
   "THA-04": {
     src: "/images/topics/wudu.webp",
-    alt: "Foto seseorang berwudu di tempat wudu masjid",
+    alt: "Foto air mengalir dari keran ke bak cuci",
     ar: "الوضوء",
-    creditName: "Yaşar Başkurt",
-    creditUrl: `${P}man-performing-ablution-at-outdoor-water-taps-36492440/`,
+    creditName: "Karolina Grabowska",
+    creditUrl: `${P}water-flows-from-the-tap-to-sink-6256/`,
     creditSource: "Pexels",
-    position: "50% 30%",
+    position: "50% 45%",
   },
   "THA-05": {
-    src: "/images/topics/wudu.webp",
-    alt: "Foto tempat wudu masjid",
+    src: "/images/topics/pembatal.webp",
+    alt: "Foto makro keran krom dengan tetesan air",
     ar: "نواقض الوضوء",
-    creditName: "Yaşar Başkurt",
-    creditUrl: `${P}man-performing-ablution-at-outdoor-water-taps-36492440/`,
+    creditName: "Zulfugar Karimov",
+    creditUrl: `${P}close-up-of-water-faucet-dripping-in-bathroom-34295406/`,
     creditSource: "Pexels",
-    position: "85% 50%",
+    position: "50% 50%",
   },
   "THA-06": {
     src: "/images/topics/khuf.webp",
-    alt: "Foto ruang shalat masjid berkarpet merah",
+    alt: "Foto sepasang sepatu bot kulit cokelat dan ikat pinggang kulit",
     ar: "المسح على الخفين",
-    creditName: "Ahmed Sherif",
-    creditUrl: U,
-    creditSource: "Unsplash",
-    position: "50% 70%",
+    creditName: "José Martin Segura Benites",
+    creditUrl: `${P}brown-leather-boots-and-a-belt-lying-on-a-white-surface-26851198/`,
+    creditSource: "Pexels",
+    position: "50% 40%",
   },
   "THA-07": {
     src: "/images/topics/mandi.jpg",
@@ -102,21 +103,21 @@ export const TOPIC_IMAGES: Record<string, TopicImage> = {
   },
   "THA-09": {
     src: "/images/topics/najis.jpg",
-    alt: "Foto tangan dicuci di bawah keran emas",
+    alt: "Foto makro tetesan air memercik di permukaan air biru",
     ar: "النجاسة وإزالتها",
-    creditName: "Polina Zimmerman",
-    creditUrl: `${P}person-washing-hands-4008500/`,
+    creditName: "Jason Walters",
+    creditUrl: `${P}close-up-of-a-drop-of-water-splashing-5039451/`,
     creditSource: "Pexels",
-    position: "50% 45%",
+    position: "50% 50%",
   },
   "THA-10": {
     src: "/images/topics/masjid-agung.webp",
-    alt: "Foto interior masjid agung dengan mihrab dan lampu gantung",
+    alt: "Foto menara dan kubah Masjid Süleymaniye saat senja",
     ar: "الحيض والنفاس",
-    creditName: "Ridzuan Naina",
-    creditUrl: U,
-    creditSource: "Unsplash",
-    position: "50% 40%",
+    creditName: "Sümeyye Başbil",
+    creditUrl: `${P}suleymaniye-mosque-minaret-at-sunset-32525281/`,
+    creditSource: "Pexels",
+    position: "50% 35%",
   },
 };
 
@@ -133,7 +134,7 @@ export const DEFAULT_IMAGE: TopicImage = {
 
 export const HOME_HERO = DEFAULT_IMAGE;
 
-/** Kredit unik untuk footer (tanpa duplikat foto wudu THA-04/THA-05). */
+/** Kredit unik untuk footer (satu entri per berkas foto). */
 export const PHOTO_CREDITS: TopicImage[] = Array.from(
   new Map(Object.values(TOPIC_IMAGES).concat(DEFAULT_IMAGE).map((i) => [i.src, i])).values(),
 );
