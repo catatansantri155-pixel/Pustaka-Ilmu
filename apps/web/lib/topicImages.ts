@@ -1,4 +1,5 @@
 import type { MaterialSummary, Topic } from "@pustaka/shared-types";
+import poolData from "../public/images/topics/pool/pool.json";
 
 /**
  * Peta topik → foto sampul (PR #3).
@@ -12,6 +13,13 @@ import type { MaterialSummary, Topic } from "@pustaka/shared-types";
  *   karena lolos aturan (mushaf di rehal; bukit pasir; kepala pancuran).
  * - 8 foto lain diganti total pada 25 Okt 2026 dari Pexels (lihat kredit).
  * Atribusi lengkap dirender di footer aplikasi (ReaderShell).
+ *
+ * PR #5: tiap topik kini punya POOL 8 foto — indeks 0 = sampul di atas,
+ * indeks 1..7 = foto tambahan dari public/images/topics/pool/pool.json
+ * (berkas <slug>-2.jpg s.d. <slug>-8.jpg, semua Pexels, teraudit dengan
+ * aturan yang sama: tanpa makhluk bernyawa, tanpa duplikat). Permukaan
+ * per-materi memilih foto dari pool secara deterministik (hash id materi),
+ * permukaan per-topik tetap memakai sampul indeks 0.
  */
 export interface TopicImage {
   src: string;
@@ -134,9 +142,78 @@ export const DEFAULT_IMAGE: TopicImage = {
 
 export const HOME_HERO = DEFAULT_IMAGE;
 
-/** Kredit unik untuk footer (satu entri per berkas foto). */
+/* ------------------------------------------------------------------ */
+/* Pool foto per topik (PR #5)                                          */
+/* ------------------------------------------------------------------ */
+
+interface PoolEntry {
+  file: string;
+  topic: string;
+  subject: string;
+  source: string;
+  photographer: string;
+  photoUrl: string;
+}
+
+const POOL_ENTRIES = poolData as PoolEntry[];
+
+/** Nomor urut dari nama berkas pool, mis. "air-7.jpg" → 7. */
+function poolIndexOf(file: string): number {
+  const m = /-(\d+)\.[a-z]+$/i.exec(file);
+  return m ? parseInt(m[1], 10) : 0;
+}
+
+/**
+ * Pool foto per topik: indeks 0 = sampul lama (TOPIC_IMAGES), indeks 1..7 =
+ * foto pool n=2..8 dari pool.json (urut nomor berkas menaik).
+ */
+export const TOPIC_POOLS: Record<string, TopicImage[]> = (() => {
+  const pools: Record<string, TopicImage[]> = {};
+  for (const [code, cover] of Object.entries(TOPIC_IMAGES)) {
+    const extras = POOL_ENTRIES.filter((e) => e.topic === code)
+      .sort((a, b) => poolIndexOf(a.file) - poolIndexOf(b.file))
+      .map<TopicImage>((e) => ({
+        src: `/images/topics/pool/${e.file}`,
+        alt: `Foto ${e.subject.charAt(0).toLowerCase()}${e.subject.slice(1)}`,
+        ar: cover.ar,
+        creditName: e.photographer,
+        creditUrl: e.photoUrl,
+        creditSource: e.source === "Unsplash" ? "Unsplash" : "Pexels",
+      }));
+    pools[code] = [cover, ...extras];
+  }
+  return pools;
+})();
+
+/** Hash FNV-1a 32-bit atas string — deterministik lintas kunjungan & platform. */
+export function hashMaterialId(id: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < id.length; i++) {
+    h ^= id.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+
+/**
+ * Foto pool untuk satu materi: indeks = hash(id materi) mod jumlah foto pool.
+ * Tanpa id → sampul indeks 0. Materi yang sama selalu mendapat foto yang sama.
+ */
+export function poolImageForMaterial(code: string, materialId?: string | null): TopicImage {
+  const pool = TOPIC_POOLS[code];
+  if (!pool || pool.length === 0) return imageForTopicCode(code);
+  if (!materialId) return pool[0];
+  return pool[hashMaterialId(materialId) % pool.length];
+}
+
+/** Kredit unik untuk footer (satu entri per berkas foto, termasuk seluruh pool). */
 export const PHOTO_CREDITS: TopicImage[] = Array.from(
-  new Map(Object.values(TOPIC_IMAGES).concat(DEFAULT_IMAGE).map((i) => [i.src, i])).values(),
+  new Map(
+    Object.values(TOPIC_POOLS)
+      .flat()
+      .concat(DEFAULT_IMAGE)
+      .map((i) => [i.src, i]),
+  ).values(),
 );
 
 /** Pencocokan cadangan berdasarkan kata kunci nama topik (bila kode tak dikenal). */
@@ -166,18 +243,35 @@ export function imageForTopic(t?: Topic | null): TopicImage {
   return DEFAULT_IMAGE;
 }
 
-/** Foto sampul materi: dari topik pertamanya; tanpa topik → kata kunci judul; terakhir → sampul umum. */
+/** Kode topik dari objek topik: kode persis dulu, lalu kata kunci nama. */
+function codeForTopic(t?: Topic | null): string | null {
+  if (!t) return null;
+  if (t.code && TOPIC_IMAGES[t.code]) return t.code;
+  const name = `${t.name_id || ""} ${t.name || ""} ${t.title || ""}`;
+  for (const [re, code] of KEYWORD_RULES) if (re.test(name)) return code;
+  return null;
+}
+
+/** Kode topik materi: dari topik pertamanya; tanpa topik → kata kunci judul. */
+function codeForMaterial(m: MaterialSummary): string | null {
+  const t = (m.topics && m.topics[0]) || m.topic || null;
+  const fromTopic = codeForTopic(t);
+  if (fromTopic) return fromTopic;
+  const title = `${m.title_id || ""} ${m.title || ""}`;
+  for (const [re, code] of KEYWORD_RULES) if (re.test(title)) return code;
+  return null;
+}
+
+/**
+ * Foto materi: dipilih deterministik dari pool topiknya berdasarkan hash
+ * id materi (materi sama → foto sama di semua permukaan). Topik tak dikenal
+ * → sampul umum.
+ */
 export function imageForMaterial(m?: MaterialSummary | null): TopicImage {
   if (!m) return DEFAULT_IMAGE;
-  const t = (m.topics && m.topics[0]) || m.topic || null;
-  if (t) {
-    if (t.code && TOPIC_IMAGES[t.code]) return TOPIC_IMAGES[t.code];
-    const byName = imageForTopic(t);
-    if (byName !== DEFAULT_IMAGE) return byName;
-  }
-  const title = `${m.title_id || ""} ${m.title || ""}`;
-  for (const [re, code] of KEYWORD_RULES) if (re.test(title)) return TOPIC_IMAGES[code];
-  return DEFAULT_IMAGE;
+  const code = codeForMaterial(m);
+  if (!code) return DEFAULT_IMAGE;
+  return poolImageForMaterial(code, m.id);
 }
 
 /** Kata Arab sampul untuk topik (API sering mengembalikan name_ar kosong). */
