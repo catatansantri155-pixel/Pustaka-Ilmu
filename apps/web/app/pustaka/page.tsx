@@ -5,6 +5,7 @@ import type { Scholar } from "@pustaka/shared-types";
 import { api, scholarName } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui";
 import { IconChevronRight, IconUsers } from "@/components/icons";
+import ScholarEmblem from "@/components/ScholarEmblem";
 
 export default function PustakaPage() {
   const [scholars, setScholars] = useState<Scholar[]>([]);
@@ -22,7 +23,7 @@ export default function PustakaPage() {
           {scholars.map((s) => (
             <Link key={s.id} href={`/pustaka/${s.id}`} className="card group p-5 transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
               <span className="flex items-start justify-between gap-3">
-                <span className="font-arabic flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-deep text-xl text-gold" aria-hidden>{(s.name_ar || scholarName(s)).slice(0, 2)}</span>
+                <ScholarEmblem scholar={s} size="md" />
                 <IconChevronRight className="h-5 w-5 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
               </span>
               <h2 className="mt-3 text-base font-bold text-emerald-deep group-hover:underline">{scholarName(s)}</h2>

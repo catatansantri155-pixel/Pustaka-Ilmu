@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { Scholar } from "@pustaka/shared-types";
 import { api, scholarName } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState, MaterialCard } from "@/components/ui";
+import ScholarEmblem from "@/components/ScholarEmblem";
 
 export default function ScholarDetailPage() {
   const params = useParams<{ scholarId: string }>();
@@ -31,7 +32,7 @@ export default function ScholarDetailPage() {
         <>
           <section className="card pattern-islamic-light p-6">
             <div className="flex items-start gap-4">
-              <span className="font-arabic flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl bg-emerald-deep text-2xl text-gold" aria-hidden>{(scholar.name_ar || scholarName(scholar)).slice(0, 2)}</span>
+              <ScholarEmblem scholar={scholar} size="lg" />
               <div>
                 <h1 className="text-xl font-extrabold text-emerald-deep">{scholarName(scholar)}</h1>
                 {scholar.name_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 text-right text-lg text-stone-700">{scholar.name_ar}</p> : null}
