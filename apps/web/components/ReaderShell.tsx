@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode, SVGProps } from "react";
 import {
-  IconBookmark, IconGrid, IconHeadphones, IconHome, IconLayers,
+  IconBookmark, IconGrid, IconHeadphones, IconHome,
   IconSearch, IconUsers,
 } from "@/components/icons";
 import { PHOTO_CREDITS } from "@/lib/topicImages";
@@ -13,7 +13,6 @@ type IconType = ComponentType<SVGProps<SVGSVGElement>>;
 const NAV_MAIN: Array<{ href: string; label: string; icon: IconType }> = [
   { href: "/", label: "Beranda", icon: IconHome },
   { href: "/cari", label: "Cari", icon: IconSearch },
-  { href: "/#topik", label: "Topik", icon: IconLayers },
   { href: "/pustaka", label: "Ulama", icon: IconUsers },
   { href: "/tersimpan", label: "Tersimpan", icon: IconBookmark },
 ];
@@ -28,7 +27,6 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
   if (isAdmin) return <>{children}</>;
   const active = (href: string) => {
     if (href === "/") return pathname === "/";
-    if (href.startsWith("/#")) return false;
     return pathname.startsWith(href);
   };
   // Satu pintu per tujuan: "Katalog" (NAV_EXTRA[0]) menuju /cari yang sama
@@ -102,7 +100,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
         className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto max-w-md rounded-full border border-white/60 bg-white/75 shadow-pill backdrop-blur-xl lg:hidden"
         aria-label="Navigasi utama ponsel"
       >
-        <div className="grid grid-cols-5 px-1.5 py-1.5">
+        <div className="grid grid-cols-4 px-1.5 py-1.5">
           {NAV_MAIN.map((n) => {
             const Icon = n.icon;
             const isActive = active(n.href);
