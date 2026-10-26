@@ -34,10 +34,17 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
   // menyatu/duplikat, jadi nav desktop hanya memakai satu di antaranya.
   const desktopNav = [...NAV_MAIN, NAV_EXTRA[1]];
   return (
-    <div className="reader-shell min-h-screen bg-ivory">
+    <div className="reader-shell min-h-screen bg-ivory pt-[65px]">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
 
-      <header className="sticky top-0 z-40 border-b border-white/60 bg-white/70 shadow-[0_8px_30px_-12px_rgba(10,31,68,0.18)] backdrop-blur-xl">
+      {/* Header FIXED (bukan sticky) — PR #10 lanjutan, bukti tangkapan layar
+          user 27 Okt 2026: di ponsel nyata header sticky TIDAK menempel saat
+          halaman digulir. Fixed menempel ke viewport tanpa bergantung pada
+          wadah gulir leluhur mana pun, jadi selalu diam di atas. Kompensasinya:
+          padding-top 65px pada .reader-shell di atas (tinggi header = py-2.5
+          20px + isi h-11 44px + border 1px), dan jangkar tetap aman karena
+          scroll-padding-top html 5rem dan scroll-margin segmen 6rem > 65px. */}
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/60 bg-white/70 shadow-[0_8px_30px_-12px_rgba(10,31,68,0.18)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 md:px-6">
           <Link href="/" className="inline-flex min-h-11 items-center gap-2.5" aria-label="Maktabah Al-'Ilmiyyah — Beranda">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
@@ -96,8 +103,17 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
           harus tetap pb-32 (±128px > tinggi pil + offset ±74px); jangan
           dikecilkan di breakpoint md, atau elemen terbawah tertutup pil
           dan tidak bisa diklik. */}
+      {/* Lebar nav ditegaskan TANPA max-w-md/mx-auto (PR #10 lanjutan, bukti
+          tangkapan layar user 27 Okt 2026): skema lama inset-x-3 + max-w-md +
+          mx-auto pada elemen fixed terukur me-render ±470-495px pada viewport
+          ±390px di ponsel nyata — sel ke-4 "Tersimpan" jatuh di luar layar dan
+          tidak terlihat sama sekali. Skema baru: lebar = min(28rem, 100vw-1.5rem)
+          dan dipusatkan dengan left-1/2 -translate-x-1/2, jadi pada ponsel
+          lebarnya selalu tepat selebar layar dikurangi 12px di kedua sisi dan
+          keempat sel grid sama lebar di dalam layar; di tablet ia tetap
+          terpusat dengan lebar maksimum 28rem seperti desain awal. */}
       <nav
-        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto max-w-md rounded-full border border-white/60 bg-white/75 shadow-pill backdrop-blur-xl lg:hidden"
+        className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(28rem,calc(100vw-1.5rem))] -translate-x-1/2 rounded-full border border-white/60 bg-white/75 shadow-pill backdrop-blur-xl lg:hidden"
         aria-label="Navigasi utama ponsel"
       >
         <div className="grid grid-cols-4 px-1.5 py-1.5">
