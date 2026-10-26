@@ -31,7 +31,10 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
     if (href.startsWith("/#")) return false;
     return pathname.startsWith(href);
   };
-  const desktopNav = [...NAV_MAIN.slice(0, 2), NAV_EXTRA[0], ...NAV_MAIN.slice(2), NAV_EXTRA[1]];
+  // Satu pintu per tujuan: "Katalog" (NAV_EXTRA[0]) menuju /cari yang sama
+  // dengan "Cari" — dua tombol berdampingan ke halaman yang sama terasa
+  // menyatu/duplikat, jadi nav desktop hanya memakai satu di antaranya.
+  const desktopNav = [...NAV_MAIN, NAV_EXTRA[1]];
   return (
     <div className="reader-shell min-h-screen bg-ivory">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
@@ -64,13 +67,14 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
               );
             })}
           </nav>
-          <Link href="/admin/login" className="inline-flex min-h-11 shrink-0 items-center rounded-full px-3 text-sm font-medium text-muted underline underline-offset-4 hover:text-emerald-deep">Admin</Link>
+          {/* Pintu masuk admin SENGAJA tidak ditampilkan di UI publik;
+              rute /admin tetap dapat dibuka lewat URL langsung. */}
         </div>
       </header>
 
-      <main id="konten-utama" tabIndex={-1} className="mx-auto w-full max-w-6xl px-4 pb-32 pt-6 md:px-6 md:pb-14 md:pt-10">{children}</main>
+      <main id="konten-utama" tabIndex={-1} className="mx-auto w-full max-w-6xl px-4 pb-32 pt-6 md:px-6 md:pt-10 lg:pb-14">{children}</main>
 
-      <footer className="mx-auto w-full max-w-6xl px-4 pb-32 md:px-6 md:pb-10">
+      <footer className="mx-auto w-full max-w-6xl px-4 pb-32 md:px-6 lg:pb-10">
         <div className="border-t border-line pt-5 text-xs leading-relaxed text-muted">
           <p className="font-semibold text-emerald-deep">Maktabah Al-'Ilmiyyah</p>
           <p className="mt-1">Perpustakaan fatwa dan khazanah Islam — teks Arab beserta terjemahan Indonesia. Catatan sumber tersedia pada setiap materi.</p>
@@ -89,7 +93,11 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
-      {/* Navigasi bawah melayang (mobile) — gaya aplikasi native */}
+      {/* Navigasi bawah melayang (mobile & tablet, <lg) — gaya aplikasi native.
+          PENTING: selama nav ini tampil, padding bawah <main> dan <footer>
+          harus tetap pb-32 (±128px > tinggi pil + offset ±74px); jangan
+          dikecilkan di breakpoint md, atau elemen terbawah tertutup pil
+          dan tidak bisa diklik. */}
       <nav
         className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto max-w-md rounded-full border border-white/60 bg-white/75 shadow-pill backdrop-blur-xl lg:hidden"
         aria-label="Navigasi utama ponsel"
