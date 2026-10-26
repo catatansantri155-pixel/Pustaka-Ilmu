@@ -63,7 +63,7 @@ export default function AdminLoginPage() {
       <form onSubmit={onSubmit} className="card w-full max-w-md p-8">
         <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-deep text-xl text-gold">✦</div>
         <h1 className="text-2xl font-extrabold text-emerald-deep">Masuk Admin</h1>
-        <p className="mt-1 text-sm text-stone-600">Masuk dengan akun admin Pustaka Ilmu untuk mengelola materi, sumber, dan publikasi.</p>
+        <p className="mt-1 text-sm text-stone-600">Masuk dengan akun admin Maktabah Al-'Ilmiyyah untuk mengelola materi, sumber, dan publikasi.</p>
         <label className="mt-5 block text-sm font-semibold">Email<input className="input mt-1" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@contoh.id" autoComplete="username" /></label>
         <label className="mt-4 block text-sm font-semibold">Kata sandi<input className="input mt-1" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Kata sandi" autoComplete="current-password" /></label>
         {error ? <p className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{error}</p> : null}

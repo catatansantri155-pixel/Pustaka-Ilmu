@@ -1,7 +1,7 @@
 import type { SVGProps } from "react";
 
 /**
- * Set ikon internal Pustaka Ilmu — gaya goresan (stroke) konsisten ala Lucide,
+ * Set ikon internal Maktabah Al-'Ilmiyyah — gaya goresan (stroke) konsisten ala Lucide,
  * digambar sebagai jalur SVG inline. Tanpa dependensi baru.
  * Semua ikon: viewBox 24×24, stroke currentColor 1.8, ujung membulat,
  * aria-hidden (makna disampaikan teks/aria-label pendamping).
@@ -89,7 +89,7 @@ export function IconBookOpen(props: P) {
   );
 }
 
-/** Merek Pustaka Ilmu — buku tertutup (dipakai pada top bar & nav). */
+/** Merek lama — buku tertutup (dipakai pada top bar & nav). */
 export function IconBook(props: P) {
   return (
     <svg {...base(props)}>

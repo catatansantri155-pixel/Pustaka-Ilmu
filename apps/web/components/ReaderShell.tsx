@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode, SVGProps } from "react";
 import {
-  IconBook, IconBookmark, IconGrid, IconHeadphones, IconHome, IconLayers,
+  IconBookmark, IconGrid, IconHeadphones, IconHome, IconLayers,
   IconSearch, IconUsers,
 } from "@/components/icons";
 import { PHOTO_CREDITS } from "@/lib/topicImages";
@@ -36,14 +36,14 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
     <div className="reader-shell min-h-screen bg-ivory">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
 
-      <header className="sticky top-0 z-40 border-b border-line/70 bg-ivory/90 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-white/60 bg-white/70 shadow-[0_8px_30px_-12px_rgba(10,31,68,0.18)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 md:px-6">
-          <Link href="/" className="inline-flex min-h-11 items-center gap-2.5" aria-label="Pustaka Ilmu — Beranda">
-            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-deep text-gold shadow-soft">
-              <IconBook className="h-5 w-5" />
+          <Link href="/" className="inline-flex min-h-11 items-center gap-2.5" aria-label="Maktabah Al-'Ilmiyyah — Beranda">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+              <img src="/images/logo-maktabah.png" alt="" aria-hidden className="h-full w-full object-contain p-0.5" />
             </span>
             <span className="leading-tight">
-              <span className="block text-base font-extrabold tracking-tight text-emerald-deep">Pustaka Ilmu</span>
+              <span className="block text-base font-extrabold tracking-tight text-emerald-deep">Maktabah Al-'Ilmiyyah</span>
               <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">Perpustakaan Fatwa &amp; Khazanah</span>
             </span>
           </Link>
@@ -72,7 +72,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
 
       <footer className="mx-auto w-full max-w-6xl px-4 pb-32 md:px-6 md:pb-10">
         <div className="border-t border-line pt-5 text-xs leading-relaxed text-muted">
-          <p className="font-semibold text-emerald-deep">Pustaka Ilmu</p>
+          <p className="font-semibold text-emerald-deep">Maktabah Al-'Ilmiyyah</p>
           <p className="mt-1">Perpustakaan fatwa dan khazanah Islam — teks Arab beserta terjemahan Indonesia. Catatan sumber tersedia pada setiap materi.</p>
           <p className="mt-3">
             Foto sampul adalah foto asli (bukan hasil generate) dari{" "}
@@ -91,7 +91,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
 
       {/* Navigasi bawah melayang (mobile) — gaya aplikasi native */}
       <nav
-        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto max-w-md rounded-full border border-line bg-white/95 shadow-pill backdrop-blur lg:hidden"
+        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto max-w-md rounded-full border border-white/60 bg-white/75 shadow-pill backdrop-blur-xl lg:hidden"
         aria-label="Navigasi utama ponsel"
       >
         <div className="grid grid-cols-5 px-1.5 py-1.5">

@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen bg-ivory">
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col overflow-y-auto bg-emerald-deep p-4 text-white md:flex">
-        <Link href="/admin" className="mb-1 px-2 text-lg font-bold">Pustaka Ilmu</Link>
+        <Link href="/admin" className="mb-1 px-2 text-lg font-bold">Maktabah Al-'Ilmiyyah</Link>
         <p className="mb-4 px-2 text-xs text-white/70">Admin{user ? ` · ${user.email}` : ""}</p>
         <nav className="flex flex-1 flex-col gap-1">
           {ADMIN_NAV.map((n) => (
@@ -54,7 +54,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <div className="min-w-0 flex-1">
         <div className="border-b border-emerald-900/10 bg-white px-4 py-3 md:hidden">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-emerald-deep">Admin Pustaka Ilmu</span>
+            <span className="font-bold text-emerald-deep">Admin Maktabah Al-'Ilmiyyah</span>
             <button onClick={() => { clearToken(); router.replace("/admin/login"); }} className="text-sm font-semibold text-emerald">Keluar</button>
           </div>
           <nav className="mt-2 flex gap-2 overflow-x-auto pb-1">
