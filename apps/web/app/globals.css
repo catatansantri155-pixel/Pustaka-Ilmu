@@ -4,18 +4,18 @@
 
 /* Design tokens — Master Prompt V2.0 BAGIAN 4.2 */
 :root {
-  --green-deep: #103D32;
-  --emerald: #176B53;
-  --ivory: #FAF9F6;
+  --green-deep: #0A1F44;
+  --emerald: #14386E;
+  --ivory: #FAF8F2;
   --white: #FFFFFF;
-  --gold: #D6B979;
-  --ink: #17201D;
-  --muted: #52625B;
-  --line: #E8EAE6;
-  --surface: #F2F5F1;
+  --gold: #C9A227;
+  --ink: #141D31;
+  --muted: #525F7A;
+  --line: #E2E6EF;
+  --surface: #EDF0F7;
 }
 html { background: var(--ivory); }
-body { background: var(--ivory); color: var(--ink); font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
+body { background: linear-gradient(180deg, #FCFBF7 0%, #F3F5FA 55%, #E8EDF7 100%); background-attachment: fixed; color: var(--ink); font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
 html { scroll-padding-top: 5rem; }
 body { line-height: 1.65; }
 button, input, select, textarea { font: inherit; }
@@ -33,9 +33,21 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .reader-shell button { min-width: 44px; }
 .reader-shell [id^="seg-"] { scroll-margin-top: 6rem; }
 .section-heading { @apply text-lg font-bold text-emerald-deep; }
-.catalog-entry { @apply block overflow-hidden rounded-3xl border border-line bg-white shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift; }
+.catalog-entry { @apply block overflow-hidden rounded-3xl transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift;
+  background: rgba(255, 255, 255, 0.58);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 2px rgba(10, 31, 68, 0.05), 0 16px 40px -12px rgba(10, 31, 68, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
 .catalog-entry:hover h3 { text-decoration: underline; text-underline-offset: 4px; }
-.topic-link { @apply flex min-h-14 items-center justify-between gap-4 rounded-2xl border border-line bg-white px-4 py-3 text-sm text-emerald-deep shadow-soft; }
+.topic-link { @apply flex min-h-14 items-center justify-between gap-4 rounded-2xl px-4 py-3 text-sm text-emerald-deep;
+  background: rgba(255, 255, 255, 0.58);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 2px rgba(10, 31, 68, 0.05), 0 10px 28px -10px rgba(10, 31, 68, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
 .photo-warm { filter: saturate(1.06) sepia(0.14) contrast(0.98); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
@@ -45,18 +57,32 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 
 /* Eight-point star geometric pattern (SVG data-URI, no external images) */
 .pattern-islamic {
-  background-color: #103D32;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23D6B979' stroke-opacity='0.28'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3Ccircle cx='36' cy='36' r='7'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: #0A1F44;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23C9A227' stroke-opacity='0.28'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3Ccircle cx='36' cy='36' r='7'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 72px 72px;
 }
 .pattern-islamic-light {
   background-color: #FAF9F6;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23176B53' stroke-opacity='0.10'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%2314386E' stroke-opacity='0.10'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 72px 72px;
 }
-.card { @apply rounded-3xl border border-line bg-white shadow-soft; }
-.btn-primary { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-emerald px-5 py-2.5 text-sm font-semibold text-white shadow-soft hover:bg-emerald-deep disabled:cursor-not-allowed disabled:opacity-50; }
-.btn-gold { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-emerald-deep shadow-soft hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50; }
+.card {
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.58);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 2px rgba(10, 31, 68, 0.05), 0 16px 40px -12px rgba(10, 31, 68, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+.btn-primary { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-emerald px-5 py-2.5 text-sm font-semibold text-white shadow-soft disabled:cursor-not-allowed disabled:opacity-50;
+  background-image: linear-gradient(180deg, #1E50A2 0%, #14386E 55%, #0B2650 100%);
+  box-shadow: 0 10px 24px -8px rgba(10, 31, 68, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.btn-primary:hover { background-image: linear-gradient(180deg, #173F7E 0%, #0E2C5C 55%, #081C3E 100%); }
+.btn-gold { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-emerald-deep shadow-soft hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50;
+  background-image: linear-gradient(180deg, #F2DE9C 0%, #DFBE55 45%, #C9A227 100%);
+  box-shadow: 0 10px 24px -8px rgba(160, 124, 20, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
 .btn-outline { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-emerald bg-white px-4 py-2 text-sm font-semibold text-emerald hover:bg-surface disabled:cursor-not-allowed disabled:opacity-50; }
 .input { @apply min-h-11 w-full min-w-0 rounded-2xl border border-muted bg-white px-4 py-2.5 text-base focus:border-emerald focus:ring-2 focus:ring-emerald/20; }
 .input-search { @apply rounded-full pl-12 shadow-soft; }

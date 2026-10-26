@@ -1,1 +1,24 @@
-{"background_color":"#FAF7F0","description":"Perpustakaan fatwa dan khazanah Islam: materi Thaharah dari para ulama, teks Arab beserta terjemahan Indonesia.","display":"standalone","icons":[{"purpose":"any","sizes":"any","src":"/icon.svg","type":"image/svg+xml"}],"lang":"id","name":"Pustaka Ilmu","short_name":"Pustaka Ilmu","start_url":"/","theme_color":"#065F46"}
+{
+  "name": "Maktabah Al-'Ilmiyyah",
+  "short_name": "Maktabah Al-'Ilmiyyah",
+  "description": "Perpustakaan fatwa dan khazanah Islam: materi Thaharah dari para ulama, teks Arab beserta terjemahan Indonesia.",
+  "lang": "id",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF8F2",
+  "theme_color": "#0A1F44",
+  "icons": [
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

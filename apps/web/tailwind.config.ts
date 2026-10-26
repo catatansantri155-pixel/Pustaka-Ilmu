@@ -5,23 +5,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ivory: "#FAF9F6",
+        ivory: "#FAF8F2",
         white: "#FFFFFF",
-        emerald: { DEFAULT: "#176B53", deep: "#103D32" },
-        gold: "#D6B979",
-        ink: "#17201D",
-        muted: "#52625B",
-        line: "#E8EAE6",
-        surface: "#F2F5F1",
+        emerald: { DEFAULT: "#14386E", deep: "#0A1F44" },
+        gold: "#C9A227",
+        ink: "#141D31",
+        muted: "#525F7A",
+        line: "#E2E6EF",
+        surface: "#EDF0F7",
       },
       fontFamily: {
         sans: ["'Plus Jakarta Sans'", "ui-sans-serif", "system-ui", "sans-serif"],
         arabic: ["'Noto Naskh Arabic'", "'Amiri'", "serif"],
       },
       boxShadow: {
-        soft: "0 2px 16px rgba(16,61,50,0.07)",
-        lift: "0 14px 34px rgba(16,61,50,0.14)",
-        pill: "0 10px 30px rgba(16,61,50,0.18)",
+        soft: "0 2px 16px rgba(10,31,68,0.07)",
+        lift: "0 14px 34px rgba(10,31,68,0.14)",
+        pill: "0 10px 30px rgba(10,31,68,0.18)",
       },
     },
   },

@@ -4,12 +4,12 @@ import "./globals.css";
 import ReaderShell from "@/components/ReaderShell";
 
 export const metadata: Metadata = {
-  title: { default: "Pustaka Ilmu", template: "%s · Pustaka Ilmu" },
+  title: { default: "Maktabah Al-'Ilmiyyah", template: "%s · Maktabah Al-'Ilmiyyah" },
   description: "Perpustakaan fatwa dan khazanah Islam: materi Thaharah dari para ulama, teks Arab beserta terjemahan Indonesia.",
   manifest: "/manifest.webmanifest",
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/icons/icon-192.png", apple: "/apple-touch-icon.png" },
 };
-export const viewport: Viewport = { themeColor: "#103D32" };
+export const viewport: Viewport = { themeColor: "#0A1F44" };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
