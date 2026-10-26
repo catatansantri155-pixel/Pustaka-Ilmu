@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { GlossaryItem, MaterialDetail } from "@pustaka/shared-types";
 import { ApiError, api, materialTitle, recordLocalReading, scholarName, topicName } from "@/lib/api";
+import { toggleLocalBookmark, useIsBookmarked } from "@/lib/bookmarks";
 import { getToken } from "@/lib/auth";
 import { EmptyState, ErrorState, LoadingState, severityClass } from "@/components/ui";
 import TopicCover from "@/components/TopicCover";
@@ -76,10 +77,12 @@ export default function MaterialPage() {
     });
   }, [m]);
 
-  async function bookmark() {
-    if (!getToken()) { setNotice("Anda perlu masuk terlebih dahulu untuk menyimpan materi."); return; }
-    try { await api.addBookmark(params.id); setNotice("Materi disimpan ke daftar Tersimpan."); }
-    catch (e) { setNotice(e instanceof ApiError ? e.message : "Gagal menyimpan bookmark."); }
+  // Bookmark LOKAL perangkat (localStorage) — tanpa login, tanpa API.
+  const saved = useIsBookmarked(params.id);
+  function bookmark() {
+    if (!m) return;
+    const now = toggleLocalBookmark(m);
+    setNotice(now ? "Materi disimpan di perangkat ini — lihat menu Tersimpan." : "Materi dihapus dari daftar Tersimpan di perangkat ini.");
   }
   async function share() {
     if (!m) return;
@@ -118,8 +121,8 @@ export default function MaterialPage() {
 
       <div className="relative overflow-hidden rounded-[2rem] shadow-lift">
         <TopicCover image={hero} className="h-44 w-full sm:h-56" />
-        <div className="absolute inset-0 bg-gradient-to-t from-emerald-deep/70 via-transparent to-transparent" aria-hidden />
-        <p dir="rtl" lang="ar" className="font-arabic absolute bottom-3 right-5 text-2xl leading-none text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">{hero.ar}</p>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-emerald-deep/70 via-transparent to-transparent" aria-hidden />
+        <p dir="rtl" lang="ar" className="font-arabic pointer-events-none absolute bottom-3 right-5 text-2xl leading-none text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">{hero.ar}</p>
       </div>
 
       <header>
@@ -154,11 +157,11 @@ export default function MaterialPage() {
           <button className="btn-outline px-3" aria-label="Perkecil font Indonesia" onClick={() => { const v = Math.max(0, fontId - 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A−</button>
           <button className="btn-outline px-3" aria-label="Perbesar font Indonesia" onClick={() => { const v = Math.min(3, fontId + 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A+</button>
         </div>
-        <button className="btn-outline" onClick={bookmark}><IconBookmark className="h-4 w-4" /> Simpan materi</button>
+        <button className={saved ? "btn-primary" : "btn-outline"} aria-pressed={saved} onClick={bookmark}><IconBookmark className="h-4 w-4" fill={saved ? "currentColor" : "none"} /> {saved ? "Tersimpan" : "Simpan materi"}</button>
         <button className="btn-outline" onClick={share}><IconShare className="h-4 w-4" /> Bagikan</button>
         <button className="btn-outline" aria-expanded={reportOpen} aria-controls="correction-form" onClick={() => setReportOpen((v) => !v)}><IconFlag className="h-4 w-4" /> Laporkan kesalahan terjemahan</button>
       </div>
-      {notice ? <div role="status" className="rounded-lg border border-emerald/20 bg-emerald/5 px-4 py-3 text-sm text-emerald-deep">{notice} {notice.includes("masuk terlebih dahulu") ? <Link href="/admin/login" className="font-semibold underline">Masuk di sini</Link> : null}</div> : null}
+      {notice ? <div role="status" className="rounded-lg border border-emerald/20 bg-emerald/5 px-4 py-3 text-sm text-emerald-deep">{notice}</div> : null}
 
       {reportOpen ? (
         <form id="correction-form" onSubmit={submitReport} className="card space-y-3 p-5">

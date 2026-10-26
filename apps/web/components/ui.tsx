@@ -4,6 +4,7 @@ import type { MaterialSummary } from "@pustaka/shared-types";
 import { materialTitle, scholarName, topicName } from "@/lib/api";
 import { imageForMaterial } from "@/lib/topicImages";
 import TopicCover from "@/components/TopicCover";
+import BookmarkButton from "@/components/BookmarkButton";
 import { IconAlert, IconBookOpen, IconChevronRight } from "@/components/icons";
 
 export function EmptyState({ title, body }: { title: string; body?: string }) {
@@ -59,6 +60,7 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 export function MaterialCard({ m }: { m: MaterialSummary }) {
   const img = imageForMaterial(m);
   return (
+    <div className="relative">
     <Link href={`/materi/${m.id}`} className="catalog-entry group">
       <div className="flex gap-4 p-3.5 sm:gap-5 sm:p-4">
         <TopicCover image={img} className="h-24 w-24 shrink-0 rounded-2xl sm:h-28 sm:w-36" />
@@ -80,6 +82,12 @@ export function MaterialCard({ m }: { m: MaterialSummary }) {
         </div>
       </div>
     </Link>
+    {/* Tombol penanda lokal: saudara tautan kartu (BUKAN di dalamnya) agar
+        kliknya tidak pernah menyatu dengan navigasi kartu. */}
+    <div className="absolute right-3 top-3 z-10">
+      <BookmarkButton m={m} />
+    </div>
+    </div>
   );
 }
 export function AdminPlaceholder({ title, description, children }: { title: string; description: string; children?: ReactNode }) {

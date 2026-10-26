@@ -38,8 +38,8 @@ export default function HomePage() {
       <section className="overflow-hidden rounded-[2rem] bg-emerald-deep shadow-lift">
         <div className="relative">
           <TopicCover image={HOME_HERO} className="h-44 w-full sm:h-56" />
-          <div className="absolute inset-0 bg-gradient-to-t from-emerald-deep/85 via-emerald-deep/25 to-transparent" aria-hidden />
-          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-emerald-deep/85 via-emerald-deep/25 to-transparent" aria-hidden />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5 sm:p-7">
             <p className="text-sm font-medium text-gold">Assalamu&apos;alaikum</p>
             <h1 className="mt-1 max-w-xl text-2xl font-extrabold leading-tight text-white sm:text-3xl">Temukan ilmu dari sumbernya</h1>
           </div>
@@ -105,7 +105,7 @@ export default function HomePage() {
                 <Link key={t.id} href={`/cari?topic_id=${encodeURIComponent(t.id)}`} className="group overflow-hidden rounded-3xl border border-line bg-white shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
                   <div className="relative">
                     <TopicCover image={imageForTopic(t)} className="h-24 w-full sm:h-28" />
-                    <span dir="rtl" lang="ar" className="font-arabic absolute bottom-2 right-3 text-lg leading-none text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">{topicArabic(t)}</span>
+                    <span dir="rtl" lang="ar" className="font-arabic pointer-events-none absolute bottom-2 right-3 text-lg leading-none text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">{topicArabic(t)}</span>
                   </div>
                   <div className="flex items-center justify-between gap-2 p-3.5">
                     <span className="min-w-0">
