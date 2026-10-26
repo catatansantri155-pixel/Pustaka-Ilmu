@@ -29,8 +29,13 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .skip-link:focus { top: 1rem; }
 .reader-shell { overflow-wrap: anywhere; font-size: 0.9375rem; }
 .reader-shell main > article { max-width: 68ch; margin-inline: auto; }
-.reader-shell button, .reader-shell select { min-height: 44px; }
-.reader-shell button { min-width: 44px; }
+/* Target sentuh minimum 44px HANYA untuk tombol non-chip: tombol .chip harus
+   tampil PERSIS seukuran chip tautan/span (mis. chip "Bagian N" Daftar Isi yang
+   berupa <a>). Tanpa pengecualian ini, spesifisitas .reader-shell button
+   memaksa semua tombol chip setinggi 44px dan tombol mungil (A−/A+) menjadi
+   lingkaran 44x44 — akar masalah PR #9 lanjutan (27 Okt 2026). */
+.reader-shell button:not(.chip), .reader-shell select { min-height: 44px; }
+.reader-shell button:not(.chip) { min-width: 44px; }
 .reader-shell [id^="seg-"] { scroll-margin-top: 6rem; }
 .section-heading { @apply text-lg font-bold text-emerald-deep; }
 .catalog-entry { @apply block overflow-hidden rounded-3xl transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift;
