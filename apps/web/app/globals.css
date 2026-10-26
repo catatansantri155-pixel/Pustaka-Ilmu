@@ -15,6 +15,14 @@
   --surface: #EDF0F7;
 }
 html { background: var(--ivory); }
+/* Pagar anti-luber horizontal (PR #10, keluhan user 27 Okt 2026): satu elemen
+   yang lebih lebar dari layar ponsel TIDAK boleh lagi melebarkan seluruh
+   dokumen (halaman terpotong + scroll horizontal + pil navigasi fixed tampak
+   memanjang). Pakai `clip`, BUKAN `hidden`: `hidden` pada html/body menciptakan
+   scroll container yang MEMBUNUH position: sticky pada header, sedangkan
+   `clip` tidak menciptakan scroll container sehingga header sticky dan nav
+   bawah fixed tetap diam di tempat saat halaman digulir. */
+html, body { overflow-x: clip; }
 body { background: linear-gradient(180deg, #FCFBF7 0%, #F3F5FA 55%, #E8EDF7 100%); background-attachment: fixed; color: var(--ink); font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
 html { scroll-padding-top: 5rem; }
 body { line-height: 1.65; }
