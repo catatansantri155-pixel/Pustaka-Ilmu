@@ -137,29 +137,33 @@ export default function MaterialPage() {
         {m.ai_label ? <p className="mt-3 inline-block rounded-2xl border border-gold/50 bg-gold/10 px-4 py-2 text-xs font-semibold leading-relaxed text-emerald-deep">{m.ai_label}</p> : null}
       </header>
 
-      <div className="card flex flex-wrap items-center gap-x-3 gap-y-2.5 p-4">
+      {/* Panel kontrol pembaca — ukuran ringkas (PR #9, permintaan user 27 Okt 2026):
+          semua teks & padding pil/tombol panel ini diperkecil di semua perangkat.
+          Pengecilan TERLINGKUP panel ini saja (kelas utilitas menimpa .btn-* global);
+          fungsi setiap kontrol tidak berubah. */}
+      <div className="card flex flex-wrap items-center gap-x-2.5 gap-y-2 p-3">
         <div className="flex flex-wrap gap-1" role="group" aria-label="Tampilan bahasa">
           {([["gabung", "Arab + Indonesia"], ["arab", "Arab saja"], ["indo", "Indonesia saja"]] as Array<[DisplayMode, string]>).map(([v, label]) => (
-            <button key={v} aria-pressed={display === v} onClick={() => { setDisplay(v); savePref("pustaka:reader:display", v); }} className={`rounded-full border border-emerald px-3 py-2 text-xs font-semibold sm:text-sm ${display === v ? "bg-emerald text-white" : "bg-white text-emerald"}`}>{label}</button>
+            <button key={v} aria-pressed={display === v} onClick={() => { setDisplay(v); savePref("pustaka:reader:display", v); }} className={`rounded-full border border-emerald px-2.5 py-1.5 text-[11px] font-semibold sm:text-xs ${display === v ? "bg-emerald text-white" : "bg-white text-emerald"}`}>{label}</button>
           ))}
         </div>
         <div className="flex flex-wrap gap-1" role="group" aria-label="Mode membaca">
-          <button aria-pressed={mode === "pemula"} onClick={() => { setMode("pemula"); savePref("pustaka:reader:mode", "pemula"); }} className={`rounded-full border border-emerald px-4 py-2 text-sm font-semibold ${mode === "pemula" ? "bg-emerald text-white" : "bg-white text-emerald"}`}>Pemula</button>
-          <button aria-pressed={mode === "mendalam"} onClick={() => { setMode("mendalam"); savePref("pustaka:reader:mode", "mendalam"); }} className={`rounded-full border border-emerald px-4 py-2 text-sm font-semibold ${mode === "mendalam" ? "bg-emerald text-white" : "bg-white text-emerald"}`}>Mendalam</button>
+          <button aria-pressed={mode === "pemula"} onClick={() => { setMode("pemula"); savePref("pustaka:reader:mode", "pemula"); }} className={`rounded-full border border-emerald px-3 py-1.5 text-xs font-semibold ${mode === "pemula" ? "bg-emerald text-white" : "bg-white text-emerald"}`}>Pemula</button>
+          <button aria-pressed={mode === "mendalam"} onClick={() => { setMode("mendalam"); savePref("pustaka:reader:mode", "mendalam"); }} className={`rounded-full border border-emerald px-3 py-1.5 text-xs font-semibold ${mode === "mendalam" ? "bg-emerald text-white" : "bg-white text-emerald"}`}>Mendalam</button>
         </div>
         <div className="flex items-center gap-1" aria-label="Ukuran font Arab">
-          <span className="flex items-center gap-1 text-xs text-muted"><IconType className="h-4 w-4" /> Arab</span>
-          <button className="btn-outline px-3" aria-label="Perkecil font Arab" onClick={() => { const v = Math.max(0, fontAr - 1); setFontAr(v); savePref("pustaka:reader:fontAr", v); }}>A−</button>
-          <button className="btn-outline px-3" aria-label="Perbesar font Arab" onClick={() => { const v = Math.min(3, fontAr + 1); setFontAr(v); savePref("pustaka:reader:fontAr", v); }}>A+</button>
+          <span className="flex items-center gap-1 text-[11px] text-muted"><IconType className="h-3.5 w-3.5" /> Arab</span>
+          <button className="btn-outline min-h-9 px-2.5 py-1.5 text-xs" aria-label="Perkecil font Arab" onClick={() => { const v = Math.max(0, fontAr - 1); setFontAr(v); savePref("pustaka:reader:fontAr", v); }}>A−</button>
+          <button className="btn-outline min-h-9 px-2.5 py-1.5 text-xs" aria-label="Perbesar font Arab" onClick={() => { const v = Math.min(3, fontAr + 1); setFontAr(v); savePref("pustaka:reader:fontAr", v); }}>A+</button>
         </div>
         <div className="flex items-center gap-1" aria-label="Ukuran font Indonesia">
-          <span className="flex items-center gap-1 text-xs text-muted"><IconType className="h-4 w-4" /> Latin</span>
-          <button className="btn-outline px-3" aria-label="Perkecil font Indonesia" onClick={() => { const v = Math.max(0, fontId - 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A−</button>
-          <button className="btn-outline px-3" aria-label="Perbesar font Indonesia" onClick={() => { const v = Math.min(3, fontId + 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A+</button>
+          <span className="flex items-center gap-1 text-[11px] text-muted"><IconType className="h-3.5 w-3.5" /> Latin</span>
+          <button className="btn-outline min-h-9 px-2.5 py-1.5 text-xs" aria-label="Perkecil font Indonesia" onClick={() => { const v = Math.max(0, fontId - 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A−</button>
+          <button className="btn-outline min-h-9 px-2.5 py-1.5 text-xs" aria-label="Perbesar font Indonesia" onClick={() => { const v = Math.min(3, fontId + 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A+</button>
         </div>
-        <button className={saved ? "btn-primary" : "btn-outline"} aria-pressed={saved} onClick={bookmark}><IconBookmark className="h-4 w-4" fill={saved ? "currentColor" : "none"} /> {saved ? "Tersimpan" : "Simpan materi"}</button>
-        <button className="btn-outline" onClick={share}><IconShare className="h-4 w-4" /> Bagikan</button>
-        <button className="btn-outline" aria-expanded={reportOpen} aria-controls="correction-form" onClick={() => setReportOpen((v) => !v)}><IconFlag className="h-4 w-4" /> Laporkan kesalahan terjemahan</button>
+        <button className={`${saved ? "btn-primary" : "btn-outline"} min-h-9 px-3.5 py-1.5 text-xs`} aria-pressed={saved} onClick={bookmark}><IconBookmark className="h-3.5 w-3.5" fill={saved ? "currentColor" : "none"} /> {saved ? "Tersimpan" : "Simpan materi"}</button>
+        <button className="btn-outline min-h-9 px-3.5 py-1.5 text-xs" onClick={share}><IconShare className="h-3.5 w-3.5" /> Bagikan</button>
+        <button className="btn-outline min-h-9 px-3.5 py-1.5 text-xs" aria-expanded={reportOpen} aria-controls="correction-form" onClick={() => setReportOpen((v) => !v)}><IconFlag className="h-3.5 w-3.5" /> Laporkan kesalahan terjemahan</button>
       </div>
       {notice ? <div role="status" className="rounded-lg border border-emerald/20 bg-emerald/5 px-4 py-3 text-sm text-emerald-deep">{notice}</div> : null}
 
@@ -178,11 +182,13 @@ export default function MaterialPage() {
       {pairs.length > 1 ? (
         <nav className="card p-5" aria-label="Daftar isi">
           <h2 className="font-bold text-emerald-deep">Daftar Isi</h2>
-          <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm">
+          {/* Susunan MENYAMPING (PR #9, permintaan user 27 Okt 2026): chip bagian
+              mengalir horizontal dan membungkus ke baris berikutnya, bukan daftar vertikal. */}
+          <div className="mt-3 flex flex-wrap gap-2">
             {pairs.map((p, idx) => (
-              <li key={p.segId || idx}><a className="text-emerald underline" href={`#seg-${idx + 1}`}>Bagian {idx + 1}</a></li>
+              <a key={p.segId || idx} className="chip border-emerald/25 bg-white font-semibold text-emerald" href={`#seg-${idx + 1}`}>Bagian {idx + 1}</a>
             ))}
-          </ol>
+          </div>
         </nav>
       ) : null}
 
