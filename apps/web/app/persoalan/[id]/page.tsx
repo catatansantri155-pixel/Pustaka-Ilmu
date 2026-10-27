@@ -44,7 +44,7 @@ export default function IssuePage() {
             body={issue.materials_status || "Belum ada materi terbit yang tertaut pada persoalan ini. Materi hanya ditautkan bila benar-benar membahas persoalan ini dan telah lolos gerbang publikasi."}
           />
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {mats.map((m) => <MaterialCard key={m.id} m={m} />)}
           </div>
         )}

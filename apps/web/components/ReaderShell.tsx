@@ -4,15 +4,20 @@ import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode, SVGProps } from "react";
 import {
   IconBookmark, IconGrid, IconHeadphones, IconHome,
-  IconSearch, IconUsers,
+  IconLayers, IconSearch, IconUsers,
 } from "@/components/icons";
 import { PHOTO_CREDITS } from "@/lib/topicImages";
 
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
 
+{/* PR #11 (27 Okt 2026): item "Topik" KEMBALI — kali ini sebagai halaman
+    sendiri /topik (semua topik tergrup per bab), sesuai permintaan user.
+    Pada PR #8 item ini sempat dihapus karena dulu hanya jangkar ke seksi
+    beranda; kini tujuannya halaman penuh, jadi bukan duplikat. */}
 const NAV_MAIN: Array<{ href: string; label: string; icon: IconType }> = [
   { href: "/", label: "Beranda", icon: IconHome },
   { href: "/cari", label: "Cari", icon: IconSearch },
+  { href: "/topik", label: "Topik", icon: IconLayers },
   { href: "/pustaka", label: "Ulama", icon: IconUsers },
   { href: "/tersimpan", label: "Tersimpan", icon: IconBookmark },
 ];
@@ -116,7 +121,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
         className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(28rem,calc(100vw-1.5rem))] -translate-x-1/2 rounded-full border border-white/60 bg-white/75 shadow-pill backdrop-blur-xl lg:hidden"
         aria-label="Navigasi utama ponsel"
       >
-        <div className="grid grid-cols-4 px-1.5 py-1.5">
+        <div className="grid grid-cols-5 px-1.5 py-1.5">
           {NAV_MAIN.map((n) => {
             const Icon = n.icon;
             const isActive = active(n.href);
