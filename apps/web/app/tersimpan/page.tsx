@@ -25,12 +25,12 @@ export default function TersimpanPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <h1 className="flex items-center gap-2.5 text-xl font-extrabold text-emerald-deep">
-          <IconBookmark className="h-6 w-6 text-emerald" /> Tersimpan
+        <h1 className="flex items-center gap-2 text-lg font-extrabold text-emerald-deep">
+          <IconBookmark className="h-5 w-5 text-emerald" /> Tersimpan
         </h1>
-        <p className="mt-2 text-sm leading-relaxed text-muted">
+        <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
           Materi yang kamu simpan tersimpan hanya di perangkat ini (penyimpanan
           lokal browser) — tanpa perlu masuk. Daftar akan kosong di perangkat
           atau browser lain, dan terhapus bila data browser dibersihkan.
@@ -46,11 +46,11 @@ export default function TersimpanPage() {
           {items.map((b) => {
             const summary = bookmarkAsSummary(b);
             return (
-              <div key={b.id} className="card flex items-center gap-4 p-3.5">
-                <Link href={`/materi/${b.id}`} className="flex min-w-0 flex-1 items-center gap-4">
-                  <TopicCover image={imageForMaterial(summary)} className="h-14 w-14 shrink-0 rounded-2xl sm:h-16 sm:w-20" />
+              <div key={b.id} className="card flex items-center gap-3 p-3">
+                <Link href={`/materi/${b.id}`} className="flex min-w-0 flex-1 items-center gap-3">
+                  <TopicCover image={imageForMaterial(summary)} className="h-12 w-12 shrink-0 rounded-2xl sm:h-14 sm:w-16" />
                   <span className="min-w-0">
-                    <span className="block truncate font-semibold text-emerald-deep">{materialTitle(summary)}</span>
+                    <span className="block truncate text-[15px] font-semibold text-emerald-deep">{materialTitle(summary)}</span>
                     <span className="mt-0.5 block text-xs text-muted">
                       {b.scholar_name ? `${b.scholar_name} · ` : ""}
                       {new Date(b.at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
@@ -59,7 +59,7 @@ export default function TersimpanPage() {
                 </Link>
                 <button
                   type="button"
-                  className="btn-outline shrink-0"
+                  className="btn-outline btn-compact shrink-0"
                   aria-label={`Hapus ${materialTitle(summary)} dari Tersimpan`}
                   onClick={() => remove(b)}
                 >

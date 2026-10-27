@@ -60,9 +60,9 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 export function MaterialCard({ m }: { m: MaterialSummary }) {
   const img = imageForMaterial(m);
   return (
-    <div className="relative">
-    <Link href={`/materi/${m.id}`} className="catalog-entry group">
-      <div className="flex gap-4 p-3.5 sm:gap-5 sm:p-4">
+    <div className="relative min-w-0">
+    <Link href={`/materi/${m.id}`} className="catalog-entry group w-full">
+      <div className="flex min-w-0 gap-4 p-3.5 sm:gap-5 sm:p-4">
         <TopicCover image={img} className="h-24 w-24 shrink-0 rounded-2xl sm:h-28 sm:w-36" />
         <div className="min-w-0 flex-1 py-0.5">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -75,7 +75,7 @@ export function MaterialCard({ m }: { m: MaterialSummary }) {
           <h3 className="mt-1.5 text-base font-bold leading-snug text-emerald-deep">{materialTitle(m)}</h3>
           {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 truncate text-right text-base text-stone-700">{m.title_ar}</p> : null}
           {m.summary ? <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-stone-600">{m.summary}</p> : null}
-          <p className="mt-2.5 flex items-center gap-1 text-xs font-medium text-stone-500">
+          <p className="mt-2.5 flex min-w-0 items-center gap-1 text-xs font-medium text-stone-500">
             <span className="min-w-0 truncate">{scholarName(m.scholar) || m.scholar_name || ""}{m.ai_label ? ` · ${m.ai_label}` : ""}</span>
             <IconChevronRight className="ml-auto h-4 w-4 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
           </p>

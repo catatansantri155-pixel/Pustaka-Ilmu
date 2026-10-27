@@ -99,4 +99,16 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .btn-outline { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-emerald bg-white px-4 py-2 text-sm font-semibold text-emerald hover:bg-surface disabled:cursor-not-allowed disabled:opacity-50; }
 .input { @apply min-h-11 w-full min-w-0 rounded-2xl border border-muted bg-white px-4 py-2.5 text-base focus:border-emerald focus:ring-2 focus:ring-emerald/20; }
 .input-search { @apply rounded-full pl-12 shadow-soft; }
+/* Kontrol ringkas (PR #11, permintaan user 27 Okt 2026): form pencarian dan
+   halaman Tersimpan dibuat lebih kecil — teks, kolom isian, dan tombolnya.
+   Padding/ukuran teks cukup lewat kelas di bawah (urutan berkas membuatnya
+   menang atas .input/.btn-*), tetapi tinggi minimum harus ditegaskan lewat
+   aturan .reader-shell ber-spesifisitas lebih tinggi, karena aturan target
+   sentuh 44px global (.reader-shell button/select) menang atas kelas biasa.
+   Pengecualian ini HANYA untuk kontrol berlabel compact; tombol, select,
+   dan chip lain tidak berubah. */
+.input-compact { @apply px-3.5 py-1.5 text-sm; }
+.btn-compact { @apply px-4 py-1.5 text-[13px]; }
+.reader-shell button.btn-compact { min-height: 36px; min-width: 0; }
+.reader-shell select.input-compact, .reader-shell input.input-compact { min-height: 36px; }
 .chip { @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium; }
