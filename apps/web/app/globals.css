@@ -104,7 +104,12 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 }
 .btn-outline { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-emerald bg-white px-4 py-2 text-sm font-semibold text-emerald hover:bg-surface disabled:cursor-not-allowed disabled:opacity-50; }
 .input { @apply min-h-11 w-full min-w-0 rounded-2xl border border-muted bg-white px-4 py-2.5 text-base focus:border-emerald focus:ring-2 focus:ring-emerald/20; }
-.input-search { @apply rounded-full pl-12 shadow-soft; }
+/* Selektor ganda .input.input-search disengaja: pl-12 (3rem, ruang untuk ikon
+   kaca pembesar di kiri) harus menang atas px-3.5 milik .input-compact yang
+   muncul belakangan di berkas ini; sebelumnya padding efektif hanya 0,875rem
+   sehingga teks yang diketik menabrak ikon. Padding dibiarkan konstan juga
+   saat ikon disembunyikan ketika pengguna mengetik, jadi teks tidak melompat. */
+.input.input-search { @apply rounded-full pl-12 shadow-soft; }
 /* Kontrol ringkas (PR #11, permintaan user 27 Okt 2026): form pencarian dan
    halaman Tersimpan dibuat lebih kecil — teks, kolom isian, dan tombolnya.
    Padding/ukuran teks cukup lewat kelas di bawah (urutan berkas membuatnya
