@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode, SVGProps } from "react";
 import {
   IconBookmark, IconGrid, IconHeadphones, IconHome,
-  IconLayers, IconSearch, IconUsers,
+  IconInfo, IconLayers, IconSearch, IconUsers,
 } from "@/components/icons";
 
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
@@ -48,34 +48,53 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
           padding-top 65px pada .reader-shell di atas (tinggi header = py-2.5
           20px + isi h-11 44px + border 1px), dan jangkar tetap aman karena
           scroll-padding-top html 5rem dan scroll-margin segmen 6rem > 65px. */}
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/60 bg-white/70 shadow-[0_8px_30px_-12px_rgba(10,31,68,0.18)] backdrop-blur-xl">
+      {/* PR #12: blur header diturunkan xl (24px) → md (12px) dan latar
+          dinaikkan /70 → /80 — header fixed selalu dikomposit ulang saat
+          scroll, jadi ini penghematan terbesar per frame; tampilannya
+          praktis sama karena isinya teks di atas latar ivory terang. */}
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/60 bg-white/80 shadow-[0_8px_30px_-12px_rgba(10,31,68,0.18)] backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 md:px-6">
           <Link href="/" className="inline-flex min-h-11 items-center gap-2.5" aria-label="Maktabah Al-'Ilmiyyah — Beranda">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
-              <img src="/images/logo-maktabah.png" alt="" aria-hidden className="h-full w-full object-contain p-0.5" />
+              <img src="/images/logo-maktabah.png" alt="" aria-hidden width={44} height={44} decoding="async" className="h-full w-full object-contain p-0.5" />
             </span>
             <span className="leading-tight">
               <span className="block text-base font-extrabold tracking-tight text-emerald-deep">Maktabah Al-'Ilmiyyah</span>
               <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">Perpustakaan Fatwa &amp; Khazanah</span>
             </span>
           </Link>
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigasi utama">
-            {desktopNav.map((n) => {
-              const Icon = n.icon;
-              const isActive = active(n.href);
-              return (
-                <Link
-                  key={n.label}
-                  href={n.href}
-                  aria-current={isActive ? "page" : undefined}
-                  className={`inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 text-sm transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep hover:bg-surface"}`}
-                >
-                  <Icon className="h-[18px] w-[18px]" />
-                  {n.label}
-                </Link>
-              );
-            })}
-          </nav>
+          <div className="flex items-center gap-1">
+            <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigasi utama">
+              {desktopNav.map((n) => {
+                const Icon = n.icon;
+                const isActive = active(n.href);
+                return (
+                  <Link
+                    key={n.label}
+                    href={n.href}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 text-sm transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep hover:bg-surface"}`}
+                  >
+                    <Icon className="h-[18px] w-[18px]" />
+                    {n.label}
+                  </Link>
+                );
+              })}
+            </nav>
+            {/* Tombol "Tentang" (ikon i) di pojok kanan atas — tampil di
+                ponsel dan desktop (di desktop setelah item nav terakhir).
+                Awalnya (PR #13) membuka panel dialog, tetapi keputusan user
+                27 Okt 2026 09:19 WIB: dialog tampil rusak di ponsel, jadi
+                Tentang menjadi HALAMAN TERPISAH /tentang dan tombol ini
+                adalah tautan ke sana. */}
+            <Link
+              href="/tentang"
+              aria-label="Tentang aplikasi Maktabah Al-'Ilmiyyah"
+              className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full text-emerald-deep transition hover:bg-surface"
+            >
+              <IconInfo className="h-5 w-5" />
+            </Link>
+          </div>
           {/* Pintu masuk admin SENGAJA tidak ditampilkan di UI publik;
               rute /admin tetap dapat dibuka lewat URL langsung. */}
         </div>
@@ -103,9 +122,11 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
           dan dipusatkan dengan left-1/2 -translate-x-1/2, jadi pada ponsel
           lebarnya selalu tepat selebar layar dikurangi 12px di kedua sisi dan
           keempat sel grid sama lebar di dalam layar; di tablet ia tetap
-          terpusat dengan lebar maksimum 28rem seperti desain awal. */}
+          terpusat dengan lebar maksimum 28rem seperti desain awal.
+          PR #12: blur pil ini juga diturunkan xl → md dan latar /75 → /85
+          (alasan sama seperti header: elemen fixed selalu aktif saat scroll). */}
       <nav
-        className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(28rem,calc(100vw-1.5rem))] -translate-x-1/2 rounded-full border border-white/60 bg-white/75 shadow-pill backdrop-blur-xl lg:hidden"
+        className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(28rem,calc(100vw-1.5rem))] -translate-x-1/2 rounded-full border border-white/60 bg-white/85 shadow-pill backdrop-blur-md lg:hidden"
         aria-label="Navigasi utama ponsel"
       >
         <div className="grid grid-cols-5 px-1.5 py-1.5">

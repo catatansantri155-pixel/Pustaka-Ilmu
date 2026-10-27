@@ -21,7 +21,7 @@ export default function PustakaPage() {
       {loading ? <LoadingState /> : scholars.length === 0 ? <EmptyState title="Belum ada data ulama" body="Data ulama akan tampil di sini setelah tersedia dari server." /> : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {scholars.map((s) => (
-            <Link key={s.id} href={`/pustaka/${s.id}`} className="card group p-5 transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
+            <Link key={s.id} href={`/pustaka/${s.id}`} className="card cv-scholar group p-5 transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
               <span className="flex items-start justify-between gap-3">
                 <ScholarEmblem scholar={s} size="md" />
                 <IconChevronRight className="h-5 w-5 shrink-0 text-emerald transition group-hover:translate-x-0.5" />

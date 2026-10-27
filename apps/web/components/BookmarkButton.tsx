@@ -10,6 +10,9 @@ import { IconBookmark } from "@/components/icons";
  */
 export default function BookmarkButton({ m }: { m: MaterialSummary }) {
   const saved = useIsBookmarked(m.id);
+  // PR #12: backdrop-blur pada tombol ini dibuang — latarnya sudah putih/90
+  // (nyaris buram penuh) sehingga blur tidak terlihat, tetapi setiap kartu
+  // materi membayar satu lapisan backdrop-filter saat scroll.
   return (
     <button
       type="button"
@@ -21,7 +24,7 @@ export default function BookmarkButton({ m }: { m: MaterialSummary }) {
         e.stopPropagation();
         toggleLocalBookmark(m);
       }}
-      className={`pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full shadow-soft backdrop-blur transition ${
+      className={`pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full shadow-soft transition ${
         saved
           ? "bg-emerald text-white"
           : "bg-white/90 text-emerald-deep hover:bg-white"
