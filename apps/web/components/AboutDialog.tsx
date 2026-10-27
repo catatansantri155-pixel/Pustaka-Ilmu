@@ -116,12 +116,12 @@ export default function AboutButton() {
                     catatansantri.com <IconExternal className="h-4 w-4" />
                   </a>
                   <a
-                    href="https://www.youtube.com/@CatatanSantri-s7o"
+                    href="https://t.me/Catatansantriii"
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-emerald underline-offset-4 hover:underline"
                   >
-                    YouTube Catatan Santri <IconExternal className="h-4 w-4" />
+                    Kanal Telegram Catatan Santri <IconExternal className="h-4 w-4" />
                   </a>
                 </p>
               </section>
