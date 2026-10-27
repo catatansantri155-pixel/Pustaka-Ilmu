@@ -4,10 +4,9 @@ import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode, SVGProps } from "react";
 import {
   IconBookmark, IconGrid, IconHeadphones, IconHome,
-  IconLayers, IconSearch, IconUsers,
+  IconInfo, IconLayers, IconSearch, IconUsers,
 } from "@/components/icons";
 import { PHOTO_CREDITS } from "@/lib/topicImages";
-import AboutButton from "@/components/AboutDialog";
 
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -83,10 +82,19 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
                 );
               })}
             </nav>
-            {/* PR #12: tombol "Tentang" (ikon i) di pojok kanan atas —
-                tampil di ponsel dan desktop (di desktop setelah item nav
-                terakhir); membuka panel detail aplikasi. */}
-            <AboutButton />
+            {/* Tombol "Tentang" (ikon i) di pojok kanan atas — tampil di
+                ponsel dan desktop (di desktop setelah item nav terakhir).
+                Awalnya (PR #13) membuka panel dialog, tetapi keputusan user
+                27 Okt 2026 09:19 WIB: dialog tampil rusak di ponsel, jadi
+                Tentang menjadi HALAMAN TERPISAH /tentang dan tombol ini
+                adalah tautan ke sana. */}
+            <Link
+              href="/tentang"
+              aria-label="Tentang aplikasi Maktabah Al-'Ilmiyyah"
+              className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full text-emerald-deep transition hover:bg-surface"
+            >
+              <IconInfo className="h-5 w-5" />
+            </Link>
           </div>
           {/* Pintu masuk admin SENGAJA tidak ditampilkan di UI publik;
               rute /admin tetap dapat dibuka lewat URL langsung. */}
