@@ -60,7 +60,9 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
 export function MaterialCard({ m }: { m: MaterialSummary }) {
   const img = imageForMaterial(m);
   return (
-    <div className="relative min-w-0">
+    // PR #12: .cv-material menunda render kartu yang jauh di luar layar
+    // (content-visibility) supaya daftar panjang ringan digulir.
+    <div className="cv-material relative min-w-0">
     <Link href={`/materi/${m.id}`} className="catalog-entry group w-full">
       <div className="flex min-w-0 gap-4 p-3.5 sm:gap-5 sm:p-4">
         <TopicCover image={img} className="h-24 w-24 shrink-0 rounded-2xl sm:h-28 sm:w-36" />

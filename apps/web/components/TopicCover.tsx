@@ -11,9 +11,15 @@ import { IconDroplet } from "@/components/icons";
 export default function TopicCover({
   image,
   className = "",
+  eager = false,
 }: {
   image: TopicImage;
   className?: string;
+  /** PR #12: hanya untuk gambar di atas lipatan (slide hero pertama) —
+      dimuat segera; semua sampul lain tetap lazy. Ukuran bingkai selalu
+      ditegaskan oleh kelas pemanggil (h-/w- tetap), jadi tidak ada geser
+      tata letak dari gambar. */
+  eager?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
   if (failed) {
@@ -34,7 +40,9 @@ export default function TopicCover({
     <img
       src={image.src}
       alt={image.alt}
-      loading="lazy"
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      {...(eager ? { fetchPriority: "high" as const } : {})}
       onError={() => setFailed(true)}
       className={`photo-warm object-cover ${className}`}
       style={image.position ? { objectPosition: image.position } : undefined}

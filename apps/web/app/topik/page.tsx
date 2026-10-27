@@ -55,7 +55,7 @@ export default function TopikPage() {
           </h2>
           <div className="mt-4 grid grid-cols-2 gap-3.5 sm:gap-4 lg:grid-cols-3">
             {g.topics.map(t => (
-              <Link key={t.id} href={`/cari?topic_id=${encodeURIComponent(t.id)}`} className="group overflow-hidden rounded-3xl border border-line bg-white shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
+              <Link key={t.id} href={`/cari?topic_id=${encodeURIComponent(t.id)}`} className="cv-topic group overflow-hidden rounded-3xl border border-line bg-white shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
                 <div className="relative">
                   <TopicCover image={imageForTopic(t)} className="h-24 w-full sm:h-28" />
                   <span dir="rtl" lang="ar" className="font-arabic pointer-events-none absolute bottom-2 right-3 text-lg leading-none text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">{topicArabic(t)}</span>

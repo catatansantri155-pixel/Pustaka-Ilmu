@@ -46,18 +46,24 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .reader-shell button:not(.chip) { min-width: 44px; }
 .reader-shell [id^="seg-"] { scroll-margin-top: 6rem; }
 .section-heading { @apply text-lg font-bold text-emerald-deep; }
+/* Kaca buram diringankan (PR #12, 27 Okt 2026): blur 18px pada SETIAP kartu
+   adalah sumber berat utama saat scroll di ponsel — radius blur adalah biaya
+   kompositing dominan dan kartu katalog/.card/.topic-link jumlahnya banyak
+   dalam satu daftar. Radius diturunkan 18px → 12px dan saturasi 1.6 → 1.45,
+   diimbangi kepekatan latar 0.58 → 0.66 supaya rupa kaca buramnya nyaris
+   tidak berubah tetapi kerja GPU per kartu turun besar. */
 .catalog-entry { @apply block overflow-hidden rounded-3xl transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift;
-  background: rgba(255, 255, 255, 0.58);
-  -webkit-backdrop-filter: blur(18px) saturate(1.6);
-  backdrop-filter: blur(18px) saturate(1.6);
+  background: rgba(255, 255, 255, 0.66);
+  -webkit-backdrop-filter: blur(12px) saturate(1.45);
+  backdrop-filter: blur(12px) saturate(1.45);
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0 1px 2px rgba(10, 31, 68, 0.05), 0 16px 40px -12px rgba(10, 31, 68, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 .catalog-entry:hover h3 { text-decoration: underline; text-underline-offset: 4px; }
 .topic-link { @apply flex min-h-14 items-center justify-between gap-4 rounded-2xl px-4 py-3 text-sm text-emerald-deep;
-  background: rgba(255, 255, 255, 0.58);
-  -webkit-backdrop-filter: blur(18px) saturate(1.6);
-  backdrop-filter: blur(18px) saturate(1.6);
+  background: rgba(255, 255, 255, 0.66);
+  -webkit-backdrop-filter: blur(12px) saturate(1.45);
+  backdrop-filter: blur(12px) saturate(1.45);
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0 1px 2px rgba(10, 31, 68, 0.05), 0 10px 28px -10px rgba(10, 31, 68, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
@@ -81,9 +87,9 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 }
 .card {
   border-radius: 1.5rem;
-  background: rgba(255, 255, 255, 0.58);
-  -webkit-backdrop-filter: blur(18px) saturate(1.6);
-  backdrop-filter: blur(18px) saturate(1.6);
+  background: rgba(255, 255, 255, 0.66);
+  -webkit-backdrop-filter: blur(12px) saturate(1.45);
+  backdrop-filter: blur(12px) saturate(1.45);
   border: 1px solid rgba(255, 255, 255, 0.7);
   box-shadow: 0 1px 2px rgba(10, 31, 68, 0.05), 0 16px 40px -12px rgba(10, 31, 68, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
@@ -112,3 +118,14 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .reader-shell button.btn-compact { min-height: 36px; min-width: 0; }
 .reader-shell select.input-compact, .reader-shell input.input-compact { min-height: 36px; }
 .chip { @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium; }
+
+/* Render daftar ditunda (PR #12): pada daftar panjang (katalog, materi
+   terbaru, topik, ulama), kartu/baris yang jauh di luar layar tidak dirender
+   penuh oleh browser sampai mendekati viewport — scroll terasa jauh lebih
+   ringan di ponsel kelas menengah. contain-intrinsic-size memakai kata
+   kunci `auto` agar ukuran nyata hasil render pertama dipakai ulang pada
+   kunjungan berikutnya di halaman yang sama, jadi tidak ada loncatan tata
+   letak berarti; angka awalnya adalah taksiran tinggi kartu/baris terkait. */
+.cv-material { content-visibility: auto; contain-intrinsic-size: auto 9rem; }
+.cv-topic { content-visibility: auto; contain-intrinsic-size: auto 13rem; }
+.cv-scholar { content-visibility: auto; contain-intrinsic-size: auto 6.5rem; }
