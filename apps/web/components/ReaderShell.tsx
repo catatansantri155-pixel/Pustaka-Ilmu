@@ -6,7 +6,6 @@ import {
   IconBookmark, IconGrid, IconHeadphones, IconHome,
   IconInfo, IconLayers, IconSearch, IconUsers,
 } from "@/components/icons";
-import { PHOTO_CREDITS } from "@/lib/topicImages";
 
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -107,18 +106,6 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
         <div className="border-t border-line pt-5 text-xs leading-relaxed text-muted">
           <p className="font-semibold text-emerald-deep">Maktabah Al-'Ilmiyyah</p>
           <p className="mt-1">Perpustakaan fatwa dan khazanah Islam — teks Arab beserta terjemahan Indonesia. Catatan sumber tersedia pada setiap materi.</p>
-          <p className="mt-3">
-            Foto sampul adalah foto asli (bukan hasil generate) dari{" "}
-            {PHOTO_CREDITS.map((c, i) => (
-              <span key={c.src}>
-                {i > 0 ? ", " : ""}
-                <a href={c.creditUrl} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-emerald-deep">
-                  {c.creditSource} · {c.creditName}
-                </a>
-              </span>
-            ))}
-            .
-          </p>
         </div>
       </footer>
 
