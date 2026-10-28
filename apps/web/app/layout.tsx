@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import AppIntro from "@/components/AppIntro";
 import ReaderShell from "@/components/ReaderShell";
 
 export const metadata: Metadata = {
@@ -19,7 +20,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body><ReaderShell>{children}</ReaderShell></body>
+      <body>
+        {/* Lapisan pembuka ala aplikasi mobile (PR splash+onboarding):
+            splash tampil setiap pemuatan awal dokumen; onboarding hanya
+            sekali pada kunjungan pertama yang mendarat di beranda. Logika
+            lengkapnya di components/AppIntro.tsx — dipasang di layout akar
+            agar berjalan sekali per pemuatan dokumen, bukan per halaman. */}
+        <AppIntro />
+        <ReaderShell>{children}</ReaderShell>
+      </body>
     </html>
   );
 }
