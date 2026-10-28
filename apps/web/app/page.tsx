@@ -121,13 +121,16 @@ export default function HomePage() {
             kosong. */}
         <DailyBanner materials={materials} topics={topics} />
 
-        {/* PR #14: "Materi terbaru" kini deretan geser ke samping juga. */}
+        {/* PR #14: "Materi terbaru" kini deretan geser ke samping juga.
+            Kartunya memakai varian `uniform` pada MaterialCard:
+            tinggi seragam dalam deretan, judul maks 2 baris, meta
+            menempel di dasar kartu. */}
         <section aria-labelledby="latest-heading">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 id="latest-heading" className="section-heading">Materi terbaru</h2>
             <Link href="/cari" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-emerald underline-offset-4 hover:underline">Lihat semua materi <IconChevronRight className="h-4 w-4" /></Link>
           </div>
-          {materials.length === 0 ? <EmptyState title="Belum ada materi terbit" body="Materi akan tersedia setelah diterbitkan oleh admin. Kamu dapat mencoba kembali nanti." /> : <div className="-mx-4 mt-4 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">{materials.slice(0, 6).map(m => <div key={m.id} className="w-[88%] min-w-0 shrink-0 snap-start sm:w-[30rem]"><MaterialCard m={m} /></div>)}</div>}
+          {materials.length === 0 ? <EmptyState title="Belum ada materi terbit" body="Materi akan tersedia setelah diterbitkan oleh admin. Kamu dapat mencoba kembali nanti." /> : <div className="-mx-4 mt-4 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">{materials.slice(0, 6).map(m => <div key={m.id} className="w-[88%] min-w-0 shrink-0 snap-start sm:w-[30rem]"><MaterialCard m={m} uniform /></div>)}</div>}
         </section>
 
         {/* PR #11 (27 Okt 2026): seksi grid "Topik pembahasan" dan daftar
