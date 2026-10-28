@@ -10,19 +10,7 @@ import HeroSlideshow from "@/components/HeroSlideshow";
 import DailyBanner from "@/components/DailyBanner";
 import { imageForTopic } from "@/lib/topicImages";
 import { groupTopicsByBab } from "@/lib/babs";
-import { IconArrowRight, IconBookOpen, IconBookmark, IconChevronRight, IconClock, IconInfo, IconLayers, IconSearch, IconUsers } from "@/components/icons";
-
-/** Deretan "Akses cepat" ala Quick Access referensi (PR arah desain
-    tahap 1, 28 Okt 2026): ikon bundar + label menuju pintu yang paling
-    sering dipakai. "Persoalan" menuju seksi Daftar persoalan di halaman
-    /cari (satu-satunya daftar persoalan publik; detailnya /persoalan/[id]). */
-const QUICK_ACCESS: Array<{ href: string; label: string; icon: typeof IconBookOpen }> = [
-  { href: "/cari#persoalan", label: "Persoalan", icon: IconBookOpen },
-  { href: "/topik", label: "Topik", icon: IconLayers },
-  { href: "/pustaka", label: "Ulama", icon: IconUsers },
-  { href: "/tersimpan", label: "Tersimpan", icon: IconBookmark },
-  { href: "/tentang", label: "Tentang", icon: IconInfo },
-];
+import { IconArrowRight, IconChevronRight, IconClock, IconSearch } from "@/components/icons";
 
 /** Cuplikan cakupan per bab untuk kartu deretan "Koleksi awal" (PR #14). */
 const BAB_DESC: Record<string, string> = {
@@ -91,28 +79,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* "Akses cepat" (PR arah desain tahap 1, 28 Okt 2026): deretan ikon
-          bundar + label tepat di bawah hero/sapaan, meniru Quick Access
-          referensi. Ditempatkan sebelum "Koleksi awal" tanpa menggeser
-          urutan seksi lain yang sudah disetujui. Sasaran sentuh tiap item
-          adalah seluruh kotaknya (±64×76px ≥ 44px). */}
-      <section aria-labelledby="quick-access-heading">
-        <h2 id="quick-access-heading" className="section-heading">Akses cepat</h2>
-        <div className="mt-4 grid max-w-xl grid-cols-5 gap-1 sm:gap-3">
-          {QUICK_ACCESS.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link key={item.href} href={item.href} className="group flex min-w-0 flex-col items-center gap-1.5 rounded-3xl px-1 py-1.5 text-center">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-line bg-white shadow-soft transition group-hover:shadow-lift">
-                  <Icon className="h-6 w-6 text-emerald" />
-                </span>
-                <span className="max-w-full truncate text-xs font-semibold text-emerald-deep">{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
       {/* PR #14 (28 Okt 2026): "Koleksi awal" kini deretan geser ke samping
           berisi kartu koleksi per bab (mengikuti data bab dari API lewat
           lib/babs.ts — bab baru muncul otomatis). Tiap kartu menaut ke grup
@@ -156,9 +122,9 @@ export default function HomePage() {
         <DailyBanner materials={materials} topics={topics} />
 
         {/* PR #14: "Materi terbaru" kini deretan geser ke samping juga.
-            Kartunya memakai varian `uniform` pada MaterialCard (PR arah
-            desain tahap 1): tinggi seragam dalam deretan, judul maks 2
-            baris, meta menempel di dasar kartu. */}
+            Kartunya memakai varian `uniform` pada MaterialCard:
+            tinggi seragam dalam deretan, judul maks 2 baris, meta
+            menempel di dasar kartu. */}
         <section aria-labelledby="latest-heading">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 id="latest-heading" className="section-heading">Materi terbaru</h2>

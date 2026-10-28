@@ -130,14 +130,6 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .btn-compact { @apply px-4 py-1.5 text-[13px]; }
 .reader-shell button.btn-compact { min-height: 36px; min-width: 0; }
 .reader-shell select.input-compact, .reader-shell input.input-compact { min-height: 36px; }
-/* Stepper ukuran teks pada bilah aksi baca materi (PR arah desain tahap 1,
-   28 Okt 2026): dua pasang tombol A−/A+ (Arab + Latin) harus muat
-   berdampingan dengan tombol Simpan/Bagikan pada bilah bawah selebar
-   artikel, jadi LEBAR minimumnya dirampingkan menjadi 2.25rem — TINGGI
-   minimum tetap 44px dari aturan target sentuh global di atas, sehingga
-   sasaran jempol tidak mengecil secara vertikal. Pola pengecualian yang
-   sama dengan button.btn-compact di atas. */
-.reader-shell button.bar-step { min-width: 2.25rem; }
 .chip { @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium; }
 
 /* Render daftar ditunda (PR #12): pada daftar panjang (katalog, materi

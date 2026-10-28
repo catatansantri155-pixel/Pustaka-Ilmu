@@ -31,13 +31,6 @@ export function babPrefixOf(code?: string | null): string {
   return m ? m[1].toUpperCase() : "LAIN";
 }
 
-/** Nama bab dari awalannya saja — dipakai chip meta halaman materi
-    (PR arah desain tahap 1) tanpa harus mengelompokkan ulang topik. */
-export function babNameOfPrefix(prefix: string): string {
-  const info = BAB_INFO[prefix];
-  return info?.name_id || (prefix === "LAIN" ? "Bab lainnya" : prefix);
-}
-
 export function groupTopicsByBab(topics: Topic[]): BabGroup[] {
   const map = new Map<string, Topic[]>();
   for (const t of topics) {
