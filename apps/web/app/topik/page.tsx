@@ -37,12 +37,12 @@ export default function TopikPage() {
   const groups = groupTopicsByBab(topics);
 
   return (
-    <div className="space-y-7 sm:space-y-9">
+    <div className="space-y-6 sm:space-y-9">
       <header>
-        <h1 className="flex items-center gap-2.5 text-xl font-extrabold text-emerald-deep">
-          <IconLayers className="h-6 w-6 text-emerald" /> Topik pembahasan
+        <h1 className="flex items-center gap-2.5 text-[17px] font-extrabold text-emerald-deep sm:text-xl">
+          <IconLayers className="h-5 w-5 text-emerald sm:h-6 sm:w-6" /> Topik pembahasan
         </h1>
-        <p className="mt-2 text-[13px] leading-relaxed text-muted sm:text-sm">Semua topik tergrup menurut babnya — pilih satu topik untuk melihat fatwa di dalamnya.</p>
+        <p className="mt-2 text-xs leading-relaxed text-muted sm:text-sm">Semua topik tergrup menurut babnya — pilih satu topik untuk melihat fatwa di dalamnya.</p>
       </header>
       {error ? <ErrorState message={error} onRetry={load} /> : loading ? <LoadingState label="Memuat topik…" /> : topics.length === 0 ? (
         <EmptyState title="Topik belum tersedia" body="Daftar topik akan tampil setelah tersedia dari server." />

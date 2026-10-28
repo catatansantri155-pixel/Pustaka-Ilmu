@@ -38,28 +38,34 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
   // menyatu/duplikat, jadi nav desktop hanya memakai satu di antaranya.
   const desktopNav = [...NAV_MAIN, NAV_EXTRA[1]];
   return (
-    <div className="reader-shell min-h-screen bg-ivory pt-[65px]">
+    <div className="reader-shell min-h-screen bg-ivory pt-[57px] sm:pt-[65px]">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
 
       {/* Header FIXED (bukan sticky) — PR #10 lanjutan, bukti tangkapan layar
           user 27 Okt 2026: di ponsel nyata header sticky TIDAK menempel saat
           halaman digulir. Fixed menempel ke viewport tanpa bergantung pada
           wadah gulir leluhur mana pun, jadi selalu diam di atas. Kompensasinya:
-          padding-top 65px pada .reader-shell di atas (tinggi header = py-2.5
-          20px + isi h-11 44px + border 1px), dan jangkar tetap aman karena
-          scroll-padding-top html 5rem dan scroll-margin segmen 6rem > 65px. */}
+          padding-top pada .reader-shell di atas, dan jangkar tetap aman karena
+          scroll-padding-top html 5rem dan scroll-margin segmen 6rem melebihi
+          tinggi header.
+          PR mobile-compact-2: header ponsel dirampingkan — py-2.5→py-1.5,
+          logo 44→36px, nama aplikasi 16→15px. Tinggi header ponsel kini
+          57px (py 12px + isi 44px dari target sentuh tombol Tentang/min-h-11
+          + border 1px) sehingga padding atas .reader-shell = 57px; pada sm:
+          ke atas tetap skema lama 65px (py-2.5 20px + 44px + 1px) dan
+          padding atas 65px. Navigasi bawah TIDAK berubah sama sekali. */}
       {/* PR #12: blur header diturunkan xl (24px) → md (12px) dan latar
           dinaikkan /70 → /80 — header fixed selalu dikomposit ulang saat
           scroll, jadi ini penghematan terbesar per frame; tampilannya
           praktis sama karena isinya teks di atas latar ivory terang. */}
       <header className="fixed inset-x-0 top-0 z-40 border-b border-white/60 bg-white/80 shadow-[0_8px_30px_-12px_rgba(10,31,68,0.18)] backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 md:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-1.5 md:px-6 sm:py-2.5">
           <Link href="/" className="inline-flex min-h-11 items-center gap-2.5" aria-label="Maktabah Al-'Ilmiyyah — Beranda">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-line bg-white shadow-soft sm:h-11 sm:w-11">
               <img src="/images/logo-maktabah.png" alt="" aria-hidden width={44} height={44} decoding="async" className="h-full w-full object-contain p-0.5" />
             </span>
             <span className="leading-tight">
-              <span className="block text-base font-extrabold tracking-tight text-emerald-deep">Maktabah Al-'Ilmiyyah</span>
+              <span className="block text-[15px] font-extrabold tracking-tight text-emerald-deep sm:text-base">Maktabah Al-'Ilmiyyah</span>
               <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">Perpustakaan Fatwa &amp; Khazanah</span>
             </span>
           </Link>

@@ -30,16 +30,16 @@ export default function ScholarDetailPage() {
       {error ? <ErrorState message={error} onRetry={() => setNonce((n) => n + 1)} /> : null}
       {!scholar ? <EmptyState title="Ulama tidak ditemukan" body="Profil ulama ini belum tersedia dari server." /> : (
         <>
-          <section className="card pattern-islamic-light p-4 sm:p-6">
+          <section className="card pattern-islamic-light p-3.5 sm:p-6">
             <div className="flex items-start gap-4">
               <ScholarEmblem scholar={scholar} size="lg" />
               <div>
-                <h1 className="text-xl font-extrabold text-emerald-deep">{scholarName(scholar)}</h1>
+                <h1 className="text-[17px] font-extrabold text-emerald-deep sm:text-xl">{scholarName(scholar)}</h1>
                 {scholar.name_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 text-right text-lg text-stone-700">{scholar.name_ar}</p> : null}
-                {(scholar.death_year || scholar.death_year_hijri || scholar.died) ? <p className="mt-1 text-[13px] text-stone-500 sm:text-sm">Wafat: {String(scholar.death_year || scholar.death_year_hijri || scholar.died)}</p> : null}
+                {(scholar.death_year || scholar.death_year_hijri || scholar.died) ? <p className="mt-1 text-xs text-stone-500 sm:text-sm">Wafat: {String(scholar.death_year || scholar.death_year_hijri || scholar.died)}</p> : null}
               </div>
             </div>
-            {(scholar.bio_id || scholar.bio || scholar.description) ? <p className="mt-4 text-[13px] leading-relaxed text-stone-700 sm:text-sm">{scholar.bio_id || scholar.bio || scholar.description}</p> : null}
+            {(scholar.bio_id || scholar.bio || scholar.description) ? <p className="mt-4 text-xs leading-relaxed text-stone-700 sm:text-sm">{scholar.bio_id || scholar.bio || scholar.description}</p> : null}
           </section>
           <CatalogBrowser scholarId={params.scholarId} />
         </>

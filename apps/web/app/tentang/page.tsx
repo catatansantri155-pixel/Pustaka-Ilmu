@@ -13,16 +13,16 @@ export default function TentangPage() {
   return (
     <div className="mx-auto w-full max-w-2xl space-y-6">
       <header>
-        <h1 className="flex items-center gap-2.5 text-xl font-extrabold text-emerald-deep">
-          <IconInfo className="h-6 w-6 text-emerald" /> Tentang Maktabah Al-&apos;Ilmiyyah
+        <h1 className="flex items-center gap-2.5 text-[17px] font-extrabold text-emerald-deep sm:text-xl">
+          <IconInfo className="h-5 w-5 text-emerald sm:h-6 sm:w-6" /> Tentang Maktabah Al-&apos;Ilmiyyah
         </h1>
         <p className="mt-2 text-sm leading-relaxed text-muted">
           Sekilas tentang aplikasi ini, alasan dibangunnya, dan siapa yang mengelolanya.
         </p>
       </header>
 
-      <div className="card p-6 sm:p-7">
-        <div className="space-y-6 text-[15px] leading-relaxed text-stone-600">
+      <div className="card p-4 sm:p-7">
+        <div className="space-y-6 text-sm leading-relaxed text-stone-600 sm:text-[15px]">
           <section>
             <h2 className="text-base font-bold text-emerald-deep">Tentang aplikasi</h2>
             <p className="mt-1.5">
