@@ -143,8 +143,10 @@ export default function DailyBanner({ materials, topics }: { materials: Material
     <section ref={rootRef} aria-labelledby="daily-heading" aria-roledescription="carousel" aria-label="Pembahasan pilihan hari ini">
       <h2 id="daily-heading" className="section-heading">Pembahasan pilihan hari ini</h2>
       {/* PR mobile-compact: tinggi banner di ponsel 22rem→18rem dan radius
-          2rem→1.5rem; sm: ke atas persis seperti sebelumnya. */}
-      <div className="relative mt-3 h-72 overflow-hidden rounded-3xl bg-emerald-deep shadow-lift sm:mt-4 sm:h-80 sm:rounded-[2rem]">
+          2rem→1.5rem; sm: ke atas persis seperti sebelumnya.
+          Putaran 2 (mobile-compact-2): tinggi ponsel 18rem→16rem, judul
+          18→17px, kutipan 13→12px — sm: tetap. */}
+      <div className="relative mt-3 h-64 overflow-hidden rounded-3xl bg-emerald-deep shadow-lift sm:mt-4 sm:h-80 sm:rounded-[2rem]">
         {slides.map((s, i) => {
           const isActive = i === active;
           const label = [s.babLabel, s.topicLabel].filter(Boolean).join(" · ");
@@ -160,8 +162,8 @@ export default function DailyBanner({ materials, topics }: { materials: Material
                 {label ? (
                   <p className="inline-block max-w-full truncate rounded-full bg-emerald-deep/55 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold backdrop-blur-sm">{label}</p>
                 ) : null}
-                <h3 className="mt-2 line-clamp-2 max-w-xl text-lg font-extrabold leading-snug text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-2xl">{materialTitle(s.m)}</h3>
-                {s.excerpt ? <p className="mt-1.5 line-clamp-2 max-w-prose text-[13px] leading-relaxed text-white/85 sm:text-sm">{s.excerpt}</p> : null}
+                <h3 className="mt-2 line-clamp-2 max-w-xl text-[17px] font-extrabold leading-snug text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-2xl">{materialTitle(s.m)}</h3>
+                {s.excerpt ? <p className="mt-1.5 line-clamp-2 max-w-prose text-xs leading-relaxed text-white/85 sm:text-sm">{s.excerpt}</p> : null}
                 <Link
                   href={`/materi/${s.m.id}`}
                   tabIndex={isActive ? 0 : -1}
@@ -175,7 +177,12 @@ export default function DailyBanner({ materials, topics }: { materials: Material
           );
         })}
         {slides.length > 1 ? (
-          <div className="absolute right-4 top-4 z-10 flex gap-1.5">
+          /* Indikator titik KECIL (perbaikan PR mobile-compact-2): kelas
+             .dot-indicator mengecualikan tombol ini dari aturan target
+             sentuh 44px global .reader-shell — tanpa itu titiknya tampil
+             sebagai lingkaran raksasa 44x44 (keluhan user 28 Okt 2026).
+             Titik 8px; slide aktif berupa pil emas memanjang 20px. */
+          <div className="absolute right-4 top-4 z-10 flex gap-1">
             {slides.map((s, i) => (
               <button
                 key={s.m.id}
@@ -183,7 +190,7 @@ export default function DailyBanner({ materials, topics }: { materials: Material
                 onClick={() => setIdx(i)}
                 aria-label={`Slide ${i + 1}: ${materialTitle(s.m)}`}
                 aria-current={i === active}
-                className={`h-2.5 rounded-full shadow-soft transition-all ${i === active ? "w-6 bg-gold" : "w-2.5 bg-white/60 hover:bg-white/85"}`}
+                className={`dot-indicator h-2 rounded-full shadow-soft transition-all ${i === active ? "w-5 bg-gold" : "w-2 bg-white/60 hover:bg-white/85"}`}
               />
             ))}
           </div>

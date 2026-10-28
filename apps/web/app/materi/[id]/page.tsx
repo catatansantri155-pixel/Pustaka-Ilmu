@@ -121,7 +121,9 @@ export default function MaterialPage() {
 
       {/* PR mobile-compact: hero ponsel h-44→h-32, radius 2rem→1.5rem,
           judul 20→18px, padding kartu segmen p-5→p-4 — hanya di ponsel;
-          tangga font pembaca & teks Arab tidak disentuh. */}
+          tangga font pembaca & teks Arab tidak disentuh.
+          Putaran 2 (mobile-compact-2): judul 18→17px, padding kartu
+          segmen & kartu teks penuh p-4→p-3.5 — sm:/md: tetap. */}
       <div className="relative overflow-hidden rounded-3xl shadow-lift sm:rounded-[2rem]">
         <TopicCover image={hero} className="h-32 w-full sm:h-56" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-emerald-deep/70 via-transparent to-transparent" aria-hidden />
@@ -134,7 +136,7 @@ export default function MaterialPage() {
           {m.content_type ? <span className="chip border-gold/40 bg-gold/10 text-emerald-deep">{m.content_type}</span> : null}
           {m.is_demo ? <span className="chip border-amber-300 bg-amber-50 text-amber-800">Demo</span> : null}
         </div>
-        <h1 className="mt-3 text-lg font-extrabold leading-snug text-emerald-deep md:text-2xl">{materialTitle(m)}</h1>
+        <h1 className="mt-3 text-[17px] font-extrabold leading-snug text-emerald-deep md:text-2xl">{materialTitle(m)}</h1>
         {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-2 text-right text-xl text-ink">{m.title_ar}</p> : null}
         <p className="mt-2 text-[13px] text-muted sm:text-sm">{m.scholar ? <Link className="font-semibold text-emerald underline" href={`/pustaka/${m.scholar.id}`}>{scholarName(m.scholar)}</Link> : m.scholar_name || ""}</p>
         {m.ai_label ? <p className="mt-3 inline-block rounded-2xl border border-gold/50 bg-gold/10 px-4 py-2 text-xs font-semibold leading-relaxed text-emerald-deep">{m.ai_label}</p> : null}
@@ -201,7 +203,7 @@ export default function MaterialPage() {
         {pairs.length === 0 ? (
           <>
             {showAr && (m.arabic?.full_text || m.arabic_text) ? (
-              <div className="card p-4 sm:p-6">
+              <div className="card p-3.5 sm:p-6">
                 <div className="space-y-4">
                   {paragraphs(m.arabic?.full_text || m.arabic_text).map((para, i) => (
                     <p key={i} dir="rtl" lang="ar" className="font-arabic text-right" style={{ fontSize: arSize }}>{para}</p>
@@ -212,7 +214,7 @@ export default function MaterialPage() {
             {showId && !m.translation ? <EmptyState title="Terjemahan belum tersedia" body="Terjemahan Indonesia untuk materi ini belum diterbitkan." /> : null}
           </>
         ) : pairs.map((p, idx) => (
-          <div key={p.segId || idx} id={`seg-${idx + 1}`} className={`card p-4 sm:p-6 ${mode === "mendalam" && display === "gabung" ? "grid gap-5 md:grid-cols-2" : ""}`}>
+          <div key={p.segId || idx} id={`seg-${idx + 1}`} className={`card p-3.5 sm:p-6 ${mode === "mendalam" && display === "gabung" ? "grid gap-5 md:grid-cols-2" : ""}`}>
             {showAr && p.ar ? (
               <div className={mode === "mendalam" && display === "gabung" ? "md:order-2" : ""}>
                 <div className="space-y-4">

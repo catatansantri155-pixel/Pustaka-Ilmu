@@ -14,14 +14,14 @@ export function EmptyState({ title, body }: { title: string; body?: string }) {
         <IconBookOpen className="h-6 w-6" />
       </span>
       <p className="mt-3 font-semibold text-emerald-deep">{title}</p>
-      {body ? <p className="mx-auto mt-1.5 max-w-prose text-[13px] leading-relaxed text-muted sm:text-sm">{body}</p> : null}
+      {body ? <p className="mx-auto mt-1.5 max-w-prose text-xs leading-relaxed text-muted sm:text-sm">{body}</p> : null}
     </div>
   );
 }
 export function SkeletonCard() {
   return (
     <div className="card flex gap-3 p-3 sm:gap-4 sm:p-4" aria-hidden>
-      <div className="h-20 w-20 shrink-0 rounded-2xl bg-surface sm:h-28 sm:w-32" />
+      <div className="h-[4.5rem] w-[4.5rem] shrink-0 rounded-2xl bg-surface sm:h-28 sm:w-32" />
       <div className="min-w-0 flex-1 py-1">
         <div className="h-3.5 w-24 rounded-full bg-surface" />
         <div className="mt-3 h-4 w-3/4 rounded bg-surface" />
@@ -75,10 +75,14 @@ export function MaterialCard({ m, uniform = false }: { m: MaterialSummary; unifo
     // sampul h-24→h-20, padding p-3.5→p-3, judul 16→15px, ringkasan
     // 14→13px (min-h cadangan judul uniform menyesuaikan 2.6rem);
     // semua ukuran sm: ke atas dipertahankan persis.
+    // Putaran 2 (mobile-compact-2, 28 Okt 2026): pengecilan putaran 1
+    // dinilai user TIDAK terasa, jadi di ponsel sampul 80→72px, judul
+    // 15→14px, judul Arab 15→14px, ringkasan 13→12px, dan cadangan
+    // tinggi judul uniform 2.6→2.4rem; sm: tetap nilai putaran 1.
     <div className={`cv-material relative min-w-0 ${uniform ? "h-full" : ""}`}>
     <Link href={`/materi/${m.id}`} className={`catalog-entry group w-full ${uniform ? "h-full" : ""}`}>
       <div className={`flex min-w-0 gap-3 p-3 sm:gap-5 sm:p-4 ${uniform ? "h-full" : ""}`}>
-        <TopicCover image={img} className="h-20 w-20 shrink-0 rounded-2xl sm:h-28 sm:w-36" />
+        <TopicCover image={img} className="h-[4.5rem] w-[4.5rem] shrink-0 rounded-2xl sm:h-28 sm:w-36" />
         <div className={uniform ? "flex min-w-0 flex-1 flex-col py-0.5" : "min-w-0 flex-1 py-0.5"}>
           <div className={uniform ? "flex h-5 flex-nowrap items-center gap-x-2 overflow-hidden" : "flex flex-wrap items-center gap-x-2 gap-y-1"}>
             {m.topics?.slice(0, 2).map((t) => (
@@ -87,9 +91,9 @@ export function MaterialCard({ m, uniform = false }: { m: MaterialSummary; unifo
             {m.content_type ? <span className={`${uniform ? "whitespace-nowrap " : ""}text-[11px] font-medium uppercase tracking-wide text-muted`}>{m.content_type}</span> : null}
             {m.is_demo ? <span className="chip border-amber-300 bg-amber-50 text-amber-800">Demo</span> : null}
           </div>
-          <h3 className={`mt-1.5 text-[15px] font-bold leading-snug text-emerald-deep sm:text-base ${uniform ? "line-clamp-2 min-h-[2.6rem] sm:min-h-[2.75rem]" : ""}`}>{materialTitle(m)}</h3>
-          {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 truncate text-right text-[15px] text-stone-700 sm:text-base">{m.title_ar}</p> : null}
-          {m.summary ? <p className="mt-1.5 line-clamp-2 text-[13px] leading-relaxed text-stone-600 sm:text-sm">{m.summary}</p> : null}
+          <h3 className={`mt-1.5 text-sm font-bold leading-snug text-emerald-deep sm:text-base ${uniform ? "line-clamp-2 min-h-[2.4rem] sm:min-h-[2.75rem]" : ""}`}>{materialTitle(m)}</h3>
+          {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 truncate text-right text-sm text-stone-700 sm:text-base">{m.title_ar}</p> : null}
+          {m.summary ? <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-stone-600 sm:text-sm">{m.summary}</p> : null}
           <p className={`${uniform ? "mt-auto pt-2.5" : "mt-2.5"} flex min-w-0 items-center gap-1 text-xs font-medium text-stone-500`}>
             <span className="min-w-0 truncate">{scholarName(m.scholar) || m.scholar_name || ""}{m.ai_label ? ` · ${m.ai_label}` : ""}</span>
             <IconChevronRight className="ml-auto h-4 w-4 shrink-0 text-emerald transition group-hover:translate-x-0.5" />

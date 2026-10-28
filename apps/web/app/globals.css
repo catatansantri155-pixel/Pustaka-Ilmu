@@ -41,11 +41,23 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
    tampil PERSIS seukuran chip tautan/span (mis. chip "Bagian N" Daftar Isi yang
    berupa <a>). Tanpa pengecualian ini, spesifisitas .reader-shell button
    memaksa semua tombol chip setinggi 44px dan tombol mungil (A−/A+) menjadi
-   lingkaran 44x44 — akar masalah PR #9 lanjutan (27 Okt 2026). */
-.reader-shell button:not(.chip), .reader-shell select { min-height: 44px; }
-.reader-shell button:not(.chip) { min-width: 44px; }
+   lingkaran 44x44 — akar masalah PR #9 lanjutan (27 Okt 2026).
+   Pengecualian kedua: .dot-indicator — titik indikator slideshow banner
+   harian BUKAN tombol aksi, melainkan penanda posisi slide; tanpa
+   pengecualian ini titik 8px-nya menggelembung menjadi lingkaran 44x44
+   (keluhan user 28 Okt 2026, PR mobile-compact-2). */
+.reader-shell button:not(.chip):not(.dot-indicator), .reader-shell select { min-height: 44px; }
+.reader-shell button:not(.chip):not(.dot-indicator) { min-width: 44px; }
 .reader-shell [id^="seg-"] { scroll-margin-top: 6rem; }
-.section-heading { @apply text-lg font-bold text-emerald-deep; }
+/* PR mobile-compact-2: judul seksi di ponsel 18→17px; sm: ke atas tetap 18px. */
+.section-heading { @apply text-[17px] font-bold text-emerald-deep sm:text-lg; }
+/* Deretan geser horizontal TANPA scrollbar (PR mobile-compact-2, permintaan
+   user 28 Okt 2026): garis hitam/abu scrollbar bawaan di bawah deretan
+   beranda/bab mengganggu tampilan. Fungsi geser + snap TIDAK berubah —
+   hanya petunjuk visualnya yang disembunyikan (pola yang sama seperti
+   slider onboarding di AppIntro). */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 /* Kaca buram diringankan (PR #12, 27 Okt 2026): blur 18px pada SETIAP kartu
    adalah sumber berat utama saat scroll di ponsel — radius blur adalah biaya
    kompositing dominan dan kartu katalog/.card/.topic-link jumlahnya banyak
@@ -149,8 +161,13 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
    ReaderShell tidak membungkus /admin, jadi halaman admin tidak berubah).
    Tombol CTA dirampingkan secara horizontal + ukuran hurufnya di ponsel;
    tinggi minimum 44px dari kelas .btn-* sendiri TIDAK disentuh, jadi
-   target sentuh tetap ≥44px. Ukuran sm: ke atas persis seperti sebelumnya. */
+   target sentuh tetap ≥44px. Ukuran sm: ke atas persis seperti sebelumnya.
+   Putaran 2 (PR mobile-compact-2): kolom isian non-compact (kolom cari
+   hero beranda, form laporan) dirampingkan vertikalnya di ponsel —
+   tinggi kolom cari hero ±46→42px. Kontrol .input-compact (36px, PR #11)
+   dan textarea TIDAK tersentuh aturan ini. */
 @media (max-width: 639.98px) {
   .reader-shell .btn-primary, .reader-shell .btn-gold { padding-left: 1rem; padding-right: 1rem; font-size: 0.8125rem; }
   .reader-shell .btn-outline { padding-left: 0.875rem; padding-right: 0.875rem; font-size: 0.8125rem; }
+  .reader-shell input.input:not(.input-compact) { min-height: 2.5rem; padding-top: 0.5rem; padding-bottom: 0.5rem; }
 }

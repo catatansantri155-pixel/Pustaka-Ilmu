@@ -31,9 +31,9 @@ export default function IssuePage() {
     <div className="space-y-5 sm:space-y-7">
       <header>
         {issue.code ? <p className="text-xs font-bold uppercase tracking-wide text-emerald">{issue.code}</p> : null}
-        <h1 className="mt-1.5 text-lg font-extrabold leading-snug text-emerald-deep md:text-2xl">{issue.title_id}</h1>
-        {issue.topic ? <p className="mt-2 text-[13px] text-muted sm:text-sm">Kategori: <Link className="font-semibold text-emerald underline" href={`/cari?q=${encodeURIComponent(topicName(issue.topic as never))}`}>{topicName(issue.topic as never)}</Link></p> : null}
-        {issue.description_id ? <p className="mt-3 max-w-3xl text-[13px] leading-[1.8] text-ink sm:text-sm">{issue.description_id}</p> : null}
+        <h1 className="mt-1.5 text-[17px] font-extrabold leading-snug text-emerald-deep md:text-2xl">{issue.title_id}</h1>
+        {issue.topic ? <p className="mt-2 text-xs text-muted sm:text-sm">Kategori: <Link className="font-semibold text-emerald underline" href={`/cari?q=${encodeURIComponent(topicName(issue.topic as never))}`}>{topicName(issue.topic as never)}</Link></p> : null}
+        {issue.description_id ? <p className="mt-3 max-w-3xl text-xs leading-[1.8] text-ink sm:text-sm">{issue.description_id}</p> : null}
       </header>
 
       <section>

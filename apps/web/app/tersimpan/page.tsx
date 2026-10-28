@@ -27,7 +27,7 @@ export default function TersimpanPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="flex items-center gap-2 text-lg font-extrabold text-emerald-deep">
+        <h1 className="flex items-center gap-2 text-[17px] font-extrabold text-emerald-deep sm:text-lg">
           <IconBookmark className="h-5 w-5 text-emerald" /> Tersimpan
         </h1>
         <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
