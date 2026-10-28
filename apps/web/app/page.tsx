@@ -48,22 +48,24 @@ export default function HomePage() {
   const babGroups = groupTopicsByBab(topics);
 
   return (
-    <div className="space-y-10 md:space-y-14">
+    <div className="space-y-7 sm:space-y-10 md:space-y-14">
       {/* Hero slideshow otomatis (PR #11): foto berganti tiap ±5 detik.
           Salam diberi latar kaca tipis agar tidak bertabrakan dengan foto
-          slideshow mana pun yang sedang tampil. */}
-      <section className="overflow-hidden rounded-[2rem] bg-emerald-deep shadow-lift">
+          slideshow mana pun yang sedang tampil.
+          PR mobile-compact: di ponsel jarak seksi, radius, tinggi hero,
+          dan padding diringkas ±20–30%; sm: ke atas tidak berubah. */}
+      <section className="overflow-hidden rounded-3xl bg-emerald-deep shadow-lift sm:rounded-[2rem]">
         <div className="relative">
-          <HeroSlideshow className="h-44 w-full sm:h-56" />
+          <HeroSlideshow className="h-36 w-full sm:h-56" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-emerald-deep/85 via-emerald-deep/25 to-transparent" aria-hidden />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 p-5 sm:p-7">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 sm:p-7">
             <p className="inline-block rounded-full bg-emerald-deep/55 px-3 py-1 text-sm font-medium text-gold backdrop-blur-sm">Assalamu&apos;alaikum</p>
-            <h1 className="mt-1.5 max-w-xl text-2xl font-extrabold leading-tight text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-3xl">Temukan ilmu dari sumbernya</h1>
+            <h1 className="mt-1.5 max-w-xl text-xl font-extrabold leading-tight text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-3xl">Temukan ilmu dari sumbernya</h1>
           </div>
         </div>
-        <div className="p-5 sm:p-7 sm:pt-5">
-          <p className="max-w-prose text-sm leading-relaxed text-white/85">Telusuri fatwa para ulama berdasarkan persoalan — lengkap dengan teks Arab, terjemahan Indonesia, dan sumber aslinya.</p>
-          <form role="search" className="mt-5" onSubmit={e => { e.preventDefault(); router.push(`/cari?q=${encodeURIComponent(q.trim())}`); }}>
+        <div className="p-4 sm:p-7 sm:pt-5">
+          <p className="max-w-prose text-[13px] leading-relaxed text-white/85 sm:text-sm">Telusuri fatwa para ulama berdasarkan persoalan — lengkap dengan teks Arab, terjemahan Indonesia, dan sumber aslinya.</p>
+          <form role="search" className="mt-4 sm:mt-5" onSubmit={e => { e.preventDefault(); router.push(`/cari?q=${encodeURIComponent(q.trim())}`); }}>
             <label htmlFor="home-search" className="mb-2 block text-sm font-semibold text-white">Apa yang ingin kamu pelajari?</label>
             <div className="flex gap-2">
               <div className="relative min-w-0 flex-1">
@@ -85,15 +87,15 @@ export default function HomePage() {
           bab itu di halaman /topik. */}
       {babGroups.length > 0 && <section aria-labelledby="collection-heading">
         <h2 id="collection-heading" className="section-heading">Koleksi awal</h2>
-        <p className="mt-1.5 text-sm text-muted">Geser untuk menjelajahi koleksi per bab — ketuk satu koleksi untuk mulai membaca.</p>
-        <div className="-mx-4 mt-4 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">
+        <p className="mt-1.5 text-[13px] text-muted sm:text-sm">Geser untuk menjelajahi koleksi per bab — ketuk satu koleksi untuk mulai membaca.</p>
+        <div className="-mx-4 mt-3 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2 sm:mt-4">
           {babGroups.map(g => (
             <article key={g.prefix} className="card w-[85%] shrink-0 snap-start overflow-hidden sm:w-[26rem]">
-              <TopicCover image={imageForTopic(g.topics[0])} className="h-36 w-full" />
-              <div className="p-5">
-                <h3 className="text-xl font-extrabold text-emerald-deep">{g.name_id}{g.name_ar ? <span dir="rtl" lang="ar" className="font-arabic ml-1.5 text-xl font-medium text-emerald">{g.name_ar}</span> : null}</h3>
-                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">{BAB_DESC[g.prefix] || `Pembahasan ${g.name_id} — dari fatwa para ulama dengan teks Arab, terjemahan Indonesia, dan sumbernya.`}</p>
-                <Link href={`/topik#${g.prefix}`} className="btn-primary mt-4">
+              <TopicCover image={imageForTopic(g.topics[0])} className="h-28 w-full sm:h-36" />
+              <div className="p-4 sm:p-5">
+                <h3 className="text-lg font-extrabold text-emerald-deep sm:text-xl">{g.name_id}{g.name_ar ? <span dir="rtl" lang="ar" className="font-arabic ml-1.5 text-lg font-medium text-emerald sm:text-xl">{g.name_ar}</span> : null}</h3>
+                <p className="mt-2 line-clamp-3 text-[13px] leading-relaxed text-muted sm:text-sm">{BAB_DESC[g.prefix] || `Pembahasan ${g.name_id} — dari fatwa para ulama dengan teks Arab, terjemahan Indonesia, dan sumbernya.`}</p>
+                <Link href={`/topik#${g.prefix}`} className="btn-primary mt-3.5 sm:mt-4">
                   Baca materi {g.name_id} <IconArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -107,7 +109,7 @@ export default function HomePage() {
       {reading.length > 0 && <section aria-labelledby="continue-heading">
         <h2 id="continue-heading" className="section-heading flex items-center gap-2"><IconClock className="h-5 w-5 text-emerald" /> Lanjutkan membaca</h2>
         <div className="-mx-4 mt-3 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">{reading.slice(0, 6).map(r => (
-          <Link key={r.id} href={`/materi/${r.id}`} className="card group flex w-[85%] shrink-0 snap-start items-center justify-between gap-4 p-4 sm:w-96">
+          <Link key={r.id} href={`/materi/${r.id}`} className="card group flex w-[85%] shrink-0 snap-start items-center justify-between gap-4 p-3.5 sm:w-96 sm:p-4">
             <span className="min-w-0"><span className="block truncate font-semibold text-emerald-deep group-hover:underline">{r.title}</span>{r.scholar && <span className="text-sm text-muted">{r.scholar}</span>}</span>
             <span className="flex shrink-0 items-center gap-2 text-xs text-muted">{new Date(r.at).toLocaleDateString("id-ID", {day:"numeric",month:"short"})}<IconChevronRight className="h-4 w-4 text-emerald" /></span>
           </Link>
@@ -145,16 +147,16 @@ export default function HomePage() {
             <h2 id="bab-heading" className="section-heading">Bab pembahasan</h2>
             <Link href="/topik" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-emerald underline-offset-4 hover:underline">Semua topik <IconChevronRight className="h-4 w-4" /></Link>
           </div>
-          <p className="mt-1.5 text-sm text-muted">Geser untuk menjelajahi bab — ketuk satu bab untuk melihat topik di dalamnya.</p>
+          <p className="mt-1.5 text-[13px] text-muted sm:text-sm">Geser untuk menjelajahi bab — ketuk satu bab untuk melihat topik di dalamnya.</p>
           {babGroups.length === 0 ? <div className="mt-4"><EmptyState title="Bab belum tersedia" body="Daftar bab akan tampil setelah tersedia dari server." /></div> : (
             <div className="-mx-4 mt-4 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">
               {babGroups.map(g => (
                 <Link key={g.prefix} href={`/topik#${g.prefix}`} className="group w-52 shrink-0 snap-start overflow-hidden rounded-3xl border border-line bg-white shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
                   <div className="relative">
-                    <TopicCover image={imageForTopic(g.topics[0])} className="h-28 w-full" />
+                    <TopicCover image={imageForTopic(g.topics[0])} className="h-24 w-full sm:h-28" />
                     {g.name_ar ? <span dir="rtl" lang="ar" className="font-arabic pointer-events-none absolute bottom-2 right-3 text-lg leading-none text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">{g.name_ar}</span> : null}
                   </div>
-                  <div className="flex items-center justify-between gap-2 p-3.5">
+                  <div className="flex items-center justify-between gap-2 p-3 sm:p-3.5">
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-bold text-emerald-deep">{g.name_id}</span>
                       <span className="text-[11px] font-medium uppercase tracking-wide text-muted">{g.topics.length} topik</span>

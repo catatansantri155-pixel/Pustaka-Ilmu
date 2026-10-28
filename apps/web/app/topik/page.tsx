@@ -37,12 +37,12 @@ export default function TopikPage() {
   const groups = groupTopicsByBab(topics);
 
   return (
-    <div className="space-y-9">
+    <div className="space-y-7 sm:space-y-9">
       <header>
         <h1 className="flex items-center gap-2.5 text-xl font-extrabold text-emerald-deep">
           <IconLayers className="h-6 w-6 text-emerald" /> Topik pembahasan
         </h1>
-        <p className="mt-2 text-sm leading-relaxed text-muted">Semua topik tergrup menurut babnya — pilih satu topik untuk melihat fatwa di dalamnya.</p>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted sm:text-sm">Semua topik tergrup menurut babnya — pilih satu topik untuk melihat fatwa di dalamnya.</p>
       </header>
       {error ? <ErrorState message={error} onRetry={load} /> : loading ? <LoadingState label="Memuat topik…" /> : topics.length === 0 ? (
         <EmptyState title="Topik belum tersedia" body="Daftar topik akan tampil setelah tersedia dari server." />
@@ -53,14 +53,14 @@ export default function TopikPage() {
             {g.name_ar ? <span dir="rtl" lang="ar" className="font-arabic text-lg font-medium text-emerald">{g.name_ar}</span> : null}
             <span className="text-xs font-medium text-muted">{g.topics.length} topik</span>
           </h2>
-          <div className="mt-4 grid grid-cols-2 gap-3.5 sm:gap-4 lg:grid-cols-3">
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-3">
             {g.topics.map(t => (
               <Link key={t.id} href={`/cari?topic_id=${encodeURIComponent(t.id)}`} className="cv-topic group overflow-hidden rounded-3xl border border-line bg-white shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
                 <div className="relative">
-                  <TopicCover image={imageForTopic(t)} className="h-24 w-full sm:h-28" />
+                  <TopicCover image={imageForTopic(t)} className="h-20 w-full sm:h-28" />
                   <span dir="rtl" lang="ar" className="font-arabic pointer-events-none absolute bottom-2 right-3 text-lg leading-none text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">{topicArabic(t)}</span>
                 </div>
-                <div className="flex items-center justify-between gap-2 p-3.5">
+                <div className="flex items-center justify-between gap-2 p-3 sm:p-3.5">
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-bold text-emerald-deep">{topicName(t)}</span>
                     {t.code ? <span className="text-[11px] font-medium uppercase tracking-wide text-muted">{t.code}</span> : null}
