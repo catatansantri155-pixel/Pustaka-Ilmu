@@ -4,12 +4,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { GlossaryItem, MaterialDetail } from "@pustaka/shared-types";
 import { ApiError, api, materialTitle, recordLocalReading, scholarName, topicName } from "@/lib/api";
+import { babNameOfPrefix, babPrefixOf } from "@/lib/babs";
 import { toggleLocalBookmark, useIsBookmarked } from "@/lib/bookmarks";
 import { getToken } from "@/lib/auth";
 import { EmptyState, ErrorState, LoadingState, severityClass } from "@/components/ui";
 import TopicCover from "@/components/TopicCover";
 import { imageForMaterial } from "@/lib/topicImages";
-import { IconArrowLeft, IconBookmark, IconFlag, IconShare, IconType } from "@/components/icons";
+import { IconArrowLeft, IconBookmark, IconExternal, IconFlag, IconGrid, IconLayers, IconShare, IconUsers } from "@/components/icons";
 
 type DisplayMode = "gabung" | "arab" | "indo";
 type ReadMode = "pemula" | "mendalam";
@@ -112,6 +113,15 @@ export default function MaterialPage() {
   const arSize = `${FONT_STEPS_AR[fontAr]}rem`;
   const idSize = `${FONT_STEPS_ID[fontId]}rem`;
   const hero = imageForMaterial(m);
+  // Chip meta ala layar detail referensi (PR arah desain tahap 1): bab
+  // diturunkan dari awalan kode topik utama, sumber ditampilkan sebagai
+  // nama host tautan aslinya. Semua dari data materi yang sudah dimuat.
+  const primaryTopic = m.topics?.[0];
+  const babPrefix = primaryTopic ? babPrefixOf(primaryTopic.code) : null;
+  const babName = babPrefix ? babNameOfPrefix(babPrefix) : null;
+  const scholarLabel = scholarName(m.scholar) || m.scholar_name || "";
+  let sourceHost = "";
+  try { sourceHost = m.source_url ? new URL(m.source_url).hostname.replace(/^www\./, "") : ""; } catch { sourceHost = ""; }
 
   return (
     <article className="space-y-7">
@@ -135,6 +145,21 @@ export default function MaterialPage() {
         {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-2 text-right text-xl text-ink">{m.title_ar}</p> : null}
         <p className="mt-2 text-sm text-muted">{m.scholar ? <Link className="font-semibold text-emerald underline" href={`/pustaka/${m.scholar.id}`}>{scholarName(m.scholar)}</Link> : m.scholar_name || ""}</p>
         {m.ai_label ? <p className="mt-3 inline-block rounded-2xl border border-gold/50 bg-gold/10 px-4 py-2 text-xs font-semibold leading-relaxed text-emerald-deep">{m.ai_label}</p> : null}
+        {/* Deretan chip meta berikon (PR arah desain tahap 1, 28 Okt 2026):
+            padanan deretan info pada layar detail referensi — Bab · Topik ·
+            Ulama · Sumber — memakai kelas .chip yang sama dengan chip topik
+            di atas dan chip Daftar Isi, jadi ukurannya seragam dan terbebas
+            dari aturan target sentuh 44px shell. */}
+        {(babName || scholarLabel || m.source_url) ? (
+          <div className="mt-4 flex flex-wrap gap-2" aria-label="Rincian materi">
+            {babName && babPrefix ? <Link href={`/topik#${babPrefix}`} className="chip border-emerald/20 bg-white text-emerald-deep transition hover:border-emerald/40"><IconLayers className="h-3.5 w-3.5 text-emerald" /> Bab · {babName}</Link> : null}
+            {primaryTopic ? <span className="chip border-emerald/20 bg-white text-emerald-deep"><IconGrid className="h-3.5 w-3.5 text-emerald" /> Topik · {topicName(primaryTopic)}</span> : null}
+            {scholarLabel ? (m.scholar?.id
+              ? <Link href={`/pustaka/${m.scholar.id}`} className="chip border-emerald/20 bg-white text-emerald-deep transition hover:border-emerald/40"><IconUsers className="h-3.5 w-3.5 text-emerald" /> Ulama · {scholarLabel}</Link>
+              : <span className="chip border-emerald/20 bg-white text-emerald-deep"><IconUsers className="h-3.5 w-3.5 text-emerald" /> Ulama · {scholarLabel}</span>) : null}
+            {m.source_url ? <a href={m.source_url} target="_blank" rel="noreferrer" className="chip border-emerald/20 bg-white text-emerald-deep transition hover:border-emerald/40"><IconExternal className="h-3.5 w-3.5 text-emerald" /> Sumber · {sourceHost || "asli"}</a> : null}
+          </div>
+        ) : null}
       </header>
 
       {/* Panel kontrol pembaca — ukuran disamakan PERSIS dengan chip Daftar Isi
@@ -142,7 +167,12 @@ export default function MaterialPage() {
           kelas .chip yang sama dengan chip "Bagian N" (inline-flex, rounded-full,
           border, px-2.5 py-1, text-xs) + override warna/font daftar isi; keadaan
           aktif memakai isian emerald seperti pola chip glosarium di berkas ini.
-          Hanya ukuran & bentuk yang disamakan — fungsi setiap kontrol tidak berubah. */}
+          Hanya ukuran & bentuk yang disamakan — fungsi setiap kontrol tidak berubah.
+          PR arah desain tahap 1 (28 Okt 2026): kontrol ukuran font (Arab &
+          Latin), Simpan, dan Bagikan PINDAH dari panel ini ke bilah aksi
+          bawah yang melekat di akhir artikel — selalu terjangkau jempol saat
+          membaca panjang, tanpa duplikasi. Panel ini menyisakan pilihan
+          tampilan bahasa, mode membaca, dan tombol laporan. */}
       <div className="card flex flex-wrap items-center gap-x-2.5 gap-y-2 p-3">
         <div className="flex flex-wrap gap-1" role="group" aria-label="Tampilan bahasa">
           {([["gabung", "Arab + Indonesia"], ["arab", "Arab saja"], ["indo", "Indonesia saja"]] as Array<[DisplayMode, string]>).map(([v, label]) => (
@@ -153,18 +183,6 @@ export default function MaterialPage() {
           <button aria-pressed={mode === "pemula"} onClick={() => { setMode("pemula"); savePref("pustaka:reader:mode", "pemula"); }} className={`chip font-semibold ${mode === "pemula" ? "border-emerald bg-emerald text-white" : "border-emerald/25 bg-white text-emerald"}`}>Pemula</button>
           <button aria-pressed={mode === "mendalam"} onClick={() => { setMode("mendalam"); savePref("pustaka:reader:mode", "mendalam"); }} className={`chip font-semibold ${mode === "mendalam" ? "border-emerald bg-emerald text-white" : "border-emerald/25 bg-white text-emerald"}`}>Mendalam</button>
         </div>
-        <div className="flex items-center gap-1" aria-label="Ukuran font Arab">
-          <span className="flex items-center gap-1.5 text-xs text-muted"><IconType className="h-3.5 w-3.5" /> Arab</span>
-          <button className="chip border-emerald/25 bg-white font-semibold text-emerald" aria-label="Perkecil font Arab" onClick={() => { const v = Math.max(0, fontAr - 1); setFontAr(v); savePref("pustaka:reader:fontAr", v); }}>A−</button>
-          <button className="chip border-emerald/25 bg-white font-semibold text-emerald" aria-label="Perbesar font Arab" onClick={() => { const v = Math.min(3, fontAr + 1); setFontAr(v); savePref("pustaka:reader:fontAr", v); }}>A+</button>
-        </div>
-        <div className="flex items-center gap-1" aria-label="Ukuran font Indonesia">
-          <span className="flex items-center gap-1.5 text-xs text-muted"><IconType className="h-3.5 w-3.5" /> Latin</span>
-          <button className="chip border-emerald/25 bg-white font-semibold text-emerald" aria-label="Perkecil font Indonesia" onClick={() => { const v = Math.max(0, fontId - 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A−</button>
-          <button className="chip border-emerald/25 bg-white font-semibold text-emerald" aria-label="Perbesar font Indonesia" onClick={() => { const v = Math.min(3, fontId + 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A+</button>
-        </div>
-        <button className={`chip font-semibold ${saved ? "border-emerald bg-emerald text-white" : "border-emerald/25 bg-white text-emerald"}`} aria-pressed={saved} onClick={bookmark}><IconBookmark className="h-3.5 w-3.5" fill={saved ? "currentColor" : "none"} /> {saved ? "Tersimpan" : "Simpan materi"}</button>
-        <button className="chip border-emerald/25 bg-white font-semibold text-emerald" onClick={share}><IconShare className="h-3.5 w-3.5" /> Bagikan</button>
         <button className="chip border-emerald/25 bg-white font-semibold text-emerald" aria-expanded={reportOpen} aria-controls="correction-form" onClick={() => setReportOpen((v) => !v)}><IconFlag className="h-3.5 w-3.5" /> Laporkan kesalahan terjemahan</button>
       </div>
       {notice ? <div role="status" className="rounded-lg border border-emerald/20 bg-emerald/5 px-4 py-3 text-sm text-emerald-deep">{notice}</div> : null}
@@ -268,6 +286,45 @@ export default function MaterialPage() {
         {m.source_url ? <p className="mt-1 break-all">Sumber asli: <a className="text-emerald underline" href={m.source_url} target="_blank" rel="noreferrer">{m.source_url}</a></p> : <p className="mt-1">Tautan sumber asli tidak disediakan API untuk materi ini.</p>}
         {m.translation?.status ? <p className="mt-1">Status terjemahan: {m.translation.status}</p> : null}
       </footer>
+
+      {/* Bilah aksi baca yang melekat (PR arah desain tahap 1, 28 Okt 2026 —
+          padanan bilah aksi bawah layar detail referensi): Simpan, Bagikan,
+          dan kedua stepper ukuran teks PINDAH ke sini dari panel kontrol
+          (tanpa duplikasi) agar selalu terjangkau jempol saat membaca
+          panjang. Pola sticky-di-akhir-artikel: selama membaca ia melayang
+          tepat di atas navigasi bawah (offset 5.25rem = tepi atas pil nav
+          ±74px + jarak), dan saat pembaca mencapai akhir artikel ia berlabuh
+          sebagai elemen biasa sesudah kartu sumber — jadi tidak pernah
+          menutupi isi; bantalan bawah <main> (pb-32) tetap memberi ruang
+          dari pil navigasi. Di desktop (nav bawah hilang) offset-nya 1.5rem.
+          Tombol Simpan/Bagikan berbentuk pil ikon 44px (aturan target sentuh
+          shell); stepper memakai .bar-step (lebar dirampingkan di
+          globals.css, tinggi tetap 44px) dengan keterangan aksara ع untuk
+          Arab dan A untuk Latin. Gulir-menyamping hanya jaring pengaman di
+          layar sangat sempit. */}
+      <div className="sticky bottom-[5.25rem] z-30 mx-auto flex w-full items-center justify-between gap-2 overflow-x-auto rounded-full border border-white/60 bg-white/85 px-2.5 py-1.5 shadow-pill backdrop-blur-md lg:bottom-6" role="toolbar" aria-label="Aksi membaca">
+        <div className="flex shrink-0 items-center gap-1.5">
+          <button type="button" onClick={bookmark} aria-pressed={saved} aria-label={saved ? "Hapus dari Tersimpan" : "Simpan materi"} title={saved ? "Tersimpan" : "Simpan materi"} className={`flex h-11 w-11 items-center justify-center rounded-full transition ${saved ? "bg-emerald text-white shadow-soft" : "text-emerald-deep hover:bg-surface"}`}>
+            <IconBookmark className="h-5 w-5" fill={saved ? "currentColor" : "none"} />
+          </button>
+          <button type="button" onClick={share} aria-label="Bagikan materi" title="Bagikan" className="flex h-11 w-11 items-center justify-center rounded-full text-emerald-deep transition hover:bg-surface">
+            <IconShare className="h-5 w-5" />
+          </button>
+        </div>
+        <div className="flex shrink-0 items-center gap-2.5">
+          <div className="flex items-center gap-1" role="group" aria-label="Ukuran font Arab">
+            <span className="font-arabic select-none text-lg leading-none text-emerald" aria-hidden>ع</span>
+            <button type="button" className="bar-step flex items-center justify-center rounded-full px-2 text-sm font-bold text-emerald-deep transition hover:bg-surface" aria-label="Perkecil font Arab" onClick={() => { const v = Math.max(0, fontAr - 1); setFontAr(v); savePref("pustaka:reader:fontAr", v); }}>A−</button>
+            <button type="button" className="bar-step flex items-center justify-center rounded-full px-2 text-sm font-bold text-emerald-deep transition hover:bg-surface" aria-label="Perbesar font Arab" onClick={() => { const v = Math.min(3, fontAr + 1); setFontAr(v); savePref("pustaka:reader:fontAr", v); }}>A+</button>
+          </div>
+          <span className="h-6 w-px bg-line" aria-hidden />
+          <div className="flex items-center gap-1" role="group" aria-label="Ukuran font Indonesia">
+            <span className="select-none text-sm font-extrabold leading-none text-emerald" aria-hidden>A</span>
+            <button type="button" className="bar-step flex items-center justify-center rounded-full px-2 text-sm font-bold text-emerald-deep transition hover:bg-surface" aria-label="Perkecil font Indonesia" onClick={() => { const v = Math.max(0, fontId - 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A−</button>
+            <button type="button" className="bar-step flex items-center justify-center rounded-full px-2 text-sm font-bold text-emerald-deep transition hover:bg-surface" aria-label="Perbesar font Indonesia" onClick={() => { const v = Math.min(3, fontId + 1); setFontId(v); savePref("pustaka:reader:fontId", v); }}>A+</button>
+          </div>
+        </div>
+      </div>
     </article>
   );
 }

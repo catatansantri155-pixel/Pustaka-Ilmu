@@ -57,27 +57,36 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
     </div>
   );
 }
-export function MaterialCard({ m }: { m: MaterialSummary }) {
+export function MaterialCard({ m, uniform = false }: { m: MaterialSummary; uniform?: boolean }) {
   const img = imageForMaterial(m);
   return (
     // PR #12: .cv-material menunda render kartu yang jauh di luar layar
     // (content-visibility) supaya daftar panjang ringan digulir.
-    <div className="cv-material relative min-w-0">
-    <Link href={`/materi/${m.id}`} className="catalog-entry group w-full">
-      <div className="flex min-w-0 gap-4 p-3.5 sm:gap-5 sm:p-4">
+    // Varian `uniform` (PR arah desain tahap 1, tambahan permintaan user
+    // 28 Okt 2026 — HANYA dipakai deretan "Materi terbaru" di Beranda):
+    // kartu diratakan tingginya dalam deretan lewat rantai h-full +
+    // kolom teks flex-col; judul dibatasi line-clamp-2 dengan ruang dua
+    // baris yang dicadangkan (min-h) agar awal ringkasan sejajar; baris
+    // label dipatok satu baris; baris meta bawah menempel di dasar kolom
+    // (mt-auto) agar posisi panah/meta rata antar kartu. Pemakai lain
+    // (Cari, halaman ulama, persoalan) tidak meneruskan prop ini dan
+    // tampil persis seperti sebelumnya.
+    <div className={`cv-material relative min-w-0 ${uniform ? "h-full" : ""}`}>
+    <Link href={`/materi/${m.id}`} className={`catalog-entry group w-full ${uniform ? "h-full" : ""}`}>
+      <div className={`flex min-w-0 gap-4 p-3.5 sm:gap-5 sm:p-4 ${uniform ? "h-full" : ""}`}>
         <TopicCover image={img} className="h-24 w-24 shrink-0 rounded-2xl sm:h-28 sm:w-36" />
-        <div className="min-w-0 flex-1 py-0.5">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <div className={uniform ? "flex min-w-0 flex-1 flex-col py-0.5" : "min-w-0 flex-1 py-0.5"}>
+          <div className={uniform ? "flex h-5 flex-nowrap items-center gap-x-2 overflow-hidden" : "flex flex-wrap items-center gap-x-2 gap-y-1"}>
             {m.topics?.slice(0, 2).map((t) => (
-              <span key={t.id} className="text-[11px] font-semibold uppercase tracking-wide text-emerald">{topicName(t)}</span>
+              <span key={t.id} className={`${uniform ? "whitespace-nowrap " : ""}text-[11px] font-semibold uppercase tracking-wide text-emerald`}>{topicName(t)}</span>
             ))}
-            {m.content_type ? <span className="text-[11px] font-medium uppercase tracking-wide text-muted">{m.content_type}</span> : null}
+            {m.content_type ? <span className={`${uniform ? "whitespace-nowrap " : ""}text-[11px] font-medium uppercase tracking-wide text-muted`}>{m.content_type}</span> : null}
             {m.is_demo ? <span className="chip border-amber-300 bg-amber-50 text-amber-800">Demo</span> : null}
           </div>
-          <h3 className="mt-1.5 text-base font-bold leading-snug text-emerald-deep">{materialTitle(m)}</h3>
+          <h3 className={`mt-1.5 text-base font-bold leading-snug text-emerald-deep ${uniform ? "line-clamp-2 min-h-[2.75rem]" : ""}`}>{materialTitle(m)}</h3>
           {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 truncate text-right text-base text-stone-700">{m.title_ar}</p> : null}
           {m.summary ? <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-stone-600">{m.summary}</p> : null}
-          <p className="mt-2.5 flex min-w-0 items-center gap-1 text-xs font-medium text-stone-500">
+          <p className={`${uniform ? "mt-auto pt-2.5" : "mt-2.5"} flex min-w-0 items-center gap-1 text-xs font-medium text-stone-500`}>
             <span className="min-w-0 truncate">{scholarName(m.scholar) || m.scholar_name || ""}{m.ai_label ? ` · ${m.ai_label}` : ""}</span>
             <IconChevronRight className="ml-auto h-4 w-4 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
           </p>
