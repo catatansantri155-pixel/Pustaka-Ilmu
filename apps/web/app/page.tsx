@@ -7,9 +7,20 @@ import { api, apiFetch, getLocalReading, type LocalReadingEntry } from "@/lib/ap
 import { EmptyState, ErrorState, LoadingState, MaterialCard } from "@/components/ui";
 import TopicCover from "@/components/TopicCover";
 import HeroSlideshow from "@/components/HeroSlideshow";
+import DailyBanner from "@/components/DailyBanner";
 import { imageForTopic } from "@/lib/topicImages";
 import { groupTopicsByBab } from "@/lib/babs";
 import { IconArrowRight, IconChevronRight, IconClock, IconSearch } from "@/components/icons";
+
+/** Cuplikan cakupan per bab untuk kartu deretan "Koleksi awal" (PR #14). */
+const BAB_DESC: Record<string, string> = {
+  THA: "Pembahasan bersuci: air, wudu, mandi wajib, tayamum, dan najis — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+  SHL: "Pembahasan shalat: syarat dan rukun, waktu-waktu shalat, shalat berjamaah, dan hal yang membatalkannya — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+  JNZ: "Pembahasan jenazah: memandikan, menyalati, menguburkan, takziah, dan ziarah kubur — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+  ZAK: "Pembahasan zakat: harta yang wajib dizakati, nisab, dan cara menunaikannya — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+  SWM: "Pembahasan puasa: syarat dan pembatalnya, kafarat, dan puasa-puasa sunah — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+  HAJ: "Pembahasan haji dan umrah: manasik, larangan ihram, dan penyembelihan dam — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+};
 
 export default function HomePage() {
   const router = useRouter();
@@ -23,14 +34,17 @@ export default function HomePage() {
     setLoading(true); setError(null);
     try {
       const [t, m] = await Promise.all([
-        api.topics(), apiFetch<{items:MaterialSummary[]}>("/api/catalog/materials?limit=6", {auth:false}),
+        // PR #14: limit dinaikkan pada panggilan yang SAMA (bukan panggilan
+        // baru) supaya banner harian punya kolam materi lintas topik yang
+        // cukup untuk berganti tiap hari; "Materi terbaru" tetap menampilkan
+        // 6 pertama dari daftar ini.
+        api.topics(), apiFetch<{items:MaterialSummary[]}>("/api/catalog/materials?limit=48", {auth:false}),
       ]);
       setTopics(t); setMaterials(m.items);
     } catch (e) { setError(e instanceof Error ? e.message : "Gagal memuat pustaka."); }
     finally { setLoading(false); }
   }, []);
   useEffect(() => { load(); setReading(getLocalReading()); }, [load]);
-  const thaharah = topics.find(t => /thaharah|taharah|طهارة/i.test(`${t.name_id} ${t.name_ar} ${t.code}`));
   const babGroups = groupTopicsByBab(topics);
 
   return (
@@ -65,25 +79,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Satu blok koleksi: Thaharah */}
-      <section className="card overflow-hidden" aria-labelledby="collection-heading">
-        <div className="grid sm:grid-cols-[1fr_1.2fr]">
-          <TopicCover image={imageForTopic(thaharah || topics[3] || null)} className="h-36 w-full sm:h-full sm:min-h-44" />
-          <div className="p-5 sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-emerald">Koleksi awal</p>
-            <h2 id="collection-heading" className="mt-1.5 text-xl font-extrabold text-emerald-deep">Thaharah <span dir="rtl" lang="ar" className="font-arabic ml-1 text-xl font-medium text-emerald">الطهارة</span></h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted">Pembahasan bersuci: air, wudu, mandi wajib, tayamum, dan najis — dari fatwa para ulama dengan teks Arab dan sumbernya.</p>
-            <Link href={thaharah ? `/cari?topic_id=${encodeURIComponent(thaharah.id)}` : "/cari"} className="btn-primary mt-4">
-              Baca materi Thaharah <IconArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+      {/* PR #14 (28 Okt 2026): "Koleksi awal" kini deretan geser ke samping
+          berisi kartu koleksi per bab (mengikuti data bab dari API lewat
+          lib/babs.ts — bab baru muncul otomatis). Tiap kartu menaut ke grup
+          bab itu di halaman /topik. */}
+      {babGroups.length > 0 && <section aria-labelledby="collection-heading">
+        <h2 id="collection-heading" className="section-heading">Koleksi awal</h2>
+        <p className="mt-1.5 text-sm text-muted">Geser untuk menjelajahi koleksi per bab — ketuk satu koleksi untuk mulai membaca.</p>
+        <div className="-mx-4 mt-4 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">
+          {babGroups.map(g => (
+            <article key={g.prefix} className="card w-[85%] shrink-0 snap-start overflow-hidden sm:w-[26rem]">
+              <TopicCover image={imageForTopic(g.topics[0])} className="h-36 w-full" />
+              <div className="p-5">
+                <h3 className="text-xl font-extrabold text-emerald-deep">{g.name_id}{g.name_ar ? <span dir="rtl" lang="ar" className="font-arabic ml-1.5 text-xl font-medium text-emerald">{g.name_ar}</span> : null}</h3>
+                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">{BAB_DESC[g.prefix] || `Pembahasan ${g.name_id} — dari fatwa para ulama dengan teks Arab, terjemahan Indonesia, dan sumbernya.`}</p>
+                <Link href={`/topik#${g.prefix}`} className="btn-primary mt-4">
+                  Baca materi {g.name_id} <IconArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </article>
+          ))}
         </div>
-      </section>
+      </section>}
 
+      {/* PR #14: "Lanjutkan membaca" kini deretan geser ke samping (pola
+          snap-scroll yang sama dengan deretan bab PR #11). */}
       {reading.length > 0 && <section aria-labelledby="continue-heading">
         <h2 id="continue-heading" className="section-heading flex items-center gap-2"><IconClock className="h-5 w-5 text-emerald" /> Lanjutkan membaca</h2>
-        <div className="mt-3 space-y-2.5">{reading.slice(0, 3).map(r => (
-          <Link key={r.id} href={`/materi/${r.id}`} className="card group flex items-center justify-between gap-4 p-4">
+        <div className="-mx-4 mt-3 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">{reading.slice(0, 6).map(r => (
+          <Link key={r.id} href={`/materi/${r.id}`} className="card group flex w-[85%] shrink-0 snap-start items-center justify-between gap-4 p-4 sm:w-96">
             <span className="min-w-0"><span className="block truncate font-semibold text-emerald-deep group-hover:underline">{r.title}</span>{r.scholar && <span className="text-sm text-muted">{r.scholar}</span>}</span>
             <span className="flex shrink-0 items-center gap-2 text-xs text-muted">{new Date(r.at).toLocaleDateString("id-ID", {day:"numeric",month:"short"})}<IconChevronRight className="h-4 w-4 text-emerald" /></span>
           </Link>
@@ -91,12 +115,19 @@ export default function HomePage() {
       </section>}
 
       {error ? <ErrorState message={error} onRetry={load} /> : loading ? <LoadingState label="Memuat materi dan topik…" /> : <>
+        {/* PR #14: banner slideshow harian di antara "Lanjutkan membaca"
+            dan "Materi terbaru" — slide berganti tiap hari (lihat
+            components/DailyBanner.tsx). Tidak tampil bila daftar materi
+            kosong. */}
+        <DailyBanner materials={materials} topics={topics} />
+
+        {/* PR #14: "Materi terbaru" kini deretan geser ke samping juga. */}
         <section aria-labelledby="latest-heading">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 id="latest-heading" className="section-heading">Materi terbaru</h2>
             <Link href="/cari" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-emerald underline-offset-4 hover:underline">Lihat semua materi <IconChevronRight className="h-4 w-4" /></Link>
           </div>
-          {materials.length === 0 ? <EmptyState title="Belum ada materi terbit" body="Materi akan tersedia setelah diterbitkan oleh admin. Kamu dapat mencoba kembali nanti." /> : <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">{materials.map(m => <MaterialCard key={m.id} m={m} />)}</div>}
+          {materials.length === 0 ? <EmptyState title="Belum ada materi terbit" body="Materi akan tersedia setelah diterbitkan oleh admin. Kamu dapat mencoba kembali nanti." /> : <div className="-mx-4 mt-4 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">{materials.slice(0, 6).map(m => <div key={m.id} className="w-[88%] min-w-0 shrink-0 snap-start sm:w-[30rem]"><MaterialCard m={m} /></div>)}</div>}
         </section>
 
         {/* PR #11 (27 Okt 2026): seksi grid "Topik pembahasan" dan daftar
