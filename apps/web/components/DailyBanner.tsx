@@ -142,7 +142,9 @@ export default function DailyBanner({ materials, topics }: { materials: Material
   return (
     <section ref={rootRef} aria-labelledby="daily-heading" aria-roledescription="carousel" aria-label="Pembahasan pilihan hari ini">
       <h2 id="daily-heading" className="section-heading">Pembahasan pilihan hari ini</h2>
-      <div className="relative mt-4 h-[22rem] overflow-hidden rounded-[2rem] bg-emerald-deep shadow-lift sm:h-80">
+      {/* PR mobile-compact: tinggi banner di ponsel 22rem→18rem dan radius
+          2rem→1.5rem; sm: ke atas persis seperti sebelumnya. */}
+      <div className="relative mt-3 h-72 overflow-hidden rounded-3xl bg-emerald-deep shadow-lift sm:mt-4 sm:h-80 sm:rounded-[2rem]">
         {slides.map((s, i) => {
           const isActive = i === active;
           const label = [s.babLabel, s.topicLabel].filter(Boolean).join(" · ");
@@ -154,12 +156,12 @@ export default function DailyBanner({ materials, topics }: { materials: Material
             >
               <TopicCover image={s.img} eager={i === 0} className="absolute inset-0 h-full w-full" />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-emerald-deep/90 via-emerald-deep/35 to-emerald-deep/10" aria-hidden />
-              <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
+              <div className="absolute inset-x-0 bottom-0 p-4 sm:p-7">
                 {label ? (
                   <p className="inline-block max-w-full truncate rounded-full bg-emerald-deep/55 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold backdrop-blur-sm">{label}</p>
                 ) : null}
-                <h3 className="mt-2 line-clamp-2 max-w-xl text-xl font-extrabold leading-snug text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-2xl">{materialTitle(s.m)}</h3>
-                {s.excerpt ? <p className="mt-1.5 line-clamp-2 max-w-prose text-sm leading-relaxed text-white/85">{s.excerpt}</p> : null}
+                <h3 className="mt-2 line-clamp-2 max-w-xl text-lg font-extrabold leading-snug text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-2xl">{materialTitle(s.m)}</h3>
+                {s.excerpt ? <p className="mt-1.5 line-clamp-2 max-w-prose text-[13px] leading-relaxed text-white/85 sm:text-sm">{s.excerpt}</p> : null}
                 <Link
                   href={`/materi/${s.m.id}`}
                   tabIndex={isActive ? 0 : -1}

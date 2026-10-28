@@ -142,3 +142,15 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .cv-material { content-visibility: auto; contain-intrinsic-size: auto 9rem; }
 .cv-topic { content-visibility: auto; contain-intrinsic-size: auto 13rem; }
 .cv-scholar { content-visibility: auto; contain-intrinsic-size: auto 6.5rem; }
+
+/* Kekecilan ponsel (PR mobile-compact, masukan user 28 Okt 2026): di ponsel
+   kartu/teks/gambar terasa serba membengkak. Pengecilan HANYA di bawah
+   breakpoint sm dan HANYA di dalam .reader-shell (permukaan publik —
+   ReaderShell tidak membungkus /admin, jadi halaman admin tidak berubah).
+   Tombol CTA dirampingkan secara horizontal + ukuran hurufnya di ponsel;
+   tinggi minimum 44px dari kelas .btn-* sendiri TIDAK disentuh, jadi
+   target sentuh tetap ≥44px. Ukuran sm: ke atas persis seperti sebelumnya. */
+@media (max-width: 639.98px) {
+  .reader-shell .btn-primary, .reader-shell .btn-gold { padding-left: 1rem; padding-right: 1rem; font-size: 0.8125rem; }
+  .reader-shell .btn-outline { padding-left: 0.875rem; padding-right: 0.875rem; font-size: 0.8125rem; }
+}
