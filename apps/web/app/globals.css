@@ -71,6 +71,14 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+/* Pengaman splash (PR splash+onboarding): lapisan splash normalnya dihapus
+   React pada ±1,6 detik, tetapi andaikata JS gagal berjalan, animasi CSS
+   murni ini memudarkannya pada 3 detik supaya pengguna TIDAK PERNAH terjebak
+   di layar pembuka. Di bawah prefers-reduced-motion aturan global di atas
+   mematikan animasi ini — di sana jalur React yang dipersingkat (±0,45
+   detik) yang menghapusnya. */
+@keyframes app-splash-failsafe { to { opacity: 0; visibility: hidden; } }
+.splash-failsafe { animation: app-splash-failsafe 0.6s ease 3s forwards; }
 /* Teks Arab: Noto Naskh Arabic, line-height lebih lapang daripada Latin (BAGIAN 4.3) */
 .font-arabic { font-family: 'Noto Naskh Arabic', 'Amiri', serif; line-height: 2.1; }
 
