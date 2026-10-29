@@ -17,8 +17,8 @@ const BAB_DESC: Record<string, string> = {
   THA: "Pembahasan bersuci: air, wudu, mandi wajib, tayamum, dan najis — dari fatwa para ulama dengan teks Arab dan sumbernya.",
   SHL: "Pembahasan shalat: syarat dan rukun, waktu-waktu shalat, shalat berjamaah, dan hal yang membatalkannya — dari fatwa para ulama dengan teks Arab dan sumbernya.",
   JNZ: "Pembahasan jenazah: memandikan, menyalati, menguburkan, takziah, dan ziarah kubur — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-  ZAK: "Pembahasan zakat: harta yang wajib dizakati, nisab, dan cara menunaikannya — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-  SWM: "Pembahasan puasa: syarat dan pembatalnya, kafarat, dan puasa-puasa sunah — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+  ZKT: "Pembahasan zakat: harta yang wajib dizakati, nisab, dan cara menunaikannya — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+  PUA: "Pembahasan puasa: syarat dan pembatalnya, kafarat, dan puasa-puasa sunah — dari fatwa para ulama dengan teks Arab dan sumbernya.",
   HAJ: "Pembahasan haji dan umrah: manasik, larangan ihram, dan penyembelihan dam — dari fatwa para ulama dengan teks Arab dan sumbernya.",
 };
 
