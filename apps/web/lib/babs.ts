@@ -18,13 +18,13 @@ const BAB_INFO: Record<string, { name_id: string; name_ar: string }> = {
   THA: { name_id: "Thaharah", name_ar: "الطهارة" },
   SHL: { name_id: "Shalat", name_ar: "الصلاة" },
   JNZ: { name_id: "Jenazah", name_ar: "الجنائز" },
-  ZAK: { name_id: "Zakat", name_ar: "الزكاة" },
-  SWM: { name_id: "Puasa", name_ar: "الصوم" },
+  ZKT: { name_id: "Zakat", name_ar: "الزكاة" },
+  PUA: { name_id: "Puasa", name_ar: "الصيام" },
   HAJ: { name_id: "Haji & Umrah", name_ar: "الحج والعمرة" },
 };
 
 /** Urutan tampil bab yang dikenal; awalan lain menyusul alfabetis. */
-const BAB_ORDER = ["THA", "SHL", "JNZ", "ZAK", "SWM", "HAJ"];
+const BAB_ORDER = ["THA", "SHL", "JNZ", "ZKT", "PUA", "HAJ"];
 
 export function babPrefixOf(code?: string | null): string {
   const m = /^([A-Za-z]+)/.exec(code || "");
