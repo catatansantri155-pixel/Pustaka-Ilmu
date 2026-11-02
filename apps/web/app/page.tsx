@@ -8,6 +8,7 @@ import { EmptyState, ErrorState, LoadingState, MaterialCard } from "@/components
 import TopicCover from "@/components/TopicCover";
 import HeroSlideshow from "@/components/HeroSlideshow";
 import DailyBanner from "@/components/DailyBanner";
+import KontemporerSection from "@/components/KontemporerSection";
 import { imageForTopic } from "@/lib/topicImages";
 import { groupTopicsByBab } from "@/lib/babs";
 import { IconArrowRight, IconChevronRight, IconClock, IconSearch } from "@/components/icons";
@@ -173,6 +174,13 @@ export default function HomePage() {
             </div>
           )}
         </section>
+
+        {/* Bagian "Fikih Kontemporer" (arahan user 29 Okt 2026: di BAWAH
+            daftar bab; dibangun 2 Nov 2026 setelah jilid Muamalah tuntas
+            terbit 1.000/1.000). Mengelompokkan materi Bin Baz yang sudah
+            terbit per tema transaksi masa kini — lihat
+            components/KontemporerSection.tsx dan lib/kontemporer.ts. */}
+        <KontemporerSection topics={topics} />
       </>}
     </div>
   );
