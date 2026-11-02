@@ -20,6 +20,8 @@ const BAB_DESC: Record<string, string> = {
   ZKT: "Pembahasan zakat: harta yang wajib dizakati, nisab, dan cara menunaikannya — dari fatwa para ulama dengan teks Arab dan sumbernya.",
   PUA: "Pembahasan puasa: syarat dan pembatalnya, kafarat, dan puasa-puasa sunah — dari fatwa para ulama dengan teks Arab dan sumbernya.",
   HAJ: "Pembahasan haji dan umrah: manasik, larangan ihram, dan penyembelihan dam — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+  MUA: "Pembahasan muamalah dan jual beli: jual beli, riba, utang-piutang, sewa dan upah, wakaf, serta waris — dari fatwa para ulama dengan teks Arab dan sumbernya.",
+  NIK: "Pembahasan nikah: syarat dan rukun, mahar, walimah, hak dan kewajiban suami istri, serta mahram — dari fatwa para ulama dengan teks Arab dan sumbernya.",
 };
 
 export default function HomePage() {
