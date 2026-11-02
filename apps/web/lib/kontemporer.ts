@@ -34,15 +34,23 @@ export interface KontemporerLink {
 export interface KontemporerGroup {
   id: string;
   title: string;
-  /** Istilah Arab khas tema, tampil di pita kartu. */
+  /** Istilah Arab khas tema, tampil sebagai overlay di gambar kartu. */
   name_ar: string;
   description: string;
+  /**
+   * Gambar tema kartu di public/images/kontemporer/<slug>.jpg — satu
+   * gambar khas per kelompok, dibuat lewat Gemini Pro user (permintaan
+   * user 2 Nov 2026) dengan aturan gambar aplikasi: TANPA makhluk
+   * bernyawa dan TANPA duplikat antar-kelompok.
+   */
+  image: string;
   links: KontemporerLink[];
 }
 
 export const KONTEMPORER_GROUPS: KontemporerGroup[] = [
   {
     id: "bank-riba-pinjaman",
+    image: "/images/kontemporer/bank-riba.jpg",
     title: "Bank, Riba & Pinjaman",
     name_ar: "الربا والقروض",
     description:
@@ -54,6 +62,7 @@ export const KONTEMPORER_GROUPS: KontemporerGroup[] = [
   },
   {
     id: "saham-bursa-investasi",
+    image: "/images/kontemporer/saham.jpg",
     title: "Saham, Bursa & Investasi",
     name_ar: "الأسهم",
     description:
@@ -62,6 +71,7 @@ export const KONTEMPORER_GROUPS: KontemporerGroup[] = [
   },
   {
     id: "asuransi",
+    image: "/images/kontemporer/asuransi.jpg",
     title: "Asuransi: Komersial & Takaful",
     name_ar: "التأمين",
     description:
@@ -70,6 +80,7 @@ export const KONTEMPORER_GROUPS: KontemporerGroup[] = [
   },
   {
     id: "uang-valuta-sharf",
+    image: "/images/kontemporer/uang-valuta.jpg",
     title: "Uang Kertas, Valuta & Penukaran (Sharf)",
     name_ar: "الصرف",
     description:
@@ -78,6 +89,7 @@ export const KONTEMPORER_GROUPS: KontemporerGroup[] = [
   },
   {
     id: "cicilan-tawarruq",
+    image: "/images/kontemporer/cicilan-tawarruq.jpg",
     title: "Cicilan, Kredit Barang & Tawarruq",
     name_ar: "التقسيط والتورق",
     description:
@@ -89,6 +101,7 @@ export const KONTEMPORER_GROUPS: KontemporerGroup[] = [
   },
   {
     id: "gharar-judi-undian",
+    image: "/images/kontemporer/gharar-judi.jpg",
     title: "Gharar, Judi, Lotre & Undian",
     name_ar: "الميسر والغرر",
     description:
@@ -97,6 +110,7 @@ export const KONTEMPORER_GROUPS: KontemporerGroup[] = [
   },
   {
     id: "penghasilan-pekerjaan",
+    image: "/images/kontemporer/penghasilan.jpg",
     title: "Penghasilan & Pekerjaan",
     name_ar: "الكسب",
     description:
@@ -105,6 +119,7 @@ export const KONTEMPORER_GROUPS: KontemporerGroup[] = [
   },
   {
     id: "kaidah-produk-modern",
+    image: "/images/kontemporer/kaidah-modern.jpg",
     title: "Kaidah Uang & Utang untuk Produk Modern",
     name_ar: "قواعد النقود والديون",
     description:
