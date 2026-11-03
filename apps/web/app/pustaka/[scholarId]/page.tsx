@@ -34,7 +34,7 @@ export default function ScholarDetailPage() {
             <div className="flex items-start gap-4">
               <ScholarEmblem scholar={scholar} size="lg" />
               <div>
-                <h1 className="text-[17px] font-extrabold text-emerald-deep sm:text-xl">{scholarName(scholar)}</h1>
+                <h1 className="text-[1.0625rem] font-extrabold text-emerald-deep sm:text-xl">{scholarName(scholar)}</h1>
                 {scholar.name_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 text-right text-lg text-stone-700">{scholar.name_ar}</p> : null}
                 {(scholar.death_year || scholar.death_year_hijri || scholar.died) ? <p className="mt-1 text-xs text-stone-500 sm:text-sm">Wafat: {String(scholar.death_year || scholar.death_year_hijri || scholar.died)}</p> : null}
               </div>

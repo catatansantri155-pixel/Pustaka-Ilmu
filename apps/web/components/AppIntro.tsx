@@ -204,7 +204,7 @@ export default function AppIntro() {
             <p className="mt-5 text-2xl font-extrabold tracking-tight text-white">Maktabah Al-'Ilmiyyah</p>
             <p dir="rtl" lang="ar" className="font-arabic mt-1 text-lg leading-snug text-gold">المكتبة العلمية</p>
             <span className="mt-3 h-px w-16 bg-gold/70" />
-            <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/75">
+            <p className="mt-3 text-[0.6875rem] font-semibold uppercase tracking-[0.22em] text-white/75">
               Perpustakaan Fatwa &amp; Khazanah
             </p>
             <span className="mt-8 flex items-center gap-1.5" aria-hidden="true">

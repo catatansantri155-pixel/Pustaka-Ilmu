@@ -65,7 +65,7 @@ export default function HomePage() {
           <HeroSlideshow className="h-32 w-full sm:h-56" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-emerald-deep/85 via-emerald-deep/25 to-transparent" aria-hidden />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 sm:p-7">
-            <p className="inline-block rounded-full bg-emerald-deep/55 px-3 py-1 text-[13px] font-medium text-gold backdrop-blur-sm">Assalamu&apos;alaikum</p>
+            <p className="inline-block rounded-full bg-emerald-deep/55 px-3 py-1 text-[0.8125rem] font-medium text-gold backdrop-blur-sm">Assalamu&apos;alaikum</p>
             <h1 className="mt-1.5 max-w-xl text-lg font-extrabold leading-tight text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-3xl">Temukan ilmu dari sumbernya</h1>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default function HomePage() {
                   <div className="flex items-center justify-between gap-2 p-3 sm:p-3.5">
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-bold text-emerald-deep">{g.name_id}</span>
-                      <span className="text-[11px] font-medium uppercase tracking-wide text-muted">{g.topics.length} topik</span>
+                      <span className="text-[0.6875rem] font-medium uppercase tracking-wide text-muted">{g.topics.length} topik</span>
                     </span>
                     <IconChevronRight className="h-4 w-4 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
                   </div>

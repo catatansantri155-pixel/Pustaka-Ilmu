@@ -105,11 +105,11 @@ export default function KontemporerSection({ topics }: { topics: Topic[] }) {
             <div className="flex flex-1 flex-col p-3 sm:p-3.5">
               <h3 className="text-sm font-bold leading-snug text-emerald-deep">{g.title}</h3>
               {counts[g.id] != null && (
-                <p className="mt-1 text-[11px] font-medium uppercase tracking-wide text-muted">{counts[g.id]} materi tertaut</p>
+                <p className="mt-1 text-[0.6875rem] font-medium uppercase tracking-wide text-muted">{counts[g.id]} materi tertaut</p>
               )}
               <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-muted">{g.description}</p>
               {g.id === "kaidah-produk-modern" && (
-                <p className="mt-2 rounded-xl bg-gold/15 px-2.5 py-1.5 text-[11px] font-semibold leading-snug text-emerald-deep">
+                <p className="mt-2 rounded-xl bg-gold/15 px-2.5 py-1.5 text-[0.6875rem] font-semibold leading-snug text-emerald-deep">
                   Kaidah umum, bukan fatwa produk spesifik.
                 </p>
               )}

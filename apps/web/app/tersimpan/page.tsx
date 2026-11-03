@@ -27,10 +27,10 @@ export default function TersimpanPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="flex items-center gap-2 text-[17px] font-extrabold text-emerald-deep sm:text-lg">
+        <h1 className="flex items-center gap-2 text-[1.0625rem] font-extrabold text-emerald-deep sm:text-lg">
           <IconBookmark className="h-5 w-5 text-emerald" /> Tersimpan
         </h1>
-        <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
+        <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-muted">
           Materi yang kamu simpan tersimpan hanya di perangkat ini (penyimpanan
           lokal browser) — tanpa perlu masuk. Daftar akan kosong di perangkat
           atau browser lain, dan terhapus bila data browser dibersihkan.
@@ -50,7 +50,7 @@ export default function TersimpanPage() {
                 <Link href={`/materi/${b.id}`} className="flex min-w-0 flex-1 items-center gap-3">
                   <TopicCover image={imageForMaterial(summary)} className="h-12 w-12 shrink-0 rounded-2xl sm:h-14 sm:w-16" />
                   <span className="min-w-0">
-                    <span className="block truncate text-[15px] font-semibold text-emerald-deep">{materialTitle(summary)}</span>
+                    <span className="block truncate text-[0.9375rem] font-semibold text-emerald-deep">{materialTitle(summary)}</span>
                     <span className="mt-0.5 block text-xs text-muted">
                       {b.scholar_name ? `${b.scholar_name} · ` : ""}
                       {new Date(b.at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
