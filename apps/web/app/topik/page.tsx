@@ -39,7 +39,7 @@ export default function TopikPage() {
   return (
     <div className="space-y-6 sm:space-y-9">
       <header>
-        <h1 className="flex items-center gap-2.5 text-[17px] font-extrabold text-emerald-deep sm:text-xl">
+        <h1 className="flex items-center gap-2.5 text-[1.0625rem] font-extrabold text-emerald-deep sm:text-xl">
           <IconLayers className="h-5 w-5 text-emerald sm:h-6 sm:w-6" /> Topik pembahasan
         </h1>
         <p className="mt-2 text-xs leading-relaxed text-muted sm:text-sm">Semua topik tergrup menurut babnya — pilih satu topik untuk melihat fatwa di dalamnya.</p>
@@ -63,7 +63,7 @@ export default function TopikPage() {
                 <div className="flex items-center justify-between gap-2 p-3 sm:p-3.5">
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-bold text-emerald-deep">{topicName(t)}</span>
-                    {t.code ? <span className="text-[11px] font-medium uppercase tracking-wide text-muted">{t.code}</span> : null}
+                    {t.code ? <span className="text-[0.6875rem] font-medium uppercase tracking-wide text-muted">{t.code}</span> : null}
                   </span>
                   <IconChevronRight className="h-4 w-4 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
                 </div>

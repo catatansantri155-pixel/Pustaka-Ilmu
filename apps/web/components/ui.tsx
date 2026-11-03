@@ -86,9 +86,9 @@ export function MaterialCard({ m, uniform = false }: { m: MaterialSummary; unifo
         <div className={uniform ? "flex min-w-0 flex-1 flex-col py-0.5" : "min-w-0 flex-1 py-0.5"}>
           <div className={uniform ? "flex h-5 flex-nowrap items-center gap-x-2 overflow-hidden" : "flex flex-wrap items-center gap-x-2 gap-y-1"}>
             {m.topics?.slice(0, 2).map((t) => (
-              <span key={t.id} className={`${uniform ? "whitespace-nowrap " : ""}text-[11px] font-semibold uppercase tracking-wide text-emerald`}>{topicName(t)}</span>
+              <span key={t.id} className={`${uniform ? "whitespace-nowrap " : ""}text-[0.6875rem] font-semibold uppercase tracking-wide text-emerald`}>{topicName(t)}</span>
             ))}
-            {m.content_type ? <span className={`${uniform ? "whitespace-nowrap " : ""}text-[11px] font-medium uppercase tracking-wide text-muted`}>{m.content_type}</span> : null}
+            {m.content_type ? <span className={`${uniform ? "whitespace-nowrap " : ""}text-[0.6875rem] font-medium uppercase tracking-wide text-muted`}>{m.content_type}</span> : null}
             {m.is_demo ? <span className="chip border-amber-300 bg-amber-50 text-amber-800">Demo</span> : null}
           </div>
           <h3 className={`mt-1.5 text-sm font-bold leading-snug text-emerald-deep sm:text-base ${uniform ? "line-clamp-2 min-h-[2.4rem] sm:min-h-[2.75rem]" : ""}`}>{materialTitle(m)}</h3>

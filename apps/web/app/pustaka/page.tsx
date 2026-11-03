@@ -15,7 +15,7 @@ export default function PustakaPage() {
   useEffect(() => { setLoading(true); setError(null); api.scholars().then(setScholars).catch((e) => setError(e instanceof Error ? e.message : "Gagal memuat.")).finally(() => setLoading(false)); }, [nonce]);
   return (
     <div className="space-y-6">
-      <h1 className="flex items-center gap-2.5 text-[17px] font-extrabold text-emerald-deep sm:text-xl"><IconUsers className="h-5 w-5 text-emerald sm:h-6 sm:w-6" /> Pustaka Ulama</h1>
+      <h1 className="flex items-center gap-2.5 text-[1.0625rem] font-extrabold text-emerald-deep sm:text-xl"><IconUsers className="h-5 w-5 text-emerald sm:h-6 sm:w-6" /> Pustaka Ulama</h1>
       <p className="text-xs leading-relaxed text-stone-600 sm:text-sm">Pilih seorang ulama untuk melihat profil dan materi terbit beliau.</p>
       {error ? <ErrorState message={error} onRetry={() => setNonce((n) => n + 1)} /> : null}
       {loading ? <LoadingState /> : scholars.length === 0 ? <EmptyState title="Belum ada data ulama" body="Data ulama akan tampil di sini setelah tersedia dari server." /> : (

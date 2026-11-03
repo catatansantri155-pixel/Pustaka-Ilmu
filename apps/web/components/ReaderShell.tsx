@@ -38,7 +38,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
   // menyatu/duplikat, jadi nav desktop hanya memakai satu di antaranya.
   const desktopNav = [...NAV_MAIN, NAV_EXTRA[1]];
   return (
-    <div className="reader-shell min-h-screen bg-ivory pt-[57px] sm:pt-[65px]">
+    <div className="reader-shell min-h-screen bg-ivory pt-[41px] sm:pt-[46px]">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
 
       {/* Header FIXED (bukan sticky) — PR #10 lanjutan, bukti tangkapan layar
@@ -53,7 +53,12 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
           57px (py 12px + isi 44px dari target sentuh tombol Tentang/min-h-11
           + border 1px) sehingga padding atas .reader-shell = 57px; pada sm:
           ke atas tetap skema lama 65px (py-2.5 20px + 44px + 1px) dan
-          padding atas 65px. Navigasi bawah TIDAK berubah sama sekali. */}
+          padding atas 65px. Navigasi bawah TIDAK berubah sama sekali.
+          PR skala-70 (4 Nov 2026, permintaan user: semua elemen −30% kecuali
+          tombol utama di bawah): font akar menjadi 70% (11,2px) di
+          globals.css, jadi tinggi header ikut menyusut — ponsel: py 8,4px +
+          isi min-h-11 30,8px + border 1px = 40,2px → padding atas 41px;
+          sm: py 14px + 30,8px + 1px = 45,8px → padding atas 46px. */}
       {/* PR #12: blur header diturunkan xl (24px) → md (12px) dan latar
           dinaikkan /70 → /80 — header fixed selalu dikomposit ulang saat
           scroll, jadi ini penghematan terbesar per frame; tampilannya
@@ -65,8 +70,8 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
               <img src="/images/logo-maktabah.png" alt="" aria-hidden width={44} height={44} decoding="async" className="h-full w-full object-contain p-0.5" />
             </span>
             <span className="leading-tight">
-              <span className="block text-[15px] font-extrabold tracking-tight text-emerald-deep sm:text-base">Maktabah Al-'Ilmiyyah</span>
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">Perpustakaan Fatwa &amp; Khazanah</span>
+              <span className="block text-[0.9375rem] font-extrabold tracking-tight text-emerald-deep sm:text-base">Maktabah Al-'Ilmiyyah</span>
+              <span className="block text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-muted">Perpustakaan Fatwa &amp; Khazanah</span>
             </span>
           </Link>
           <div className="flex items-center gap-1">
@@ -81,7 +86,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
                     aria-current={isActive ? "page" : undefined}
                     className={`inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 text-sm transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep hover:bg-surface"}`}
                   >
-                    <Icon className="h-[18px] w-[18px]" />
+                    <Icon className="h-[1.125rem] w-[1.125rem]" />
                     {n.label}
                   </Link>
                 );
@@ -117,9 +122,14 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
 
       {/* Navigasi bawah melayang (mobile & tablet, <lg) — gaya aplikasi native.
           PENTING: selama nav ini tampil, padding bawah <main> dan <footer>
-          harus tetap pb-32 (±128px > tinggi pil + offset ±74px); jangan
-          dikecilkan di breakpoint md, atau elemen terbawah tertutup pil
-          dan tidak bisa diklik. */}
+          harus tetap pb-32 (±90px sesudah skala-70 > tinggi pil + offset
+          ±72px); jangan dikecilkan di breakpoint md, atau elemen terbawah
+          tertutup pil dan tidak bisa diklik.
+          PR skala-70: navigasi ini DIKECUALIKAN user dari pengecilan 30% —
+          semua ukurannya dibekukan dalam px persis seperti tampilan sebelum
+          skala (lebar min(448px, 100vw−24px), offset bawah 12px, item
+          min-48px, ikon 20px, label 11px). JANGAN kembalikan ke rem selama
+          pengecualian ini berlaku. */}
       {/* Lebar nav ditegaskan TANPA max-w-md/mx-auto (PR #10 lanjutan, bukti
           tangkapan layar user 27 Okt 2026): skema lama inset-x-3 + max-w-md +
           mx-auto pada elemen fixed terukur me-render ±470-495px pada viewport
@@ -132,10 +142,10 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
           PR #12: blur pil ini juga diturunkan xl → md dan latar /75 → /85
           (alasan sama seperti header: elemen fixed selalu aktif saat scroll). */}
       <nav
-        className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(28rem,calc(100vw-1.5rem))] -translate-x-1/2 rounded-full border border-white/60 bg-white/85 shadow-pill backdrop-blur-md lg:hidden"
+        className="fixed bottom-[max(12px,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(448px,calc(100vw-24px))] -translate-x-1/2 rounded-full border border-white/60 bg-white/85 shadow-pill backdrop-blur-md lg:hidden"
         aria-label="Navigasi utama ponsel"
       >
-        <div className="grid grid-cols-5 px-1.5 py-1.5">
+        <div className="grid grid-cols-5 px-[6px] py-[6px]">
           {NAV_MAIN.map((n) => {
             const Icon = n.icon;
             const isActive = active(n.href);
@@ -144,9 +154,9 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
                 key={n.label}
                 href={n.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex min-h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[11px] leading-tight transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep"}`}
+                className={`flex min-h-[48px] min-w-0 flex-col items-center justify-center gap-[2px] rounded-full px-[4px] py-[6px] text-[11px] leading-tight transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep"}`}
               >
-                <Icon className="h-5 w-5 shrink-0" />
+                <Icon className="h-[20px] w-[20px] shrink-0" />
                 <span className="max-w-full truncate">{n.label}</span>
               </Link>
             );

@@ -136,9 +136,9 @@ export default function MaterialPage() {
           {m.content_type ? <span className="chip border-gold/40 bg-gold/10 text-emerald-deep">{m.content_type}</span> : null}
           {m.is_demo ? <span className="chip border-amber-300 bg-amber-50 text-amber-800">Demo</span> : null}
         </div>
-        <h1 className="mt-3 text-[17px] font-extrabold leading-snug text-emerald-deep md:text-2xl">{materialTitle(m)}</h1>
+        <h1 className="mt-3 text-[1.0625rem] font-extrabold leading-snug text-emerald-deep md:text-2xl">{materialTitle(m)}</h1>
         {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-2 text-right text-xl text-ink">{m.title_ar}</p> : null}
-        <p className="mt-2 text-[13px] text-muted sm:text-sm">{m.scholar ? <Link className="font-semibold text-emerald underline" href={`/pustaka/${m.scholar.id}`}>{scholarName(m.scholar)}</Link> : m.scholar_name || ""}</p>
+        <p className="mt-2 text-[0.8125rem] text-muted sm:text-sm">{m.scholar ? <Link className="font-semibold text-emerald underline" href={`/pustaka/${m.scholar.id}`}>{scholarName(m.scholar)}</Link> : m.scholar_name || ""}</p>
         {m.ai_label ? <p className="mt-3 inline-block rounded-2xl border border-gold/50 bg-gold/10 px-4 py-2 text-xs font-semibold leading-relaxed text-emerald-deep">{m.ai_label}</p> : null}
       </header>
 
@@ -172,12 +172,12 @@ export default function MaterialPage() {
         <button className="chip border-emerald/25 bg-white font-semibold text-emerald" onClick={share}><IconShare className="h-3.5 w-3.5" /> Bagikan</button>
         <button className="chip border-emerald/25 bg-white font-semibold text-emerald" aria-expanded={reportOpen} aria-controls="correction-form" onClick={() => setReportOpen((v) => !v)}><IconFlag className="h-3.5 w-3.5" /> Laporkan kesalahan terjemahan</button>
       </div>
-      {notice ? <div role="status" className="rounded-lg border border-emerald/20 bg-emerald/5 px-4 py-3 text-[13px] text-emerald-deep sm:text-sm">{notice}</div> : null}
+      {notice ? <div role="status" className="rounded-lg border border-emerald/20 bg-emerald/5 px-4 py-3 text-[0.8125rem] text-emerald-deep sm:text-sm">{notice}</div> : null}
 
       {reportOpen ? (
         <form id="correction-form" onSubmit={submitReport} className="card space-y-3 p-4 sm:p-5">
           <p className="font-semibold text-emerald-deep">Laporkan kemungkinan kesalahan terjemahan</p>
-          <p className="text-[13px] text-muted sm:text-sm">Laporan masuk antrean admin dan tidak langsung mengubah materi publik.</p>
+          <p className="text-[0.8125rem] text-muted sm:text-sm">Laporan masuk antrean admin dan tidak langsung mengubah materi publik.</p>
           <textarea className="input min-h-24" value={reportText} onChange={(e) => setReportText(e.target.value)} placeholder="Tuliskan bagian yang Anda nilai keliru dan alasannya…" aria-label="Isi laporan koreksi" />
           <div className="flex items-center gap-3">
             <button className="btn-primary" type="submit" disabled={reporting}>{reporting ? "Mengirim…" : "Kirim Laporan"}</button>
@@ -240,7 +240,7 @@ export default function MaterialPage() {
       {glossary.length > 0 ? (
         <section className="card p-4 sm:p-5">
           <h2 className="font-bold text-emerald-deep">Glosarium Istilah</h2>
-          <p className="mt-1 text-[13px] text-muted sm:text-sm">Ketuk istilah untuk melihat penjelasannya.</p>
+          <p className="mt-1 text-[0.8125rem] text-muted sm:text-sm">Ketuk istilah untuk melihat penjelasannya.</p>
           <div className="mt-3 flex flex-wrap gap-2">
             {glossary.map((g) => (
               <button key={g.id} type="button" onClick={() => setOpenTerm(openTerm === g.id ? null : g.id)} className={`chip ${openTerm === g.id ? "border-emerald bg-emerald text-white" : "border-emerald/25 bg-white text-emerald"}`}>
@@ -249,7 +249,7 @@ export default function MaterialPage() {
             ))}
           </div>
           {openTerm ? (() => { const g = glossary.find((x) => x.id === openTerm); return g ? (
-            <div className="mt-3 rounded-2xl bg-surface p-3.5 text-[13px] sm:p-4 sm:text-sm">
+            <div className="mt-3 rounded-2xl bg-surface p-3.5 text-[0.8125rem] sm:p-4 sm:text-sm">
               <p><span className="font-arabic text-base" dir="rtl" lang="ar">{g.term_ar}</span> — <strong>{g.term_id}</strong></p>
               <p className="mt-1 text-ink">{g.context || "Penjelasan istilah belum tersedia."}</p>
             </div>
@@ -262,12 +262,12 @@ export default function MaterialPage() {
           <h2 className="font-bold text-emerald-deep">Referensi &amp; Temuan Audit</h2>
           {m.findings && m.findings.length > 0 ? (
             <ul className="mt-3 space-y-2">{m.findings.map((f, i) => <li key={f.id || i} className={`chip ${severityClass(f.severity)}`}><span className="font-bold">{f.severity}</span>&nbsp;{f.message || f.detail || f.description || f.category || ""}</li>)}</ul>
-          ) : <p className="mt-2 text-[13px] text-muted sm:text-sm">Tidak ada temuan audit yang dilaporkan API untuk materi ini.</p>}
-          {m.source_url ? <p className="mt-3 break-all text-[13px] text-muted sm:text-sm">Sumber asli: <a className="text-emerald underline" href={m.source_url} target="_blank" rel="noreferrer">{m.source_url}</a></p> : null}
+          ) : <p className="mt-2 text-[0.8125rem] text-muted sm:text-sm">Tidak ada temuan audit yang dilaporkan API untuk materi ini.</p>}
+          {m.source_url ? <p className="mt-3 break-all text-[0.8125rem] text-muted sm:text-sm">Sumber asli: <a className="text-emerald underline" href={m.source_url} target="_blank" rel="noreferrer">{m.source_url}</a></p> : null}
         </section>
       )}
 
-      <footer className="card p-4 text-[13px] text-muted sm:p-5 sm:text-sm">
+      <footer className="card p-4 text-[0.8125rem] text-muted sm:p-5 sm:text-sm">
         <p className="font-semibold text-emerald-deep">Catatan Sumber</p>
         {m.citations?.length ? <div className="mt-3 space-y-3"><p>Catatan sebagaimana tercantum pada sumber asli; rincian referensi belum diverifikasi secara terpisah.</p>{m.citations.map(c=><p key={c.id} dir="rtl" lang="ar" className="font-arabic text-right text-base">{c.text}</p>)}</div> : null}
         {m.source_url ? <p className="mt-1 break-all">Sumber asli: <a className="text-emerald underline" href={m.source_url} target="_blank" rel="noreferrer">{m.source_url}</a></p> : <p className="mt-1">Tautan sumber asli tidak disediakan API untuk materi ini.</p>}
