@@ -38,7 +38,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
   // menyatu/duplikat, jadi nav desktop hanya memakai satu di antaranya.
   const desktopNav = [...NAV_MAIN, NAV_EXTRA[1]];
   return (
-    <div className="reader-shell min-h-screen bg-ivory pt-[41px] sm:pt-[46px]">
+    <div className="reader-shell min-h-screen bg-ivory pt-[49px] sm:pt-[56px]">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
 
       {/* Header FIXED (bukan sticky) — PR #10 lanjutan, bukti tangkapan layar
@@ -54,11 +54,12 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
           + border 1px) sehingga padding atas .reader-shell = 57px; pada sm:
           ke atas tetap skema lama 65px (py-2.5 20px + 44px + 1px) dan
           padding atas 65px. Navigasi bawah TIDAK berubah sama sekali.
-          PR skala-70 (4 Nov 2026, permintaan user: semua elemen −30% kecuali
-          tombol utama di bawah): font akar menjadi 70% (11,2px) di
-          globals.css, jadi tinggi header ikut menyusut — ponsel: py 8,4px +
-          isi min-h-11 30,8px + border 1px = 40,2px → padding atas 41px;
-          sm: py 14px + 30,8px + 1px = 45,8px → padding atas 46px. */}
+          PR skala-70 lalu skala-85 (4 Nov 2026, permintaan user: semua
+          elemen diperkecil kecuali tombol utama di bawah; skala akhir 85%):
+          font akar menjadi 85% (13,6px) di globals.css, jadi tinggi header
+          ikut menyusut — ponsel: py 10,2px + isi min-h-11 37,4px + border
+          1px = 48,6px → padding atas 49px; sm: py 17px + 37,4px + 1px =
+          55,4px → padding atas 56px. */}
       {/* PR #12: blur header diturunkan xl (24px) → md (12px) dan latar
           dinaikkan /70 → /80 — header fixed selalu dikomposit ulang saat
           scroll, jadi ini penghematan terbesar per frame; tampilannya
@@ -122,10 +123,10 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
 
       {/* Navigasi bawah melayang (mobile & tablet, <lg) — gaya aplikasi native.
           PENTING: selama nav ini tampil, padding bawah <main> dan <footer>
-          harus tetap pb-32 (±90px sesudah skala-70 > tinggi pil + offset
+          harus tetap pb-32 (±109px sesudah skala-85 > tinggi pil + offset
           ±72px); jangan dikecilkan di breakpoint md, atau elemen terbawah
           tertutup pil dan tidak bisa diklik.
-          PR skala-70: navigasi ini DIKECUALIKAN user dari pengecilan 30% —
+          PR skala-70/85: navigasi ini DIKECUALIKAN user dari pengecilan —
           semua ukurannya dibekukan dalam px persis seperti tampilan sebelum
           skala (lebar min(448px, 100vw−24px), offset bawah 12px, item
           min-48px, ikon 20px, label 11px). JANGAN kembalikan ke rem selama
