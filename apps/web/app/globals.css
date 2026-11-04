@@ -2,34 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design tokens — Master Prompt V2.0 BAGIAN 4.2 */
+/* Design tokens — port prototipe Lovable "Pustaka Ilmu" (Nov 2026):
+   teal tua, kertas hangat, emas. Nama variabel lama dipertahankan. */
 :root {
-  --green-deep: #0A1F44;
-  --emerald: #14386E;
-  --ivory: #FAF8F2;
+  --green-deep: #08362E;
+  --emerald: #174D40;
+  --ivory: #F9F6F1;
   --white: #FFFFFF;
-  --gold: #C9A227;
-  --ink: #141D31;
-  --muted: #525F7A;
-  --line: #E2E6EF;
-  --surface: #EDF0F7;
+  --gold: #CA9C4E;
+  --gold-ink: #845922;
+  --ink: #12231F;
+  --muted: #505F5A;
+  --line: #E2DED5;
+  --surface: #F0ECE5;
+  --paper: #FDFAF1;
+  --card: #FEFDFA;
+  --ring: #407F6F;
 }
 html { background: var(--ivory); }
-/* Skala global (permintaan user 4 Nov 2026, PR skala-70 lalu PR skala-85):
-   SEMUA ukuran berbasis rem — nyaris seluruh tampilan (kelas utilitas
-   Tailwind, aturan kustom di berkas ini, tangga huruf halaman baca) —
-   menyusut seragam lewat satu aturan ini. Awalnya 70% (−30%), lalu user
-   meminta dinaikkan 15 poin menjadi 85% dari ukuran asli. Yang TIDAK ikut
-   menyusut: ukuran berunit px. Sebagian memang disengaja tetap: navigasi
-   bawah melayang dibekukan dalam px di ReaderShell.tsx atas permintaan
-   user (tombol utama di bawah dibiarkan), dan garis tepi 1px, bayangan,
-   serta outline fokus dibiarkan apa adanya. Lantai target sentuh 44px di
-   berkas ini ikut diskalakan ×0,85 menjadi 37px (kontrol ringkas 36px →
-   31px) supaya tombol benar-benar mengecil. Untuk membatalkan perubahan
-   ini: hapus aturan font-size di bawah, kembalikan lantai 37px→44px dan
-   31px→36px, dan kembalikan padding atas .reader-shell serta bekuan px
-   navigasi bawah di ReaderShell.tsx. */
-html { font-size: 85%; }
 /* Pagar anti-luber horizontal (PR #10, keluhan user 27 Okt 2026): satu elemen
    yang lebih lebar dari layar ponsel TIDAK boleh lagi melebarkan seluruh
    dokumen (halaman terpotong + scroll horizontal + pil navigasi fixed tampak
@@ -38,20 +28,23 @@ html { font-size: 85%; }
    `clip` tidak menciptakan scroll container sehingga header sticky dan nav
    bawah fixed tetap diam di tempat saat halaman digulir. */
 html, body { overflow-x: clip; }
-body { background: linear-gradient(180deg, #FCFBF7 0%, #F3F5FA 55%, #E8EDF7 100%); background-attachment: fixed; color: var(--ink); font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; }
+body { background: var(--ivory); color: var(--ink); font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif; }
 html { scroll-padding-top: 5rem; }
 body { line-height: 1.65; }
 button, input, select, textarea { font: inherit; }
 button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 :where(a, button, input, select, textarea, summary):focus-visible {
-  outline: 3px solid var(--emerald);
+  outline: 3px solid var(--ring);
   outline-offset: 4px;
 }
 input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .skip-link { position: absolute; left: 1rem; top: -8rem; z-index: 100; background: white; padding: .75rem 1rem; }
 .skip-link:focus { top: 1rem; }
-.reader-shell { overflow-wrap: anywhere; font-size: 0.9375rem; }
-.reader-shell main > article { max-width: 68ch; margin-inline: auto; }
+/* Port Lovable (Nov 2026): skala huruf global lama (0.9375rem, sisa aturan
+   "skala UI 85%") DICABUT — desain Lovable dikalibrasi pada ukuran penuh.
+   Lebar baris baca diselaraskan ke catatan audit Lovable (±65 karakter). */
+.reader-shell { overflow-wrap: anywhere; font-size: 1rem; }
+.reader-shell main > article { max-width: 65ch; margin-inline: auto; }
 /* Target sentuh minimum 44px HANYA untuk tombol non-chip: tombol .chip harus
    tampil PERSIS seukuran chip tautan/span (mis. chip "Bagian N" Daftar Isi yang
    berupa <a>). Tanpa pengecualian ini, spesifisitas .reader-shell button
@@ -60,85 +53,76 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
    Pengecualian kedua: .dot-indicator — titik indikator slideshow banner
    harian BUKAN tombol aksi, melainkan penanda posisi slide; tanpa
    pengecualian ini titik 8px-nya menggelembung menjadi lingkaran 44x44
-   (keluhan user 28 Okt 2026, PR mobile-compact-2). */
-.reader-shell button:not(.chip):not(.dot-indicator), .reader-shell select { min-height: 37px; }
-.reader-shell button:not(.chip):not(.dot-indicator) { min-width: 37px; }
+   (keluhan user 28 Okt 2026, PR mobile-compact-2). Dikembalikan pada
+   rekonsiliasi port Lovable bersama komponen DailyBanner. */
+.reader-shell button:not(.chip):not(.dot-indicator), .reader-shell select { min-height: 44px; }
+.reader-shell button:not(.chip):not(.dot-indicator) { min-width: 44px; }
 .reader-shell [id^="seg-"] { scroll-margin-top: 6rem; }
-/* PR mobile-compact-2: judul seksi di ponsel 18→17px; sm: ke atas tetap 18px. */
-.section-heading { @apply text-[1.0625rem] font-bold text-emerald-deep sm:text-lg; }
+.section-heading { @apply text-lg font-bold text-emerald-deep; }
 /* Deretan geser horizontal TANPA scrollbar (PR mobile-compact-2, permintaan
    user 28 Okt 2026): garis hitam/abu scrollbar bawaan di bawah deretan
-   beranda/bab mengganggu tampilan. Fungsi geser + snap TIDAK berubah —
-   hanya petunjuk visualnya yang disembunyikan (pola yang sama seperti
-   slider onboarding di AppIntro). */
+   mengganggu tampilan. Fungsi geser + snap TIDAK berubah — hanya petunjuk
+   visualnya yang disembunyikan. Dikembalikan pada rekonsiliasi port Lovable
+   (dipakai deretan Fikih Kontemporer dan pola slider sejenis). */
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
-/* Kaca buram diringankan (PR #12, 27 Okt 2026): blur 18px pada SETIAP kartu
-   adalah sumber berat utama saat scroll di ponsel — radius blur adalah biaya
-   kompositing dominan dan kartu katalog/.card/.topic-link jumlahnya banyak
-   dalam satu daftar. Radius diturunkan 18px → 12px dan saturasi 1.6 → 1.45,
-   diimbangi kepekatan latar 0.58 → 0.66 supaya rupa kaca buramnya nyaris
-   tidak berubah tetapi kerja GPU per kartu turun besar. */
-.catalog-entry { @apply block overflow-hidden rounded-3xl transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift;
-  background: rgba(255, 255, 255, 0.66);
-  -webkit-backdrop-filter: blur(12px) saturate(1.45);
-  backdrop-filter: blur(12px) saturate(1.45);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 1px 2px rgba(10, 31, 68, 0.05), 0 16px 40px -12px rgba(10, 31, 68, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+/* Port Lovable (Nov 2026): kartu kini DATAR mengikuti prototipe Lovable —
+   latar kartu pekat, garis tepi 1px warna line, bayangan soft tipis.
+   Gaya kaca buram lama (backdrop blur, warisan PR #12) ditinggalkan;
+   bonusnya biaya kompositing per kartu saat scroll hilang sama sekali. */
+.catalog-entry { @apply block overflow-hidden rounded-2xl transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(18, 35, 31, 0.06), 0 8px 24px -12px rgba(18, 35, 31, 0.18);
 }
 .catalog-entry:hover h3 { text-decoration: underline; text-underline-offset: 4px; }
 .topic-link { @apply flex min-h-14 items-center justify-between gap-4 rounded-2xl px-4 py-3 text-sm text-emerald-deep;
-  background: rgba(255, 255, 255, 0.66);
-  -webkit-backdrop-filter: blur(12px) saturate(1.45);
-  backdrop-filter: blur(12px) saturate(1.45);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 1px 2px rgba(10, 31, 68, 0.05), 0 10px 28px -10px rgba(10, 31, 68, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(18, 35, 31, 0.06), 0 8px 24px -12px rgba(18, 35, 31, 0.18);
 }
 .photo-warm { filter: saturate(1.06) sepia(0.14) contrast(0.98); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
-/* Pengaman splash (PR splash+onboarding): lapisan splash normalnya dihapus
-   React pada ±1,6 detik, tetapi andaikata JS gagal berjalan, animasi CSS
-   murni ini memudarkannya pada 3 detik supaya pengguna TIDAK PERNAH terjebak
-   di layar pembuka. Di bawah prefers-reduced-motion aturan global di atas
-   mematikan animasi ini — di sana jalur React yang dipersingkat (±0,45
-   detik) yang menghapusnya. */
+/* Pengaman splash (PR splash+onboarding; dikembalikan pada rekonsiliasi
+   port Lovable bersama components/AppIntro.tsx): lapisan splash normalnya
+   dihapus React pada ±1,6 detik, tetapi andaikata JS gagal berjalan,
+   animasi CSS murni ini memudarkannya pada 3 detik supaya pengguna TIDAK
+   PERNAH terjebak di layar pembuka. Di bawah prefers-reduced-motion aturan
+   global di atas mematikan animasi ini — di sana jalur React yang
+   dipersingkat (±0,45 detik) yang menghapusnya. */
 @keyframes app-splash-failsafe { to { opacity: 0; visibility: hidden; } }
 .splash-failsafe { animation: app-splash-failsafe 0.6s ease 3s forwards; }
-/* Teks Arab: Noto Naskh Arabic, line-height lebih lapang daripada Latin (BAGIAN 4.3) */
-.font-arabic { font-family: 'Noto Naskh Arabic', 'Amiri', serif; line-height: 2.1; }
+/* Teks Arab: Amiri (pilihan Lovable), Noto Naskh Arabic cadangan;
+   line-height lebih lapang daripada Latin. */
+.font-arabic { font-family: 'Amiri', 'Noto Naskh Arabic', serif; line-height: 2.1; }
 
 /* Eight-point star geometric pattern (SVG data-URI, no external images) */
 .pattern-islamic {
-  background-color: #0A1F44;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23C9A227' stroke-opacity='0.28'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3Ccircle cx='36' cy='36' r='7'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 61.2px 61.2px;
+  background-color: #08362E;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23CA9C4E' stroke-opacity='0.28'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3Ccircle cx='36' cy='36' r='7'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 72px 72px;
 }
 .pattern-islamic-light {
-  background-color: #FAF9F6;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%2314386E' stroke-opacity='0.10'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 61.2px 61.2px;
+  background-color: #FDFAF1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23174D40' stroke-opacity='0.10'%3E%3Cpath d='M36 6 L44 28 L66 36 L44 44 L36 66 L28 44 L6 36 L28 28 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 72px 72px;
+}
+/* Latar hero ala Lovable: gradasi teal tua 150deg. */
+.bg-hero-grad {
+  background-image: linear-gradient(150deg, #0B3E35 0%, #002A2D 100%);
 }
 .card {
-  border-radius: 1.5rem;
-  background: rgba(255, 255, 255, 0.66);
-  -webkit-backdrop-filter: blur(12px) saturate(1.45);
-  backdrop-filter: blur(12px) saturate(1.45);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 1px 2px rgba(10, 31, 68, 0.05), 0 16px 40px -12px rgba(10, 31, 68, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  border-radius: 1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(18, 35, 31, 0.06), 0 8px 24px -12px rgba(18, 35, 31, 0.18);
 }
-.btn-primary { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-emerald px-5 py-2.5 text-sm font-semibold text-white shadow-soft disabled:cursor-not-allowed disabled:opacity-50;
-  background-image: linear-gradient(180deg, #1E50A2 0%, #14386E 55%, #0B2650 100%);
-  box-shadow: 0 10px 24px -8px rgba(10, 31, 68, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-}
-.btn-primary:hover { background-image: linear-gradient(180deg, #173F7E 0%, #0E2C5C 55%, #081C3E 100%); }
-.btn-gold { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-emerald-deep shadow-soft hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50;
-  background-image: linear-gradient(180deg, #F2DE9C 0%, #DFBE55 45%, #C9A227 100%);
-  box-shadow: 0 10px 24px -8px rgba(160, 124, 20, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.65);
-}
+.btn-primary { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-emerald px-5 py-2.5 text-sm font-semibold text-white shadow-soft hover:bg-emerald-deep disabled:cursor-not-allowed disabled:opacity-50; }
+.btn-gold { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold shadow-soft hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50; color: #513716; }
 .btn-outline { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-emerald bg-white px-4 py-2 text-sm font-semibold text-emerald hover:bg-surface disabled:cursor-not-allowed disabled:opacity-50; }
-.input { @apply min-h-11 w-full min-w-0 rounded-2xl border border-muted bg-white px-4 py-2.5 text-base focus:border-emerald focus:ring-2 focus:ring-emerald/20; }
+.input { @apply min-h-11 w-full min-w-0 rounded-2xl border border-line bg-white px-4 py-2.5 text-base focus:border-emerald focus:ring-2 focus:ring-emerald/20; }
 /* Selektor ganda .input.input-search disengaja: pl-12 (3rem, ruang untuk ikon
    kaca pembesar di kiri) harus menang atas px-3.5 milik .input-compact yang
    muncul belakangan di berkas ini; sebelumnya padding efektif hanya 0,875rem
@@ -154,9 +138,9 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
    Pengecualian ini HANYA untuk kontrol berlabel compact; tombol, select,
    dan chip lain tidak berubah. */
 .input-compact { @apply px-3.5 py-1.5 text-sm; }
-.btn-compact { @apply px-4 py-1.5 text-[0.8125rem]; }
-.reader-shell button.btn-compact { min-height: 31px; min-width: 0; }
-.reader-shell select.input-compact, .reader-shell input.input-compact { min-height: 31px; }
+.btn-compact { @apply px-4 py-1.5 text-[13px]; }
+.reader-shell button.btn-compact { min-height: 36px; min-width: 0; }
+.reader-shell select.input-compact, .reader-shell input.input-compact { min-height: 36px; }
 .chip { @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium; }
 
 /* Render daftar ditunda (PR #12): pada daftar panjang (katalog, materi
@@ -169,20 +153,3 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 .cv-material { content-visibility: auto; contain-intrinsic-size: auto 9rem; }
 .cv-topic { content-visibility: auto; contain-intrinsic-size: auto 13rem; }
 .cv-scholar { content-visibility: auto; contain-intrinsic-size: auto 6.5rem; }
-
-/* Kekecilan ponsel (PR mobile-compact, masukan user 28 Okt 2026): di ponsel
-   kartu/teks/gambar terasa serba membengkak. Pengecilan HANYA di bawah
-   breakpoint sm dan HANYA di dalam .reader-shell (permukaan publik —
-   ReaderShell tidak membungkus /admin, jadi halaman admin tidak berubah).
-   Tombol CTA dirampingkan secara horizontal + ukuran hurufnya di ponsel;
-   tinggi minimum 44px dari kelas .btn-* sendiri TIDAK disentuh, jadi
-   target sentuh tetap ≥44px. Ukuran sm: ke atas persis seperti sebelumnya.
-   Putaran 2 (PR mobile-compact-2): kolom isian non-compact (kolom cari
-   hero beranda, form laporan) dirampingkan vertikalnya di ponsel —
-   tinggi kolom cari hero ±46→42px. Kontrol .input-compact (36px, PR #11)
-   dan textarea TIDAK tersentuh aturan ini. */
-@media (max-width: 639.98px) {
-  .reader-shell .btn-primary, .reader-shell .btn-gold { padding-left: 1rem; padding-right: 1rem; font-size: 0.8125rem; }
-  .reader-shell .btn-outline { padding-left: 0.875rem; padding-right: 0.875rem; font-size: 0.8125rem; }
-  .reader-shell input.input:not(.input-compact) { min-height: 2.5rem; padding-top: 0.5rem; padding-bottom: 0.5rem; }
-}

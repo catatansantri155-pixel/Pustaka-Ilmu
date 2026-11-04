@@ -14,6 +14,12 @@ import { IconChevronRight, IconLayers } from "@/components/icons";
  * sebagai halaman sendiri — semua topik tergrup per bab inti (Thaharah,
  * Shalat, Jenazah, … mengikuti awalan kode topik API). Beranda menaut ke
  * halaman ini dengan jangkar grup bab (/topik#SHL dsb.).
+ *
+ * Koreksi user 4 Nov 2026: gambar ASLI dipertahankan — kartu topik memakai
+ * sistem foto main (TopicCover + imageForTopic + istilah Arab topik
+ * sebagai overlay), BUKAN banner pola geometris BabArt milik port.
+ * Cangkang kartu mengikuti bahasa desain port (rounded-2xl, bg-card,
+ * token teal/emas baru); data dan tautan tidak berubah.
  */
 export default function TopikPage() {
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -37,12 +43,12 @@ export default function TopikPage() {
   const groups = groupTopicsByBab(topics);
 
   return (
-    <div className="space-y-6 sm:space-y-9">
+    <div className="space-y-10">
       <header>
-        <h1 className="flex items-center gap-2.5 text-[1.0625rem] font-extrabold text-emerald-deep sm:text-xl">
-          <IconLayers className="h-5 w-5 text-emerald sm:h-6 sm:w-6" /> Topik pembahasan
+        <h1 className="flex items-center gap-2.5 text-xl font-extrabold text-emerald-deep">
+          <IconLayers className="h-6 w-6 text-emerald" /> Topik pembahasan
         </h1>
-        <p className="mt-2 text-xs leading-relaxed text-muted sm:text-sm">Semua topik tergrup menurut babnya — pilih satu topik untuk melihat fatwa di dalamnya.</p>
+        <p className="mt-2 text-sm leading-relaxed text-muted">Semua topik tergrup menurut babnya — pilih satu topik untuk melihat fatwa di dalamnya.</p>
       </header>
       {error ? <ErrorState message={error} onRetry={load} /> : loading ? <LoadingState label="Memuat topik…" /> : topics.length === 0 ? (
         <EmptyState title="Topik belum tersedia" body="Daftar topik akan tampil setelah tersedia dari server." />
@@ -53,9 +59,9 @@ export default function TopikPage() {
             {g.name_ar ? <span dir="rtl" lang="ar" className="font-arabic text-lg font-medium text-emerald">{g.name_ar}</span> : null}
             <span className="text-xs font-medium text-muted">{g.topics.length} topik</span>
           </h2>
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-3">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             {g.topics.map(t => (
-              <Link key={t.id} href={`/cari?topic_id=${encodeURIComponent(t.id)}`} className="cv-topic group overflow-hidden rounded-3xl border border-line bg-white shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
+              <Link key={t.id} href={`/cari?topic_id=${encodeURIComponent(t.id)}`} className="cv-topic group overflow-hidden rounded-2xl border border-line bg-card shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
                 <div className="relative">
                   <TopicCover image={imageForTopic(t)} className="h-20 w-full sm:h-28" />
                   <span dir="rtl" lang="ar" className="font-arabic pointer-events-none absolute bottom-2 right-3 text-lg leading-none text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">{topicArabic(t)}</span>
@@ -63,7 +69,7 @@ export default function TopikPage() {
                 <div className="flex items-center justify-between gap-2 p-3 sm:p-3.5">
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-bold text-emerald-deep">{topicName(t)}</span>
-                    {t.code ? <span className="text-[0.6875rem] font-medium uppercase tracking-wide text-muted">{t.code}</span> : null}
+                    {t.code ? <span className="text-[11px] font-medium uppercase tracking-wide text-muted">{t.code}</span> : null}
                   </span>
                   <IconChevronRight className="h-4 w-4 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
                 </div>

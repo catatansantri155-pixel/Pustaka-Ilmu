@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode, SVGProps } from "react";
 import {
   IconBookmark, IconGrid, IconHeadphones, IconHome,
-  IconInfo, IconLayers, IconSearch, IconUsers,
+  IconInfo, IconLayers, IconSearch, IconSettings, IconUsers,
 } from "@/components/icons";
 
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
@@ -38,41 +38,29 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
   // menyatu/duplikat, jadi nav desktop hanya memakai satu di antaranya.
   const desktopNav = [...NAV_MAIN, NAV_EXTRA[1]];
   return (
-    <div className="reader-shell min-h-screen bg-ivory pt-[49px] sm:pt-[56px]">
+    <div className="reader-shell min-h-screen bg-ivory pt-[65px]">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
 
       {/* Header FIXED (bukan sticky) — PR #10 lanjutan, bukti tangkapan layar
           user 27 Okt 2026: di ponsel nyata header sticky TIDAK menempel saat
           halaman digulir. Fixed menempel ke viewport tanpa bergantung pada
           wadah gulir leluhur mana pun, jadi selalu diam di atas. Kompensasinya:
-          padding-top pada .reader-shell di atas, dan jangkar tetap aman karena
-          scroll-padding-top html 5rem dan scroll-margin segmen 6rem melebihi
-          tinggi header.
-          PR mobile-compact-2: header ponsel dirampingkan — py-2.5→py-1.5,
-          logo 44→36px, nama aplikasi 16→15px. Tinggi header ponsel kini
-          57px (py 12px + isi 44px dari target sentuh tombol Tentang/min-h-11
-          + border 1px) sehingga padding atas .reader-shell = 57px; pada sm:
-          ke atas tetap skema lama 65px (py-2.5 20px + 44px + 1px) dan
-          padding atas 65px. Navigasi bawah TIDAK berubah sama sekali.
-          PR skala-70 lalu skala-85 (4 Nov 2026, permintaan user: semua
-          elemen diperkecil kecuali tombol utama di bawah; skala akhir 85%):
-          font akar menjadi 85% (13,6px) di globals.css, jadi tinggi header
-          ikut menyusut — ponsel: py 10,2px + isi min-h-11 37,4px + border
-          1px = 48,6px → padding atas 49px; sm: py 17px + 37,4px + 1px =
-          55,4px → padding atas 56px. */}
+          padding-top 65px pada .reader-shell di atas (tinggi header = py-2.5
+          20px + isi h-11 44px + border 1px), dan jangkar tetap aman karena
+          scroll-padding-top html 5rem dan scroll-margin segmen 6rem > 65px. */}
       {/* PR #12: blur header diturunkan xl (24px) → md (12px) dan latar
           dinaikkan /70 → /80 — header fixed selalu dikomposit ulang saat
           scroll, jadi ini penghematan terbesar per frame; tampilannya
           praktis sama karena isinya teks di atas latar ivory terang. */}
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/60 bg-white/80 shadow-[0_8px_30px_-12px_rgba(10,31,68,0.18)] backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-1.5 md:px-6 sm:py-2.5">
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/60 bg-white/80 shadow-[0_8px_30px_-12px_rgba(18,35,31,0.18)] backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 md:px-6">
           <Link href="/" className="inline-flex min-h-11 items-center gap-2.5" aria-label="Maktabah Al-'Ilmiyyah — Beranda">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-line bg-white shadow-soft sm:h-11 sm:w-11">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
               <img src="/images/logo-maktabah.png" alt="" aria-hidden width={44} height={44} decoding="async" className="h-full w-full object-contain p-0.5" />
             </span>
             <span className="leading-tight">
-              <span className="block text-[0.9375rem] font-extrabold tracking-tight text-emerald-deep sm:text-base">Maktabah Al-'Ilmiyyah</span>
-              <span className="block text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-muted">Perpustakaan Fatwa &amp; Khazanah</span>
+              <span className="block text-base font-extrabold tracking-tight text-emerald-deep">Maktabah Al-'Ilmiyyah</span>
+              <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">Perpustakaan Fatwa &amp; Khazanah</span>
             </span>
           </Link>
           <div className="flex items-center gap-1">
@@ -87,24 +75,23 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
                     aria-current={isActive ? "page" : undefined}
                     className={`inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 text-sm transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep hover:bg-surface"}`}
                   >
-                    <Icon className="h-[1.125rem] w-[1.125rem]" />
+                    <Icon className="h-[18px] w-[18px]" />
                     {n.label}
                   </Link>
                 );
               })}
             </nav>
-            {/* Tombol "Tentang" (ikon i) di pojok kanan atas — tampil di
-                ponsel dan desktop (di desktop setelah item nav terakhir).
-                Awalnya (PR #13) membuka panel dialog, tetapi keputusan user
-                27 Okt 2026 09:19 WIB: dialog tampil rusak di ponsel, jadi
-                Tentang menjadi HALAMAN TERPISAH /tentang dan tombol ini
-                adalah tautan ke sana. */}
+            {/* Port Lovable + keputusan user 4 Nov 2026: pojok kanan atas
+                header HANYA tombol Pengaturan. Tombol Tentang yang dulu di
+                sini pindah menjadi tombol utama mengambang di pojok kanan
+                bawah (lihat di bawah, sebelum navigasi bawah). */}
             <Link
-              href="/tentang"
-              aria-label="Tentang aplikasi Maktabah Al-'Ilmiyyah"
-              className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full text-emerald-deep transition hover:bg-surface"
+              href="/pengaturan"
+              aria-label="Pengaturan aplikasi"
+              aria-current={pathname === "/pengaturan" ? "page" : undefined}
+              className={`flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full transition ${pathname === "/pengaturan" ? "bg-emerald text-white shadow-soft" : "text-emerald-deep hover:bg-surface"}`}
             >
-              <IconInfo className="h-5 w-5" />
+              <IconSettings className="h-5 w-5" />
             </Link>
           </div>
           {/* Pintu masuk admin SENGAJA tidak ditampilkan di UI publik;
@@ -121,16 +108,35 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
+      {/* Tombol Tentang mengambang (keputusan user 4 Nov 2026): tombol
+          utama di pojok kanan bawah, di atas navigasi bawah pada ponsel.
+          Pada halaman Baca (/materi/…) ia menyusut menjadi tombol ikon
+          bulat agar tidak menutupi teks, dan disembunyikan di halaman
+          Tentang itu sendiri. */}
+      {pathname !== "/tentang" ? (
+        pathname.startsWith("/materi/") ? (
+          <Link
+            href="/tentang"
+            aria-label="Tentang aplikasi Maktabah Al-'Ilmiyyah"
+            className="fixed bottom-24 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-emerald text-white shadow-pill transition hover:bg-emerald-deep lg:bottom-6"
+          >
+            <IconInfo className="h-5 w-5" />
+          </Link>
+        ) : (
+          <Link
+            href="/tentang"
+            className="fixed bottom-24 right-4 z-50 inline-flex min-h-11 items-center gap-2 rounded-full bg-emerald py-2.5 pl-4 pr-5 text-sm font-semibold text-white shadow-pill transition hover:bg-emerald-deep lg:bottom-6"
+          >
+            <IconInfo className="h-5 w-5" /> Tentang
+          </Link>
+        )
+      ) : null}
+
       {/* Navigasi bawah melayang (mobile & tablet, <lg) — gaya aplikasi native.
           PENTING: selama nav ini tampil, padding bawah <main> dan <footer>
-          harus tetap pb-32 (±109px sesudah skala-85 > tinggi pil + offset
-          ±72px); jangan dikecilkan di breakpoint md, atau elemen terbawah
-          tertutup pil dan tidak bisa diklik.
-          PR skala-70/85: navigasi ini DIKECUALIKAN user dari pengecilan —
-          semua ukurannya dibekukan dalam px persis seperti tampilan sebelum
-          skala (lebar min(448px, 100vw−24px), offset bawah 12px, item
-          min-48px, ikon 20px, label 11px). JANGAN kembalikan ke rem selama
-          pengecualian ini berlaku. */}
+          harus tetap pb-32 (±128px > tinggi pil + offset ±74px); jangan
+          dikecilkan di breakpoint md, atau elemen terbawah tertutup pil
+          dan tidak bisa diklik. */}
       {/* Lebar nav ditegaskan TANPA max-w-md/mx-auto (PR #10 lanjutan, bukti
           tangkapan layar user 27 Okt 2026): skema lama inset-x-3 + max-w-md +
           mx-auto pada elemen fixed terukur me-render ±470-495px pada viewport
@@ -143,10 +149,10 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
           PR #12: blur pil ini juga diturunkan xl → md dan latar /75 → /85
           (alasan sama seperti header: elemen fixed selalu aktif saat scroll). */}
       <nav
-        className="fixed bottom-[max(12px,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(448px,calc(100vw-24px))] -translate-x-1/2 rounded-full border border-white/60 bg-white/85 shadow-pill backdrop-blur-md lg:hidden"
+        className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(28rem,calc(100vw-1.5rem))] -translate-x-1/2 rounded-full border border-white/60 bg-white/85 shadow-pill backdrop-blur-md lg:hidden"
         aria-label="Navigasi utama ponsel"
       >
-        <div className="grid grid-cols-5 px-[6px] py-[6px]">
+        <div className="grid grid-cols-5 px-1.5 py-1.5">
           {NAV_MAIN.map((n) => {
             const Icon = n.icon;
             const isActive = active(n.href);
@@ -155,9 +161,9 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
                 key={n.label}
                 href={n.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex min-h-[48px] min-w-0 flex-col items-center justify-center gap-[2px] rounded-full px-[4px] py-[6px] text-[11px] leading-tight transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep"}`}
+                className={`flex min-h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[11px] leading-tight transition ${isActive ? "bg-emerald font-bold text-white shadow-soft" : "text-emerald-deep"}`}
               >
-                <Icon className="h-[20px] w-[20px] shrink-0" />
+                <Icon className="h-5 w-5 shrink-0" />
                 <span className="max-w-full truncate">{n.label}</span>
               </Link>
             );

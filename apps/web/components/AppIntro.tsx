@@ -13,7 +13,7 @@ import type { TopicImage } from "@/lib/topicImages";
  * 1) SPLASH — muncul SETIAP kali aplikasi dibuka (setiap pemuatan awal
  *    dokumen, BUKAN setiap perpindahan halaman internal: komponen ini
  *    dipasang sekali di layout akar dan state-nya hidup selama sesi dokumen).
- *    Layar penuh gradasi navy merek dengan logo + nama + tagline, tampil
+ *    Layar penuh gradasi teal merek dengan logo + nama + tagline, tampil
  *    ±1,15 detik lalu memudar ±0,45 detik dan DIUNMOUNT TOTAL — tidak ada
  *    sisa lapisan yang bisa menghalangi klik (kelas bug lama aplikasi ini).
  *    prefers-reduced-motion: tanpa animasi, durasi dipersingkat (±0,4 detik).
@@ -190,7 +190,7 @@ export default function AppIntro() {
           aria-hidden="true"
           data-app-splash=""
           className={`splash-failsafe fixed inset-0 z-[120] flex flex-col items-center justify-center overflow-hidden bg-emerald-deep px-6 text-center transition-opacity duration-500 ${splash === "fade" ? "pointer-events-none opacity-0" : "opacity-100"}`}
-          style={{ backgroundImage: "linear-gradient(180deg, #14386E 0%, #0A1F44 72%)" }}
+          style={{ backgroundImage: "linear-gradient(180deg, #174D40 0%, #08362E 72%)" }}
         >
           <div className="pattern-islamic pointer-events-none absolute inset-0 opacity-30" />
           <div
@@ -204,7 +204,7 @@ export default function AppIntro() {
             <p className="mt-5 text-2xl font-extrabold tracking-tight text-white">Maktabah Al-'Ilmiyyah</p>
             <p dir="rtl" lang="ar" className="font-arabic mt-1 text-lg leading-snug text-gold">المكتبة العلمية</p>
             <span className="mt-3 h-px w-16 bg-gold/70" />
-            <p className="mt-3 text-[0.6875rem] font-semibold uppercase tracking-[0.22em] text-white/75">
+            <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/75">
               Perpustakaan Fatwa &amp; Khazanah
             </p>
             <span className="mt-8 flex items-center gap-1.5" aria-hidden="true">

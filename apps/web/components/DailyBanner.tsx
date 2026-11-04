@@ -160,9 +160,9 @@ export default function DailyBanner({ materials, topics }: { materials: Material
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-emerald-deep/90 via-emerald-deep/35 to-emerald-deep/10" aria-hidden />
               <div className="absolute inset-x-0 bottom-0 p-4 sm:p-7">
                 {label ? (
-                  <p className="inline-block max-w-full truncate rounded-full bg-emerald-deep/55 px-3 py-1 text-[0.6875rem] font-semibold uppercase tracking-wide text-gold backdrop-blur-sm">{label}</p>
+                  <p className="inline-block max-w-full truncate rounded-full bg-emerald-deep/55 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold backdrop-blur-sm">{label}</p>
                 ) : null}
-                <h3 className="mt-2 line-clamp-2 max-w-xl text-[1.0625rem] font-extrabold leading-snug text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-2xl">{materialTitle(s.m)}</h3>
+                <h3 className="mt-2 line-clamp-2 max-w-xl text-[17px] font-extrabold leading-snug text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-2xl">{materialTitle(s.m)}</h3>
                 {s.excerpt ? <p className="mt-1.5 line-clamp-2 max-w-prose text-xs leading-relaxed text-white/85 sm:text-sm">{s.excerpt}</p> : null}
                 <Link
                   href={`/materi/${s.m.id}`}

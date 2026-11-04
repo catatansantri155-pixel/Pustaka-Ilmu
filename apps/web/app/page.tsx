@@ -6,25 +6,21 @@ import type { MaterialSummary, Topic } from "@pustaka/shared-types";
 import { api, apiFetch, getLocalReading, type LocalReadingEntry } from "@/lib/api";
 import { EmptyState, ErrorState, LoadingState, MaterialCard } from "@/components/ui";
 import TopicCover from "@/components/TopicCover";
-import HeroSlideshow from "@/components/HeroSlideshow";
 import DailyBanner from "@/components/DailyBanner";
 import KontemporerSection from "@/components/KontemporerSection";
 import { imageForTopic } from "@/lib/topicImages";
 import { groupTopicsByBab } from "@/lib/babs";
 import { IconArrowRight, IconChevronRight, IconClock, IconSearch } from "@/components/icons";
 
-/** Cuplikan cakupan per bab untuk kartu deretan "Koleksi awal" (PR #14). */
-const BAB_DESC: Record<string, string> = {
-  THA: "Pembahasan bersuci: air, wudu, mandi wajib, tayamum, dan najis — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-  SHL: "Pembahasan shalat: syarat dan rukun, waktu-waktu shalat, shalat berjamaah, dan hal yang membatalkannya — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-  JNZ: "Pembahasan jenazah: memandikan, menyalati, menguburkan, takziah, dan ziarah kubur — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-  ZKT: "Pembahasan zakat: harta yang wajib dizakati, nisab, dan cara menunaikannya — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-  PUA: "Pembahasan puasa: syarat dan pembatalnya, kafarat, dan puasa-puasa sunah — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-  HAJ: "Pembahasan haji dan umrah: manasik, larangan ihram, dan penyembelihan dam — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-  MUA: "Pembahasan muamalah dan jual beli: jual beli, riba, utang-piutang, sewa dan upah, wakaf, serta waris — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-  NIK: "Pembahasan nikah: syarat dan rukun, mahar, walimah, hak dan kewajiban suami istri, serta mahram — dari fatwa para ulama dengan teks Arab dan sumbernya.",
-};
-
+/**
+ * Beranda — port komposisi prototipe Lovable "Pustaka Ilmu" (Nov 2026),
+ * direkonsiliasi dengan perilaku main: hero gradasi teal + kartu pencarian
+ * menumpang, kisi kartu bab kecil berfoto sampul asli per bab, lalu Fikih
+ * Kontemporer di bawah daftar bab. Perilaku data mengikuti main: kolam
+ * materi limit=48 untuk banner harian, banner "Pembahasan pilihan hari
+ * ini" (DailyBanner) di antara "Lanjutkan membaca" dan "Materi terbaru",
+ * dan "Materi terbaru" menampilkan 6 pertama dari kolam itu.
+ */
 export default function HomePage() {
   const router = useRouter();
   const [q, setQ] = useState("");
@@ -51,28 +47,21 @@ export default function HomePage() {
   const babGroups = groupTopicsByBab(topics);
 
   return (
-    <div className="space-y-6 sm:space-y-10 md:space-y-14">
-      {/* Hero slideshow otomatis (PR #11): foto berganti tiap ±5 detik.
-          Salam diberi latar kaca tipis agar tidak bertabrakan dengan foto
-          slideshow mana pun yang sedang tampil.
-          PR mobile-compact: di ponsel jarak seksi, radius, tinggi hero,
-          dan padding diringkas ±20–30%; sm: ke atas tidak berubah.
-          Putaran 2 (mobile-compact-2): tinggi hero ponsel 144→128px,
-          judul hero 20→18px, teks pengantar 13→12px, jarak dalam blok
-          cari dirapatkan — sm: ke atas tetap. */}
-      <section className="overflow-hidden rounded-3xl bg-emerald-deep shadow-lift sm:rounded-[2rem]">
-        <div className="relative">
-          <HeroSlideshow className="h-32 w-full sm:h-56" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-emerald-deep/85 via-emerald-deep/25 to-transparent" aria-hidden />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4 sm:p-7">
-            <p className="inline-block rounded-full bg-emerald-deep/55 px-3 py-1 text-[0.8125rem] font-medium text-gold backdrop-blur-sm">Assalamu&apos;alaikum</p>
-            <h1 className="mt-1.5 max-w-xl text-lg font-extrabold leading-tight text-white [text-shadow:0_1px_10px_rgba(10,31,68,0.5)] sm:text-3xl">Temukan ilmu dari sumbernya</h1>
+    <div className="space-y-10 md:space-y-14">
+      {/* Hero Lovable: gradasi teal tua + pola bintang emas samar. */}
+      <section className="relative">
+        <div className="bg-hero-grad relative overflow-hidden rounded-[2rem] px-5 pb-16 pt-7 text-white shadow-lift sm:px-7">
+          <div className="pattern-islamic pointer-events-none absolute inset-0 opacity-30" style={{ backgroundColor: "transparent" }} aria-hidden />
+          <div className="relative">
+            <p className="text-sm text-white/80">Assalamu&apos;alaikum</p>
+            <h1 className="font-read mt-1.5 max-w-xl text-2xl font-semibold leading-snug sm:text-3xl">Apa yang ingin Anda pelajari hari ini?</h1>
+            <p className="mt-2.5 max-w-prose text-sm leading-relaxed text-white/85">Telusuri fatwa para ulama berdasarkan persoalan — lengkap dengan teks Arab, terjemahan Indonesia, dan sumber aslinya.</p>
           </div>
         </div>
-        <div className="p-4 sm:p-7 sm:pt-5">
-          <p className="max-w-prose text-xs leading-relaxed text-white/85 sm:text-sm">Telusuri fatwa para ulama berdasarkan persoalan — lengkap dengan teks Arab, terjemahan Indonesia, dan sumber aslinya.</p>
-          <form role="search" className="mt-3 sm:mt-5" onSubmit={e => { e.preventDefault(); router.push(`/cari?q=${encodeURIComponent(q.trim())}`); }}>
-            <label htmlFor="home-search" className="mb-1.5 block text-sm font-semibold text-white">Apa yang ingin kamu pelajari?</label>
+        {/* Kartu pencarian menumpang di tepi bawah hero (pola Lovable). */}
+        <div className="relative z-10 mx-1 -mt-8 sm:mx-3">
+          <form role="search" onSubmit={e => { e.preventDefault(); router.push(`/cari?q=${encodeURIComponent(q.trim())}`); }} className="rounded-2xl border border-line bg-card p-3.5 shadow-lift sm:p-4">
+            <label htmlFor="home-search" className="mb-2 block text-sm font-semibold text-emerald-deep">Apa yang ingin kamu pelajari?</label>
             <div className="flex gap-2">
               <div className="relative min-w-0 flex-1">
                 <IconSearch className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
@@ -81,41 +70,18 @@ export default function HomePage() {
               <button className="btn-gold shrink-0" type="submit">Cari</button>
             </div>
           </form>
-          <Link href="/pustaka" className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-gold underline-offset-4 hover:underline sm:mt-4">
-            Lihat pustaka menurut ulama <IconArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="mt-3 flex justify-end px-1">
+            <Link href="/pustaka" className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-emerald underline-offset-4 hover:underline">
+              Lihat pustaka menurut ulama <IconArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* PR #14 (28 Okt 2026): "Koleksi awal" kini deretan geser ke samping
-          berisi kartu koleksi per bab (mengikuti data bab dari API lewat
-          lib/babs.ts — bab baru muncul otomatis). Tiap kartu menaut ke grup
-          bab itu di halaman /topik. */}
-      {babGroups.length > 0 && <section aria-labelledby="collection-heading">
-        <h2 id="collection-heading" className="section-heading">Koleksi awal</h2>
-        <p className="mt-1.5 text-xs text-muted sm:text-sm">Geser untuk menjelajahi koleksi per bab — ketuk satu koleksi untuk mulai membaca.</p>
-        <div className="no-scrollbar -mx-4 mt-3 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2 sm:mt-4">
-          {babGroups.map(g => (
-            <article key={g.prefix} className="card w-[85%] shrink-0 snap-start overflow-hidden sm:w-[26rem]">
-              <TopicCover image={imageForTopic(g.topics[0])} className="h-24 w-full sm:h-36" />
-              <div className="p-4 sm:p-5">
-                <h3 className="text-base font-extrabold text-emerald-deep sm:text-xl">{g.name_id}{g.name_ar ? <span dir="rtl" lang="ar" className="font-arabic ml-1.5 text-base font-medium text-emerald sm:text-xl">{g.name_ar}</span> : null}</h3>
-                <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-muted sm:text-sm">{BAB_DESC[g.prefix] || `Pembahasan ${g.name_id} — dari fatwa para ulama dengan teks Arab, terjemahan Indonesia, dan sumbernya.`}</p>
-                <Link href={`/topik#${g.prefix}`} className="btn-primary mt-3.5 sm:mt-4">
-                  Baca materi {g.name_id} <IconArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>}
-
-      {/* PR #14: "Lanjutkan membaca" kini deretan geser ke samping (pola
-          snap-scroll yang sama dengan deretan bab PR #11). */}
       {reading.length > 0 && <section aria-labelledby="continue-heading">
         <h2 id="continue-heading" className="section-heading flex items-center gap-2"><IconClock className="h-5 w-5 text-emerald" /> Lanjutkan membaca</h2>
-        <div className="no-scrollbar -mx-4 mt-3 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">{reading.slice(0, 6).map(r => (
-          <Link key={r.id} href={`/materi/${r.id}`} className="card group flex w-[85%] shrink-0 snap-start items-center justify-between gap-4 p-3.5 sm:w-96 sm:p-4">
+        <div className="mt-3 space-y-2.5">{reading.slice(0, 6).map(r => (
+          <Link key={r.id} href={`/materi/${r.id}`} className="card group flex items-center justify-between gap-4 p-4">
             <span className="min-w-0"><span className="block truncate font-semibold text-emerald-deep group-hover:underline">{r.title}</span>{r.scholar && <span className="text-sm text-muted">{r.scholar}</span>}</span>
             <span className="flex shrink-0 items-center gap-2 text-xs text-muted">{new Date(r.at).toLocaleDateString("id-ID", {day:"numeric",month:"short"})}<IconChevronRight className="h-4 w-4 text-emerald" /></span>
           </Link>
@@ -126,49 +92,46 @@ export default function HomePage() {
         {/* PR #14: banner slideshow harian di antara "Lanjutkan membaca"
             dan "Materi terbaru" — slide berganti tiap hari (lihat
             components/DailyBanner.tsx). Tidak tampil bila daftar materi
-            kosong. */}
+            kosong. Dikembalikan pada rekonsiliasi port Lovable menggantikan
+            banner "Materi Pilihan" statis milik port. */}
         <DailyBanner materials={materials} topics={topics} />
 
-        {/* PR #14: "Materi terbaru" kini deretan geser ke samping juga.
-            Kartunya memakai varian `uniform` pada MaterialCard:
-            tinggi seragam dalam deretan, judul maks 2 baris, meta
-            menempel di dasar kartu. */}
         <section aria-labelledby="latest-heading">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 id="latest-heading" className="section-heading">Materi terbaru</h2>
             <Link href="/cari" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-emerald underline-offset-4 hover:underline">Lihat semua materi <IconChevronRight className="h-4 w-4" /></Link>
           </div>
-          {materials.length === 0 ? <EmptyState title="Belum ada materi terbit" body="Materi akan tersedia setelah diterbitkan oleh admin. Kamu dapat mencoba kembali nanti." /> : <div className="no-scrollbar -mx-4 mt-4 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">{materials.slice(0, 6).map(m => <div key={m.id} className="w-[88%] min-w-0 shrink-0 snap-start sm:w-[30rem]"><MaterialCard m={m} uniform /></div>)}</div>}
+          {materials.length === 0 ? <EmptyState title="Belum ada materi terbit" body="Materi akan tersedia setelah diterbitkan oleh admin. Kamu dapat mencoba kembali nanti." /> : <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">{materials.slice(0, 6).map(m => <MaterialCard key={m.id} m={m} uniform />)}</div>}
         </section>
 
-        {/* PR #11 (27 Okt 2026): seksi grid "Topik pembahasan" dan daftar
-            "Pustaka ulama" TIDAK lagi tampil di Beranda (permintaan user —
-            topik kini halaman sendiri /topik, ulama cukup lewat tombol Ulama).
-            Sebagai gantinya: deretan BAB INTI geser-samping ala aplikasi
-            mobile; bab diturunkan dari grup topik API sehingga bab baru
-            (mis. Jenazah) muncul otomatis. Tiap kartu menaut ke grup bab
-            itu di halaman /topik. */}
+        {/* Kisi bab: kartu kecil 2 kolom di ponsel (tata letak port),
+            berfoto sampul ASLI per bab lewat sistem main (TopicCover +
+            imageForTopic, istilah Arab sebagai overlay — koreksi user
+            4 Nov 2026: gambar asli dipertahankan, pola kode tidak dipakai).
+            Tiap kartu menaut ke grup bab itu di halaman /topik. Bab
+            diturunkan dari grup topik API sehingga bab baru muncul
+            otomatis. */}
         <section aria-labelledby="bab-heading">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 id="bab-heading" className="section-heading">Bab pembahasan</h2>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 id="bab-heading" className="section-heading">Bab Fikih</h2>
+              <p className="mt-1 text-sm text-muted">{babGroups.length} bab · fatwa para ulama</p>
+            </div>
             <Link href="/topik" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-emerald underline-offset-4 hover:underline">Semua topik <IconChevronRight className="h-4 w-4" /></Link>
           </div>
-          <p className="mt-1.5 text-xs text-muted sm:text-sm">Geser untuk menjelajahi bab — ketuk satu bab untuk melihat topik di dalamnya.</p>
           {babGroups.length === 0 ? <div className="mt-4"><EmptyState title="Bab belum tersedia" body="Daftar bab akan tampil setelah tersedia dari server." /></div> : (
-            <div className="no-scrollbar -mx-4 mt-4 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-2">
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
               {babGroups.map(g => (
-                <Link key={g.prefix} href={`/topik#${g.prefix}`} className="group w-52 shrink-0 snap-start overflow-hidden rounded-3xl border border-line bg-white shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
-                  <div className="relative">
-                    <TopicCover image={imageForTopic(g.topics[0])} className="h-20 w-full sm:h-28" />
+                <Link key={g.prefix} href={`/topik#${g.prefix}`} className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
+                  <span className="relative block">
+                    <TopicCover image={imageForTopic(g.topics[0])} className="h-20 w-full sm:h-24" />
                     {g.name_ar ? <span dir="rtl" lang="ar" className="font-arabic pointer-events-none absolute bottom-2 right-3 text-lg leading-none text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">{g.name_ar}</span> : null}
-                  </div>
-                  <div className="flex items-center justify-between gap-2 p-3 sm:p-3.5">
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-bold text-emerald-deep">{g.name_id}</span>
-                      <span className="text-[0.6875rem] font-medium uppercase tracking-wide text-muted">{g.topics.length} topik</span>
-                    </span>
-                    <IconChevronRight className="h-4 w-4 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
-                  </div>
+                  </span>
+                  <span className="flex flex-1 flex-col p-3 sm:p-3.5">
+                    <span className="line-clamp-2 min-h-10 text-sm font-semibold leading-tight text-emerald-deep">{g.name_id}</span>
+                    <span className="text-[11px] text-muted">{g.topics.length} topik</span>
+                    <span className="mt-2.5 inline-flex min-h-11 items-center justify-center rounded-lg bg-secondary px-3 text-xs font-semibold text-secondary-foreground transition group-hover:bg-emerald group-hover:text-white">Buka Bab</span>
+                  </span>
                 </Link>
               ))}
             </div>

@@ -1,28 +1,48 @@
-import { IconExternal, IconInfo } from "@/components/icons";
+import { IconChat, IconExternal, IconMail } from "@/components/icons";
+
+/**
+ * Kontak resmi untuk menu Saran, Ucapan, dan Dukungan (keputusan user
+ * 4 Nov 2026). Email resmi Catatan Santri:
+ */
+const EMAIL_RESMI = "catatansantri155@gmail.com";
+/**
+ * NOMOR WHATSAPP ADMIN — diberikan user 4 Nov 2026 (+62 878 86589395)
+ * untuk kontak dukungan di aplikasi. Format internasional tanpa tanda
+ * "+"; tombol WhatsApp Admin menaut ke wa.me/<nomor> ini.
+ */
+const NOMOR_WHATSAPP_ADMIN = "6287886589395";
+const TAUTAN_WHATSAPP_ADMIN = NOMOR_WHATSAPP_ADMIN ? `https://wa.me/${NOMOR_WHATSAPP_ADMIN}` : "#saran-dukungan";
 
 /**
  * Halaman Tentang (koreksi PR #13, keputusan user 27 Okt 2026 09:19 WIB):
  * isi Tentang TIDAK lagi tampil sebagai popup/dialog — di ponsel user
  * panel dialog tampil rusak (tergulir ke tengah, harus scroll di kotak
  * sempit). Tentang kini halaman terpisah /tentang yang mengalir dengan
- * scroll halaman biasa; tombol ikon "i" di pojok kanan atas header adalah
- * tautan ke halaman ini. Isi halaman adalah fakta aplikasi — jangan diubah
- * tanpa keputusan user.
+ * scroll halaman biasa. Pintu masuknya sejak port Lovable (4 Nov 2026)
+ * adalah tombol utama mengambang di pojok kanan bawah (ReaderShell);
+ * pojok kanan atas header kini hanya tombol Pengaturan. Isi halaman
+ * adalah fakta aplikasi — jangan diubah tanpa keputusan user.
  */
 export default function TentangPage() {
   return (
     <div className="mx-auto w-full max-w-2xl space-y-6">
-      <header>
-        <h1 className="flex items-center gap-2.5 text-[1.0625rem] font-extrabold text-emerald-deep sm:text-xl">
-          <IconInfo className="h-5 w-5 text-emerald sm:h-6 sm:w-6" /> Tentang Maktabah Al-&apos;Ilmiyyah
-        </h1>
-        <p className="mt-2 text-sm leading-relaxed text-muted">
-          Sekilas tentang aplikasi ini, alasan dibangunnya, dan siapa yang mengelolanya.
-        </p>
+      {/* Pita hero ala prototipe Lovable: gradasi teal, logo, nama aplikasi. */}
+      <header className="bg-hero-grad relative overflow-hidden rounded-[2rem] px-6 py-8 text-center text-white shadow-lift">
+        <div className="pattern-islamic pointer-events-none absolute inset-0 opacity-25" style={{ backgroundColor: "transparent" }} aria-hidden />
+        <div className="relative flex flex-col items-center">
+          <span className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-3xl bg-white shadow-soft">
+            <img src="/images/logo-maktabah.png" alt="" aria-hidden width={64} height={64} decoding="async" className="h-full w-full object-contain p-1" />
+          </span>
+          <h1 className="font-read mt-3 text-xl font-semibold">Tentang Maktabah Al-&apos;Ilmiyyah</h1>
+          <p dir="rtl" lang="ar" className="font-arabic mt-1 text-lg leading-tight text-gold">المكتبة العلمية</p>
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-white/85">
+            Sekilas tentang aplikasi ini, alasan dibangunnya, dan siapa yang mengelolanya.
+          </p>
+        </div>
       </header>
 
-      <div className="card p-4 sm:p-7">
-        <div className="space-y-6 text-sm leading-relaxed text-stone-600 sm:text-[0.9375rem]">
+      <div className="card p-6 sm:p-7">
+        <div className="space-y-6 text-[15px] leading-relaxed text-stone-600">
           <section>
             <h2 className="text-base font-bold text-emerald-deep">Tentang aplikasi</h2>
             <p className="mt-1.5">
@@ -73,6 +93,30 @@ export default function TentangPage() {
                 Kanal Telegram Catatan Santri <IconExternal className="h-4 w-4" />
               </a>
             </p>
+          </section>
+
+          <section id="saran-dukungan" className="scroll-mt-24">
+            <h2 className="text-base font-bold text-emerald-deep">Saran, Ucapan, dan Dukungan</h2>
+            <p className="mt-1.5">
+              Saran perbaikan, ucapan, maupun dukungan untuk pengembangan aplikasi ini sangat
+              kami hargai. Sampaikan melalui email resmi Catatan Santri atau WhatsApp Admin.
+            </p>
+            <p className="mt-3 flex flex-col gap-2 sm:flex-row">
+              <a
+                href={`mailto:${EMAIL_RESMI}?subject=${encodeURIComponent("Saran untuk Maktabah Al-'Ilmiyyah")}`}
+                className="btn-primary flex-1"
+              >
+                <IconMail className="h-4 w-4" /> Kirim Email
+              </a>
+              <a
+                href={TAUTAN_WHATSAPP_ADMIN}
+                {...(NOMOR_WHATSAPP_ADMIN ? { target: "_blank", rel: "noreferrer" } : {})}
+                className="btn-outline flex-1"
+              >
+                <IconChat className="h-4 w-4" /> WhatsApp Admin
+              </a>
+            </p>
+            <p className="mt-2 text-xs text-muted">Email resmi: {EMAIL_RESMI}</p>
           </section>
 
           <p className="border-t border-line pt-4 text-xs text-muted">

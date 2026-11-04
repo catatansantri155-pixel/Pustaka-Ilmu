@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   icons: { icon: "/icons/icon-192.png", apple: "/apple-touch-icon.png" },
 };
-export const viewport: Viewport = { themeColor: "#0A1F44" };
+export const viewport: Viewport = { themeColor: "#0B3E35" };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -18,10 +18,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Figtree:wght@400;500;600;700;800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body>
-        {/* Lapisan pembuka ala aplikasi mobile (PR splash+onboarding):
+        {/* Lapisan pembuka ala aplikasi mobile (PR splash+onboarding,
+            dikembalikan pada rekonsiliasi port Lovable — perilaku main):
             splash tampil setiap pemuatan awal dokumen; onboarding hanya
             sekali pada kunjungan pertama yang mendarat di beranda. Logika
             lengkapnya di components/AppIntro.tsx — dipasang di layout akar
