@@ -10,7 +10,7 @@ import DailyBanner from "@/components/DailyBanner";
 import KontemporerSection from "@/components/KontemporerSection";
 import { imageForTopic } from "@/lib/topicImages";
 import { groupTopicsByBab } from "@/lib/babs";
-import { IconArrowRight, IconChevronRight, IconClock, IconSearch } from "@/components/icons";
+import { IconChevronRight, IconClock, IconSearch } from "@/components/icons";
 
 /**
  * Beranda — port komposisi prototipe Lovable "Pustaka Ilmu" (Nov 2026),
@@ -70,11 +70,9 @@ export default function HomePage() {
               <button className="btn-gold shrink-0" type="submit">Cari</button>
             </div>
           </form>
-          <div className="mt-3 flex justify-end px-1">
-            <Link href="/pustaka" className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-emerald underline-offset-4 hover:underline">
-              Lihat pustaka menurut ulama <IconArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+          {/* Tautan "Lihat pustaka menurut ulama" DIHAPUS atas permintaan
+              user 4 Nov 2026 — beranda langsung ke "Lanjutkan membaca"
+              sesudah kartu pencarian (posisi bagian itu ikut naik). */}
         </div>
       </section>
 
