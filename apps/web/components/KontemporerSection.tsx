@@ -116,12 +116,14 @@ export default function KontemporerSection({ topics }: { topics: Topic[] }) {
                   Kaidah umum, bukan fatwa produk spesifik.
                 </p>
               )}
-              <div className="mt-auto flex flex-col gap-2 pt-3">
-                {g.links.map((l) => (
-                  <Link key={l.label} href={kontemporerHref(l, topics)} className="btn-primary w-full">
-                    {l.label} <IconArrowRight className="h-4 w-4 shrink-0" />
-                  </Link>
-                ))}
+              {/* Keputusan user 4 Nov 2026: SATU tombol per kartu, berlabel
+                  "Buka Materi", menuju tautan PERTAMA (utama) kelompok.
+                  Tautan lain kelompok tetap dipakai untuk hitungan materi
+                  tertaut di atas, hanya tidak lagi dirender sebagai tombol. */}
+              <div className="mt-auto pt-3">
+                <Link href={kontemporerHref(g.links[0], topics)} className="btn-primary w-full">
+                  Buka Materi <IconArrowRight className="h-4 w-4 shrink-0" />
+                </Link>
               </div>
             </div>
           </article>
