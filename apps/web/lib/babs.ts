@@ -25,14 +25,18 @@ const BAB_INFO: Record<string, { name_id: string; name_ar: string }> = {
   NIK: { name_id: "Nikah", name_ar: "النكاح" },
   TAL: { name_id: "Talak & Keluarga", name_ar: "الطلاق والأسرة" },
   MAK: { name_id: "Makanan & Sembelihan", name_ar: "الأطعمة والذبائح" },
+  SUM: { name_id: "Sumpah & Nazar", name_ar: "الأيمان والنذور" },
+  TIB: { name_id: "Pengobatan & Ruqyah", name_ar: "الطب والتداوي" },
+  LIB: { name_id: "Pakaian & Perhiasan", name_ar: "اللباس والزينة" },
+  SUR: { name_id: "Gambar & Fotografi", name_ar: "الصور والتصوير" },
 };
 
 /** Urutan tampil bab yang dikenal; awalan lain menyusul alfabetis. */
-const BAB_ORDER = ["THA", "SHL", "JNZ", "ZKT", "PUA", "HAJ", "MUA", "NIK", "TAL", "MAK"];
+const BAB_ORDER = ["THA", "SHL", "JNZ", "ZKT", "PUA", "HAJ", "MUA", "NIK", "TAL", "MAK", "SUM", "TIB", "LIB", "SUR"];
 
 /**
  * Identitas visual per bab dari prototipe Lovable (motif geometris + hue
- * oklch) — dipakai komponen BabArt. Sepuluh bab = sepuluh visual unik,
+ * oklch) — dipakai komponen BabArt. Empat belas bab = empat belas hue unik,
  * tanpa makhluk bernyawa. Awalan tak dikenal memakai motif buku teal.
  */
 export type BabMotif = "star8" | "hex" | "arch" | "lattice" | "rosette" | "chevron" | "dome" | "lantern" | "book" | "wave";
@@ -48,6 +52,10 @@ const BAB_ART: Record<string, { motif: BabMotif; hue: number }> = {
   NIK: { motif: "star8", hue: 15 },
   TAL: { motif: "chevron", hue: 320 },
   MAK: { motif: "book", hue: 110 },
+  SUM: { motif: "lantern", hue: 290 },
+  TIB: { motif: "wave", hue: 165 },
+  LIB: { motif: "hex", hue: 35 },
+  SUR: { motif: "dome", hue: 215 },
 };
 
 export function artForBabPrefix(prefix: string): { motif: BabMotif; hue: number } {
