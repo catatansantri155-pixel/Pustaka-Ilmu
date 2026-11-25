@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode, SVGProps } from "react";
 import {
-  IconBookmark, IconChat, IconGrid, IconHeadphones, IconHome,
+  IconBookmark, IconGrid, IconHeadphones, IconHome,
   IconInfo, IconLayers, IconSearch, IconSettings, IconUsers,
 } from "@/components/icons";
 
@@ -24,10 +24,6 @@ const NAV_EXTRA: Array<{ href: string; label: string; icon: IconType }> = [
   { href: "/cari", label: "Katalog", icon: IconGrid },
   { href: "/audio", label: "Audio", icon: IconHeadphones },
 ];
-{/* Tanya AI (25 Nov 2026): masuk navigasi desktop; di ponsel pintunya ada
-    di kartu beranda agar pil navigasi bawah tetap 5 sel. */}
-const NAV_TANYA = { href: "/tanya", label: "Tanya AI", icon: IconChat };
-
 export default function ReaderShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() || "/";
   const isAdmin = pathname.startsWith("/admin");
@@ -39,7 +35,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
   // Satu pintu per tujuan: "Katalog" (NAV_EXTRA[0]) menuju /cari yang sama
   // dengan "Cari" — dua tombol berdampingan ke halaman yang sama terasa
   // menyatu/duplikat, jadi nav desktop hanya memakai satu di antaranya.
-  const desktopNav = [...NAV_MAIN, NAV_EXTRA[1], NAV_TANYA];
+  const desktopNav = [...NAV_MAIN, NAV_EXTRA[1]];
   return (
     <div className="reader-shell min-h-screen bg-ivory pt-[65px]">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
