@@ -135,6 +135,8 @@ export const api = {
     const data = await apiFetch<unknown>(`/api/search?${qs.toString()}`, { auth: false });
     return asList<SearchResult>(data);
   },
+  ask: (question: string) =>
+    apiFetch<AskResponse>("/api/ask", { method: "POST", auth: false, body: JSON.stringify({ question }), timeoutMs: 90000 }),
   bookmarks: () => list<Bookmark>("/api/bookmarks"),
   addBookmark: (materialId: string) =>
     apiFetch<Bookmark>("/api/bookmarks", { method: "POST", body: JSON.stringify({ material_id: materialId }) }),
@@ -185,6 +187,16 @@ export interface IssueDetail {
   topic?: { id: string; code?: string; name_id?: string; name_ar?: string } | null;
   materials: Array<Record<string, unknown>>;
   materials_status: string;
+}
+
+/** Fitur Tanya AI: jawaban dirangkum AI hanya dari fatwa terbit; sumber selalu disertakan. */
+export interface AskSource {
+  id: string; title_id: string; title_ar?: string; scholar?: string;
+  topics?: string[]; source_url?: string | null; app_path: string;
+}
+export interface AskResponse {
+  question: string; answer: string; sources: AskSource[];
+  provider?: string | null; model?: string | null; label: string;
 }
 
 /** Riwayat bacaan lokal (localStorage) untuk "Lanjutkan membaca" di beranda. */

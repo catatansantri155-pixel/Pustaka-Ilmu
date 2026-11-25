@@ -12,6 +12,16 @@ class Settings(BaseSettings):
     ai_api_base: str = ""
     ai_api_key: str = ""
     ai_model: str = "gpt-4o-mini"
+    # Fitur Tanya AI (pencarian + ringkasan fatwa terbit). Sengaja memakai
+    # variabel sendiri agar aktivasi fitur ini TIDAK mengubah perilaku
+    # adapter terjemahan (AI_API_KEY tetap kosong = pipeline batch aman).
+    ai_ask_api_base: str = ""
+    ai_ask_api_key: str = ""
+    ai_ask_model: str = "openai/gpt-oss-120b"
+    ai_ask_fallback_api_base: str = ""
+    ai_ask_fallback_api_key: str = ""
+    ai_ask_fallback_model: str = "@cf/meta/llama-3.1-8b-instruct"
+    ai_ask_rate_limit_per_minute: int = 10
     ai_cost_limit: float = 0
     login_rate_limit_per_minute: int = 60
     rate_limit_per_minute: int = 300

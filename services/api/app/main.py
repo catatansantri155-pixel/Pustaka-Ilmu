@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from .db import Base, engine
 from . import models  # noqa
 from .config import settings
-from .routers import auth, public, admin, references, bookmarks, catalog_admin, catalog, queue, corpus
+from .routers import auth, public, admin, references, bookmarks, catalog_admin, catalog, queue, corpus, ask
 
 if settings.environment == "production" and (len(settings.jwt_secret) < 32 or settings.jwt_secret in ("dev-secret-change-me", "change-me-in-production")):
     raise RuntimeError("JWT_SECRET produksi wajib unik dan minimal 32 karakter")
@@ -34,7 +34,12 @@ async def rate_limit_middleware(request: Request, call_next):
         limit = settings.rate_limit_per_minute
     else:
         return await call_next(request)
-    ip = request.client.host if request.client else "unknown"
+    # Di belakang Cloudflare Tunnel semua koneksi tiba dari 127.0.0.1; tanpa
+    # header ini seluruh pengunjung dunia berbagi SATU keranjang rate limit.
+    # CF-Connecting-IP diisi Cloudflare dengan IP pengunjung asli.
+    ip = (request.headers.get("cf-connecting-ip")
+          or (request.headers.get("x-forwarded-for", "").split(",")[0].strip() or None)
+          or (request.client.host if request.client else "unknown"))
     key = (ip, "login" if path in ("/api/auth/login", "/api/auth/mfa/verify") else "api")
     now = time.time()
     bucket = _rate_store[key]
@@ -45,6 +50,40 @@ async def rate_limit_middleware(request: Request, call_next):
         return JSONResponse(status_code=429, content={"detail": "Terlalu banyak permintaan, coba lagi nanti"})
     bucket.append(now)
     return await call_next(request)
+
+# --- Cache header untuk endpoint baca publik (GET saja, respons 200 saja) ---
+# Memungkinkan Cloudflare (Cache Rule "cache everything" di zona api.*) dan
+# peramban menyimpan respons katalog yang sama untuk semua pengunjung,
+# sehingga request berulang tidak perlu menembus tunnel + database. Endpoint admin,
+# auth, bookmark, antrean, dan korpus TIDAK dicakup (data privat/dinamis).
+PUBLIC_CACHE_RULES = [
+    ("/api/scholars", "public, max-age=300, s-maxage=86400"),
+    ("/api/topics", "public, max-age=300, s-maxage=86400"),
+    ("/api/catalog/", "public, max-age=60, s-maxage=600"),
+    ("/api/materials", "public, max-age=60, s-maxage=900"),
+    ("/api/references", "public, max-age=300, s-maxage=86400"),
+]
+
+@app.middleware("http")
+async def public_cache_headers(request: Request, call_next):
+    response = await call_next(request)
+    if request.method == "GET" and response.status_code == 200:
+        for prefix, value in PUBLIC_CACHE_RULES:
+            if request.url.path.startswith(prefix):
+                response.headers["Cache-Control"] = value
+                break
+    return response
+
+# --- Pencatat kunjungan buatan sendiri (fail-open, lihat app/visits.py) ---
+@app.middleware("http")
+async def visit_tracking(request: Request, call_next):
+    response = await call_next(request)
+    try:
+        from .visits import record_visit
+        record_visit(request, response.status_code)
+    except Exception:
+        pass
+    return response
 
 @app.get("/health")
 def health():
@@ -70,3 +109,4 @@ app.include_router(catalog_admin.router)
 app.include_router(catalog.router)
 app.include_router(queue.router)
 app.include_router(corpus.router)
+app.include_router(ask.router)

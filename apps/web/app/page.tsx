@@ -10,7 +10,7 @@ import DailyBanner from "@/components/DailyBanner";
 import KontemporerSection from "@/components/KontemporerSection";
 import { imageForTopic } from "@/lib/topicImages";
 import { groupTopicsByBab } from "@/lib/babs";
-import { IconChevronRight, IconClock, IconSearch } from "@/components/icons";
+import { IconChat, IconChevronRight, IconClock, IconSearch } from "@/components/icons";
 
 /**
  * Beranda — port komposisi prototipe Lovable "Pustaka Ilmu" (Nov 2026),
@@ -74,6 +74,21 @@ export default function HomePage() {
               user 4 Nov 2026 — beranda langsung ke "Lanjutkan membaca"
               sesudah kartu pencarian (posisi bagian itu ikut naik). */}
         </div>
+      </section>
+
+      {/* Pintu Tanya AI (25 Nov 2026): terutama untuk ponsel, karena pil
+          navigasi bawah tetap 5 sel; desktop juga punya entri di header. */}
+      <section aria-labelledby="tanya-heading">
+        <Link href="/tanya" className="card group flex items-center gap-4 p-4 sm:p-5">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald text-white shadow-soft">
+            <IconChat className="h-5 w-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <strong id="tanya-heading" className="block text-[15px] text-emerald-deep group-hover:underline">Tanya AI — jawaban dari fatwa terbit</strong>
+            <span className="mt-0.5 block text-sm leading-relaxed text-muted">Tulis pertanyaanmu; AI mencari fatwa yang membahasnya dan merangkumnya lengkap dengan sumber. AI tidak memutuskan hukum.</span>
+          </span>
+          <IconChevronRight className="h-5 w-5 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
+        </Link>
       </section>
 
       {reading.length > 0 && <section aria-labelledby="continue-heading">
