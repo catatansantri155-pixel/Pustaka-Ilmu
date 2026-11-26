@@ -3,8 +3,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode, SVGProps } from "react";
 import {
-  IconBookmark, IconGrid, IconHeadphones, IconHome,
-  IconInfo, IconLayers, IconSearch, IconSettings, IconUsers,
+  IconBookmark, IconHeadphones, IconHome,
+  IconLayers, IconSearch, IconSettings, IconUsers,
 } from "@/components/icons";
 
 type IconType = ComponentType<SVGProps<SVGSVGElement>>;
@@ -20,10 +20,7 @@ const NAV_MAIN: Array<{ href: string; label: string; icon: IconType }> = [
   { href: "/pustaka", label: "Ulama", icon: IconUsers },
   { href: "/tersimpan", label: "Tersimpan", icon: IconBookmark },
 ];
-const NAV_EXTRA: Array<{ href: string; label: string; icon: IconType }> = [
-  { href: "/cari", label: "Katalog", icon: IconGrid },
-  { href: "/audio", label: "Audio", icon: IconHeadphones },
-];
+const NAV_AUDIO = { href: "/audio", label: "Audio", icon: IconHeadphones };
 export default function ReaderShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() || "/";
   const isAdmin = pathname.startsWith("/admin");
@@ -32,10 +29,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   };
-  // Satu pintu per tujuan: "Katalog" (NAV_EXTRA[0]) menuju /cari yang sama
-  // dengan "Cari" — dua tombol berdampingan ke halaman yang sama terasa
-  // menyatu/duplikat, jadi nav desktop hanya memakai satu di antaranya.
-  const desktopNav = [...NAV_MAIN, NAV_EXTRA[1]];
+  const desktopNav = [...NAV_MAIN, NAV_AUDIO];
   return (
     <div className="reader-shell min-h-screen bg-ivory pt-[65px]">
       <a className="skip-link" href="#konten-utama">Langsung ke isi</a>
@@ -53,13 +47,13 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
           praktis sama karena isinya teks di atas latar ivory terang. */}
       <header className="fixed inset-x-0 top-0 z-40 border-b border-white/60 bg-white/80 shadow-[0_8px_30px_-12px_rgba(18,35,31,0.18)] backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 md:px-6">
-          <Link href="/" className="inline-flex min-h-11 items-center gap-2.5" aria-label="Maktabah Al-'Ilmiyyah — Beranda">
+          <Link href="/" className="inline-flex min-h-11 min-w-0 items-center gap-2.5" aria-label="Maktabah Al-'Ilmiyyah — Beranda">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
               <img src="/images/logo-maktabah.png" alt="" aria-hidden width={44} height={44} decoding="async" className="h-full w-full object-contain p-0.5" />
             </span>
-            <span className="leading-tight">
-              <span className="block text-base font-extrabold tracking-tight text-emerald-deep">Maktabah Al-'Ilmiyyah</span>
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">Perpustakaan Fatwa &amp; Khazanah</span>
+            <span className="min-w-0 leading-tight">
+              <span className="block text-sm font-extrabold tracking-tight sm:text-base text-emerald-deep">Maktabah Al-'Ilmiyyah</span>
+              <span className="block text-[10px] font-semibold uppercase tracking-[0.10em] text-muted">Pustaka Ilmu</span>
             </span>
           </Link>
           <div className="flex items-center gap-1">
@@ -80,10 +74,7 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
                 );
               })}
             </nav>
-            {/* Port Lovable + keputusan user 4 Nov 2026: pojok kanan atas
-                header HANYA tombol Pengaturan. Tombol Tentang yang dulu di
-                sini pindah menjadi tombol utama mengambang di pojok kanan
-                bawah (lihat di bawah, sebelum navigasi bawah). */}
+            {/* Pengaturan dan Tentang tetap mudah diakses tanpa menutupi konten. */}
             <Link
               href="/pengaturan"
               aria-label="Pengaturan aplikasi"
@@ -98,44 +89,18 @@ export default function ReaderShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main id="konten-utama" tabIndex={-1} className="mx-auto w-full max-w-6xl px-4 pb-32 pt-6 md:px-6 md:pt-10 lg:pb-14">{children}</main>
+      <main id="konten-utama" tabIndex={-1} className="mx-auto w-full max-w-6xl px-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-4 md:px-6 md:pt-8 lg:pb-14">{children}</main>
 
-      <footer className="mx-auto w-full max-w-6xl px-4 pb-32 md:px-6 lg:pb-10">
+      <footer className="mx-auto w-full max-w-6xl px-4 pb-[calc(6rem+env(safe-area-inset-bottom))] md:px-6 lg:pb-10">
         <div className="border-t border-line pt-5 text-xs leading-relaxed text-muted">
           <p className="font-semibold text-emerald-deep">Maktabah Al-'Ilmiyyah</p>
           <p className="mt-1">Perpustakaan fatwa dan khazanah Islam — teks Arab beserta terjemahan Indonesia. Catatan sumber tersedia pada setiap materi.</p>
+          <Link href="/tentang" className="mt-2 inline-flex min-h-11 items-center font-semibold text-emerald underline-offset-4 hover:underline">Tentang &amp; sumber</Link>
         </div>
       </footer>
 
-      {/* Tombol Tentang mengambang (keputusan user 4 Nov 2026): tombol
-          utama di pojok kanan bawah, di atas navigasi bawah pada ponsel.
-          Pada halaman Baca (/materi/…) ia menyusut menjadi tombol ikon
-          bulat agar tidak menutupi teks, dan disembunyikan di halaman
-          Tentang itu sendiri. */}
-      {pathname !== "/tentang" ? (
-        pathname.startsWith("/materi/") ? (
-          <Link
-            href="/tentang"
-            aria-label="Tentang aplikasi Maktabah Al-'Ilmiyyah"
-            className="fixed bottom-24 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-emerald text-white shadow-pill transition hover:bg-emerald-deep lg:bottom-6"
-          >
-            <IconInfo className="h-5 w-5" />
-          </Link>
-        ) : (
-          <Link
-            href="/tentang"
-            className="fixed bottom-24 right-4 z-50 inline-flex min-h-11 items-center gap-2 rounded-full bg-emerald py-2.5 pl-4 pr-5 text-sm font-semibold text-white shadow-pill transition hover:bg-emerald-deep lg:bottom-6"
-          >
-            <IconInfo className="h-5 w-5" /> Tentang
-          </Link>
-        )
-      ) : null}
-
       {/* Navigasi bawah melayang (mobile & tablet, <lg) — gaya aplikasi native.
-          PENTING: selama nav ini tampil, padding bawah <main> dan <footer>
-          harus tetap pb-32 (±128px > tinggi pil + offset ±74px); jangan
-          dikecilkan di breakpoint md, atau elemen terbawah tertutup pil
-          dan tidak bisa diklik. */}
+          PENTING: selama nav ini tampil, padding bawah main/footer harus melampaui tinggi navigasi. */}
       {/* Lebar nav ditegaskan TANPA max-w-md/mx-auto (PR #10 lanjutan, bukti
           tangkapan layar user 27 Okt 2026): skema lama inset-x-3 + max-w-md +
           mx-auto pada elemen fixed terukur me-render ±470-495px pada viewport
