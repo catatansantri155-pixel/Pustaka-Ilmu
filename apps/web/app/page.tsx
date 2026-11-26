@@ -10,7 +10,7 @@ import DailyBanner from "@/components/DailyBanner";
 import KontemporerSection from "@/components/KontemporerSection";
 import { imageForTopic } from "@/lib/topicImages";
 import { groupTopicsByBab } from "@/lib/babs";
-import { IconBookOpen, IconChevronRight, IconClock, IconLayers, IconSearch, IconUsers } from "@/components/icons";
+import { IconBookOpen, IconChevronRight, IconClock, IconSearch } from "@/components/icons";
 
 /** Home: pencarian, akses cepat, riwayat, dan eksplorasi koleksi. */
 export default function HomePage() {
@@ -69,21 +69,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="quick-heading">
-        <h2 id="quick-heading" className="sr-only">Akses cepat</h2>
-        <div className="grid grid-cols-3 gap-2 sm:gap-4">
-          {[
-            { href: "/topik", label: "Bab Fikih", icon: IconLayers },
-            { href: "/pustaka", label: "Para Ulama", icon: IconUsers },
-            { href: "/cari#persoalan", label: "Persoalan", icon: IconBookOpen },
-          ].map(({ href, label, icon: Icon }) => (
-            <Link key={href} href={href} className="card group flex min-h-24 flex-col items-center justify-center gap-2 px-2 py-3 text-center transition hover:border-emerald/40 hover:shadow-lift">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface text-emerald"><Icon className="h-5 w-5" /></span>
-              <span className="text-xs font-semibold leading-tight text-emerald-deep sm:text-sm">{label}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* Bagian "Akses cepat" (kartu Bab Fikih / Para Ulama / Persoalan)
+          DIHAPUS atas permintaan user 26 Nov 2026 — ketiganya sudah
+          terwakili tombol utama navigasi, tidak perlu tampil di beranda. */}
 
       {reading.length > 0 && <section aria-labelledby="continue-heading">
         <h2 id="continue-heading" className="section-heading flex items-center gap-2"><IconClock className="h-5 w-5 text-emerald" /> Lanjutkan membaca</h2>
