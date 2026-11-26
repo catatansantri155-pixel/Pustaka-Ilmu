@@ -72,19 +72,19 @@ export function MaterialCard({ m, uniform = false }: { m: MaterialSummary; unifo
     // ulama, persoalan) tidak meneruskan prop ini dan tampil seperti biasa.
     <div className={`cv-material relative min-w-0 ${uniform ? "h-full" : ""}`}>
     <Link href={`/materi/${m.id}`} className={`catalog-entry group w-full ${uniform ? "h-full" : ""}`}>
-      <div className={`flex min-w-0 gap-4 p-3.5 sm:gap-5 sm:p-4 ${uniform ? "h-full" : ""}`}>
-        <TopicCover image={img} className="h-24 w-24 shrink-0 rounded-2xl sm:h-28 sm:w-36" />
+      <div className={`flex min-w-0 gap-3 p-3 sm:gap-4 sm:p-4 ${uniform ? "h-full" : ""}`}>
+        <TopicCover image={img} className="h-16 w-16 shrink-0 rounded-xl min-[390px]:h-20 min-[390px]:w-20 sm:h-24 sm:w-28" />
         <div className={uniform ? "flex min-w-0 flex-1 flex-col py-0.5" : "min-w-0 flex-1 py-0.5"}>
-          <div className={uniform ? "flex h-5 flex-nowrap items-center gap-x-2 overflow-hidden" : "flex flex-wrap items-center gap-x-2 gap-y-1"}>
+          <div className={uniform ? "flex h-5 flex-nowrap items-center gap-x-2 overflow-hidden pr-12" : "flex flex-wrap items-center gap-x-2 gap-y-1 pr-12"}>
             {m.topics?.slice(0, 2).map((t) => (
               <span key={t.id} className={`${uniform ? "whitespace-nowrap " : ""}text-[11px] font-semibold uppercase tracking-wide text-emerald`}>{topicName(t)}</span>
             ))}
             {m.content_type ? <span className={`${uniform ? "whitespace-nowrap " : ""}text-[11px] font-medium uppercase tracking-wide text-muted`}>{m.content_type}</span> : null}
             {m.is_demo ? <span className="chip border-amber-300 bg-amber-50 text-amber-800">Demo</span> : null}
           </div>
-          <h3 className={`mt-1.5 text-base font-bold leading-snug text-emerald-deep ${uniform ? "line-clamp-2 min-h-[2.75rem]" : ""}`}>{materialTitle(m)}</h3>
-          {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 truncate text-right text-base text-ink/80">{m.title_ar}</p> : null}
-          {m.summary ? <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted">{m.summary}</p> : null}
+          <h3 className={`mt-1.5 pr-12 text-sm font-bold leading-snug sm:text-base text-emerald-deep ${uniform ? "line-clamp-2" : ""}`}>{materialTitle(m)}</h3>
+          {m.title_ar ? <p dir="rtl" lang="ar" className="font-arabic mt-1 truncate text-right text-sm text-ink/80">{m.title_ar}</p> : null}
+          {m.summary ? <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed sm:text-sm text-muted">{m.summary}</p> : null}
           <p className={`${uniform ? "mt-auto pt-2.5" : "mt-2.5"} flex min-w-0 items-center gap-1 text-xs font-medium text-muted`}>
             <span className="min-w-0 truncate">{scholarName(m.scholar) || m.scholar_name || ""}{m.ai_label ? ` · ${m.ai_label}` : ""}</span>
             <IconChevronRight className="ml-auto h-4 w-4 shrink-0 text-emerald transition group-hover:translate-x-0.5" />
@@ -94,7 +94,7 @@ export function MaterialCard({ m, uniform = false }: { m: MaterialSummary; unifo
     </Link>
     {/* Tombol penanda lokal: saudara tautan kartu (BUKAN di dalamnya) agar
         kliknya tidak pernah menyatu dengan navigasi kartu. */}
-    <div className="absolute right-3 top-3 z-10">
+    <div className="absolute right-2 top-2 z-10">
       <BookmarkButton m={m} />
     </div>
     </div>
