@@ -190,6 +190,23 @@ export const BAB_IMAGES: Record<string, TopicImage> = {
   ADB: { src: "/images/bab/adb.webp", alt: "Teko perak dan gelas teh untuk menjamu tamu", ar: "الأدب والأخلاق", ...GEMINI_CREDIT },
   FAD: { src: "/images/bab/fad.webp", alt: "Halaman masjid saat matahari terbit dengan sajadah dan tasbih", ar: "فضائل الأعمال", ...GEMINI_CREDIT },
   RAQ: { src: "/images/bab/raq.webp", alt: "Jendela berhujan dengan lilin dan buku harian tertutup", ar: "الرقائق", ...GEMINI_CREDIT },
+  DOA: { src: "/images/bab/doa.webp", alt: "Tasbih amber dari dekat di atas sajadah hijau", ar: "الأدعية والأذكار", ...GEMINI_CREDIT },
+  SIR: { src: "/images/bab/sir.webp", alt: "Reruntuhan batu dan kota berdinding di jalur gurun kuno", ar: "التاريخ والسيرة", ...GEMINI_CREDIT },
+  MSR: { src: "/images/bab/msr.webp", alt: "Masjid kontemporer di tengah kota modern saat senja", ar: "قضايا معاصرة", ...GEMINI_CREDIT },
+  MAR: { src: "/images/bab/mar.webp", alt: "Kain lembut, keranjang jahit, dan botol parfum", ar: "قضايا المرأة", ...GEMINI_CREDIT },
+  LGH: { src: "/images/bab/lgh.webp", alt: "Jilid kamus tertutup dengan pena buluh dan botol tinta", ar: "اللغة العربية", ...GEMINI_CREDIT },
+  SYG: { src: "/images/bab/syg.webp", alt: "Alat musik oud di atas bantal bersulam dan lentera", ar: "الشعر والأناشيد", ...GEMINI_CREDIT },
+  NSH: { src: "/images/bab/nsh.webp", alt: "Papan penunjuk kayu kosong di persimpangan jalan gurun", ar: "النصائح والتوجيهات", ...GEMINI_CREDIT },
+  TRB: { src: "/images/bab/trb.webp", alt: "Meja belajar anak dengan buku tertutup dan tas ransel", ar: "تربية الأبناء", ...GEMINI_CREDIT },
+  HYW: { src: "/images/bab/hyw.webp", alt: "Sangkar burung kosong dan jejak kaki di pasir", ar: "أحكام الحيوان", ...GEMINI_CREDIT },
+  PGW: { src: "/images/bab/pgw.webp", alt: "Tas kerja kulit, jam dinding, dan tumpukan dokumen kosong", ar: "أحكام الموظفين", ...GEMINI_CREDIT },
+  BIR: { src: "/images/bab/bir.webp", alt: "Dua kursi goyang kosong dan tongkat kayu di beranda rumah", ar: "بر الوالدين", ...GEMINI_CREDIT },
+  SYB: { src: "/images/bab/syb.webp", alt: "Sepatu kets, ransel kanvas, dan headphone di bangku kayu", ar: "قضايا الشباب", ...GEMINI_CREDIT },
+  NWZ: { src: "/images/bab/nwz.webp", alt: "Ponsel layar gelap, kartu kosong, dan blister obat di meja modern", ar: "النوازل المعاصرة", ...GEMINI_CREDIT },
+  MNM: { src: "/images/bab/mnm.webp", alt: "Bulan sabit dan bintang di atas atap kota yang tidur", ar: "الرؤى والمنامات", ...GEMINI_CREDIT },
+  RDD: { src: "/images/bab/rdd.webp", alt: "Dua kitab kuno berhadapan dengan bidak catur di antaranya", ar: "الردود والمناقشات", ...GEMINI_CREDIT },
+  HJR: { src: "/images/bab/hjr.webp", alt: "Koper terkemas dan paspor polos di samping jendela pesawat", ar: "الهجرة وطلب العلم في الخارج", ...GEMINI_CREDIT },
+  WSW: { src: "/images/bab/wsw.webp", alt: "Gulungan benang kusut dan lilin di meja kayu gelap", ar: "الوسوسة", ...GEMINI_CREDIT },
 };
 
 /** Sampul kartu bab: gambar khusus bab bila ada, selain itu sampul topik pertama bab. */
