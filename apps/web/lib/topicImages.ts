@@ -28,7 +28,7 @@ export interface TopicImage {
   ar: string;
   creditName: string;
   creditUrl: string;
-  creditSource: "Pexels" | "Unsplash";
+  creditSource: "Pexels" | "Unsplash" | "Gemini";
   /** object-position CSS agar potongan foto tetap bagus di bingkai lanskap. */
   position?: string;
 }
@@ -141,6 +141,44 @@ export const DEFAULT_IMAGE: TopicImage = {
 };
 
 export const HOME_HERO = DEFAULT_IMAGE;
+
+/**
+ * Sampul khusus per BAB untuk kartu bab di Beranda (perintah user
+ * 27 Nov 2026: setiap bab gambar berbeda sesuai tema, dibuat dengan
+ * Gemini Pro milik user). Aturan sama seperti foto topik: TANPA makhluk
+ * bernyawa, TANPA teks di dalam gambar, TANPA duplikat antar-bab; tiap
+ * gambar diverifikasi visual oleh asisten sebelum tayang. Bab yang belum
+ * punya gambar khusus memakai sampul topik pertamanya seperti sebelumnya
+ * (lihat imageForBab). Berkas: public/images/bab/<awalan>.webp.
+ */
+const GEMINI_CREDIT = {
+  creditName: "Ilustrasi dihasilkan dengan Gemini (akun pemilik)",
+  creditUrl: "https://gemini.google.com",
+  creditSource: "Gemini" as const,
+};
+
+export const BAB_IMAGES: Record<string, TopicImage> = {
+  THA: { src: "/images/bab/tha.webp", alt: "Kendi dan baskom keramik putih untuk bersuci", ar: "الطهارة", ...GEMINI_CREDIT },
+  SHL: { src: "/images/bab/shl.webp", alt: "Sajadah hijau menghadap mihrab masjid yang kosong", ar: "الصلاة", ...GEMINI_CREDIT },
+  JNZ: { src: "/images/bab/jnz.webp", alt: "Taman pemakaman hijau yang tenang di pagi hari", ar: "الجنائز", ...GEMINI_CREDIT },
+  ZKT: { src: "/images/bab/zkt.webp", alt: "Peti koin emas, timbangan kuningan, dan karung gandum", ar: "الزكاة", ...GEMINI_CREDIT },
+  PUA: { src: "/images/bab/pua.webp", alt: "Meja berbuka dengan kurma, air, dan lentera menyala", ar: "الصيام", ...GEMINI_CREDIT },
+  HAJ: { src: "/images/bab/haj.webp", alt: "Ka'bah di pagi hari dengan halaman Masjidil Haram yang kosong", ar: "الحج والعمرة", ...GEMINI_CREDIT },
+  MUA: { src: "/images/bab/mua.webp", alt: "Timbangan pasar kuningan dan buku besar pedagang", ar: "المعاملات", ...GEMINI_CREDIT },
+  NIK: { src: "/images/bab/nik.webp", alt: "Dua cincin emas di atas buku berornamen", ar: "النكاح", ...GEMINI_CREDIT },
+  TAL: { src: "/images/bab/tal.webp", alt: "Ruang keluarga hangat dengan sofa dan mainan balok kayu", ar: "الطلاق والأسرة", ...GEMINI_CREDIT },
+  MAK: { src: "/images/bab/mak.webp", alt: "Madu, minyak zaitun, kurma, dan roti di meja kayu", ar: "الأطعمة والذبائح", ...GEMINI_CREDIT },
+  SUM: { src: "/images/bab/sum.webp", alt: "Mushaf berornamen di atas rehal dengan lilin menyala", ar: "الأيمان والنذور", ...GEMINI_CREDIT },
+  TIB: { src: "/images/bab/tib.webp", alt: "Botol minyak, habbatussauda, madu, dan lesung batu", ar: "الطب والتداوي", ...GEMINI_CREDIT },
+  LIB: { src: "/images/bab/lib.webp", alt: "Lipatan kain, perhiasan emas, dan botol parfum", ar: "اللباس والزينة", ...GEMINI_CREDIT },
+  SUR: { src: "/images/bab/sur.webp", alt: "Kamera film klasik dan bingkai foto lanskap", ar: "الصور والتصوير", ...GEMINI_CREDIT },
+};
+
+/** Sampul kartu bab: gambar khusus bab bila ada, selain itu sampul topik pertama bab. */
+export function imageForBab(prefix?: string | null, fallbackTopic?: Topic | null): TopicImage {
+  if (prefix && BAB_IMAGES[prefix]) return BAB_IMAGES[prefix];
+  return imageForTopic(fallbackTopic);
+}
 
 /* ------------------------------------------------------------------ */
 /* Pool foto per topik (PR #5)                                          */

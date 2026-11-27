@@ -8,7 +8,7 @@ import { EmptyState, ErrorState, LoadingState, MaterialCard } from "@/components
 import TopicCover from "@/components/TopicCover";
 import DailyBanner from "@/components/DailyBanner";
 import KontemporerSection from "@/components/KontemporerSection";
-import { imageForTopic } from "@/lib/topicImages";
+import { imageForBab, imageForTopic } from "@/lib/topicImages";
 import { groupTopicsByBab } from "@/lib/babs";
 import { IconBookOpen, IconChevronRight, IconClock, IconSearch } from "@/components/icons";
 
@@ -111,7 +111,7 @@ export default function HomePage() {
               {babGroups.map(g => (
                 <Link key={g.prefix} href={`/topik#${g.prefix}`} className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:shadow-lift">
                   <span className="relative block">
-                    <TopicCover image={imageForTopic(g.topics[0])} className="h-20 w-full sm:h-24" />
+                    <TopicCover image={imageForBab(g.prefix, g.topics[0])} className="h-20 w-full sm:h-24" />
                     {g.name_ar ? <span dir="rtl" lang="ar" className="font-arabic pointer-events-none absolute bottom-2 right-3 text-lg leading-none text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.65)]">{g.name_ar}</span> : null}
                   </span>
                   <span className="flex flex-1 flex-col p-3 sm:p-3.5">
