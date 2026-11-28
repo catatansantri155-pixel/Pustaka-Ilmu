@@ -28,7 +28,7 @@ export interface TopicImage {
   ar: string;
   creditName: string;
   creditUrl: string;
-  creditSource: "Pexels" | "Unsplash" | "Gemini";
+  creditSource: "Pexels" | "Unsplash" | "Gemini" | "ChatGPT";
   /** object-position CSS agar potongan foto tetap bagus di bingkai lanskap. */
   position?: string;
 }
@@ -40,6 +40,12 @@ const GEMINI_CREDIT = {
   creditName: "Ilustrasi dihasilkan dengan Gemini (akun pemilik)",
   creditUrl: "https://gemini.google.com",
   creditSource: "Gemini" as const,
+};
+
+const CHATGPT_CREDIT = {
+  creditName: "Ilustrasi dihasilkan dengan ChatGPT (akun pemilik)",
+  creditUrl: "https://chatgpt.com",
+  creditSource: "ChatGPT" as const,
 };
 
 export const TOPIC_IMAGES: Record<string, TopicImage> = {
@@ -1624,6 +1630,229 @@ function codeForMaterial(m: MaterialSummary): string | null {
   return null;
 }
 
+/** Gambar khusus per materi (satu materi satu gambar; kunci = id materi). */
+// MATERIAL_IMAGES:START
+export const MATERIAL_IMAGES: Record<string, TopicImage> = {
+  "e967c65d-2152-4419-95b6-eb61f1edbc4b": {
+    src: "/images/materi/e967c65d-2152-4419-95b6-eb61f1edbc4b.webp",
+    alt: "Ilustrasi 'Illah (Sebab) Diharamkannya Bejana Emas dan Perak",
+    ar: "علة تحريم أواني الذهب والفضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "52c21d93-19e1-4a35-bd02-0bbda7079c27": {
+    src: "/images/materi/52c21d93-19e1-4a35-bd02-0bbda7079c27.webp",
+    alt: "Ilustrasi Apa Hukum Menggunakan Bejana Emas dan Perak?",
+    ar: "ما حكم استعمال آنية الذهب والفضة؟",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "20ae5b75-3927-4c72-b274-37c12df716dd": {
+    src: "/images/materi/20ae5b75-3927-4c72-b274-37c12df716dd.webp",
+    alt: "Ilustrasi Apa yang Mencukupi dalam Menutupi Bejana sebagai Bentuk Mengikuti Sunnah?",
+    ar: "ما الذي يجزئ في تغطية الإناء اتباعًا للسُّنة؟",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "50585505-dfce-4ec4-a084-6520ade665a9": {
+    src: "/images/materi/50585505-dfce-4ec4-a084-6520ade665a9.webp",
+    alt: "Ilustrasi Apakah Boleh Meminum Sisa Minuman Orang Kafir?",
+    ar: "هل يجوز شرب سؤر الكافر؟",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "87e0a11c-47f1-4b1c-b8f2-ddbf4fef0420": {
+    src: "/images/materi/87e0a11c-47f1-4b1c-b8f2-ddbf4fef0420.webp",
+    alt: "Ilustrasi Apakah Disunahkan Menutup Bejana Walaupun Kosong?",
+    ar: "هل يُسنُّ تغطية الإناء ولو كان فارغا؟",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "05507d7f-3575-47e1-8af0-eb0a6ee9943d": {
+    src: "/images/materi/05507d7f-3575-47e1-8af0-eb0a6ee9943d.webp",
+    alt: "Ilustrasi Apakah Menutupi Bejana-Bejana Mencakup yang Kosong dan yang Penuh (Berisi)?",
+    ar: "هل تغطية الأواني  يشمل الفارغة والملآنة؟",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "997defaa-69f8-482c-8a31-c2eda70728f4": {
+    src: "/images/materi/997defaa-69f8-482c-8a31-c2eda70728f4.webp",
+    alt: "Ilustrasi Bejana berlapis emas",
+    ar: "آنية الذهب",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "ce98a964-8334-44fe-a7f5-a00379bac772": {
+    src: "/images/materi/ce98a964-8334-44fe-a7f5-a00379bac772.webp",
+    alt: "Ilustrasi Hikmah Diharamkannya Memakai Bejana Emas dan Perak",
+    ar: "الحكمة من تحريم استعمال أواني الذهب والفضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "8e080055-843f-4f5b-9e03-872d88596a97": {
+    src: "/images/materi/8e080055-843f-4f5b-9e03-872d88596a97.webp",
+    alt: "Ilustrasi Hukum Bejana yang Dilapisi Air Emas karena Takut Karat",
+    ar: "حكم الأواني المطلية بماء الذهب خوفًا من الصدأ",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "119953fc-0689-4b8e-908b-c2f6b3b48f9d": {
+    src: "/images/materi/119953fc-0689-4b8e-908b-c2f6b3b48f9d.webp",
+    alt: "Ilustrasi Hukum Bejana yang Terbuat dari Berlian dan Semisalnya",
+    ar: "حكم الأواني المصنوعة من الألماس ونحوه",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "f1642b87-065a-4e22-8510-784d8abf1375": {
+    src: "/images/materi/f1642b87-065a-4e22-8510-784d8abf1375.webp",
+    alt: "Ilustrasi Hukum Bejana-Bejana dari Selain Emas akan tetapi Ia Lebih Mahal",
+    ar: "حكم الأواني من غير الذهب لكنها أغلى",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "05874139-3336-4201-ad22-cf9cb833f139": {
+    src: "/images/materi/05874139-3336-4201-ad22-cf9cb833f139.webp",
+    alt: "Ilustrasi Hukum Bejana-Bejana yang Padanya Terdapat Sebagian Emas atau Perak",
+    ar: "حكم الأواني التي بها بعض الذهب أو الفضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "9c246bce-e643-457a-bfed-c52798ef4e28": {
+    src: "/images/materi/9c246bce-e643-457a-bfed-c52798ef4e28.webp",
+    alt: "Ilustrasi Hukum Bulu Domba dan Bulu Unta yang Ada pada Kulit",
+    ar: "حكم صوف الغنم ووبر الإبل الذي على الجلد",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "9cb6077e-4c3a-4e7b-8b48-51521e364ae0": {
+    src: "/images/materi/9cb6077e-4c3a-4e7b-8b48-51521e364ae0.webp",
+    alt: "Ilustrasi Hukum Dot (Empeng) Anak-Anak dari Perak atau Emas",
+    ar: "حكم مصاصات الأطفال من الفضة أو الذهب",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "43c6f37d-c6be-40ae-8a90-06a7175726e3": {
+    src: "/images/materi/43c6f37d-c6be-40ae-8a90-06a7175726e3.webp",
+    alt: "Ilustrasi Hukum Kesucian Bejana Apabila Binatang Buas Minum Darinya",
+    ar: "حكم طهارة الإناء إذا شربت منه السِّباع",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "e600e6fb-9f31-42cc-89ec-31eb99f8f750": {
+    src: "/images/materi/e600e6fb-9f31-42cc-89ec-31eb99f8f750.webp",
+    alt: "Ilustrasi Hukum Makan dalam Bejana yang di Dalamnya Ada Gambar-Gambar",
+    ar: "حكم الأكل في الأواني التي فيها صور",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "dfdc5788-a9a6-4839-ad8b-938aa24578ef": {
+    src: "/images/materi/dfdc5788-a9a6-4839-ad8b-938aa24578ef.webp",
+    alt: "Ilustrasi Hukum Makan dalam Bejana-Bejana yang Meragukan",
+    ar: "حكم الأكل في الأواني المشبوهة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "f0f0697d-2956-46b4-96f2-7bd43dbae68a": {
+    src: "/images/materi/f0f0697d-2956-46b4-96f2-7bd43dbae68a.webp",
+    alt: "Ilustrasi Hukum Memakai Bejana Emas dan Perak dan Berdagang pada Keduanya",
+    ar: "حكم استعمال آنية الذهب والفضة والتجارة فيهما",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "e597f762-e911-416b-82bd-31b66c57f56a": {
+    src: "/images/materi/e597f762-e911-416b-82bd-31b66c57f56a.webp",
+    alt: "Ilustrasi Hukum Memakai Bejana yang Dilapisi Emas atau Perak",
+    ar: "حكم استعمال الأواني المطلية بالذهب أو الفضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "28829afd-3d0b-4b4b-bdae-06c96c29a5ac": {
+    src: "/images/materi/28829afd-3d0b-4b4b-bdae-06c96c29a5ac.webp",
+    alt: "Ilustrasi Hukum Memakai Bejana yang Dilapisi Emas dan Perak",
+    ar: "حكم استعمال الأواني المطلية بالذهب والفضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "ed69259f-22ec-4803-89d4-e4e5130e0a7c": {
+    src: "/images/materi/ed69259f-22ec-4803-89d4-e4e5130e0a7c.webp",
+    alt: "Ilustrasi Hukum Memakai Bejana yang Dilapisi Perak",
+    ar: "حكم استعمال الأواني المطلية بالفضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "35cad0f1-8d7b-46bf-9b32-749d76ce6a07": {
+    src: "/images/materi/35cad0f1-8d7b-46bf-9b32-749d76ce6a07.webp",
+    alt: "Ilustrasi Hukum Memakan Sembelihan Orang-Orang Kafir dan Memakai Bejana-Bejana Mereka",
+    ar: "حكم أكل ذبائح الكفار واستعمال أوانيهم",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "4a8e7697-6e37-4786-a9a4-9d6baaa92bd4": {
+    src: "/images/materi/4a8e7697-6e37-4786-a9a4-9d6baaa92bd4.webp",
+    alt: "Ilustrasi Hukum Memiliki atau Memakai Bejana yang Dilapisi Emas atau Perak",
+    ar: "حكم اقتناء أو استعمال الأواني المطلية بالذهب أو الفضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "fad7f7ac-1301-48a2-ba88-2c7a5e1eb7a0": {
+    src: "/images/materi/fad7f7ac-1301-48a2-ba88-2c7a5e1eb7a0.webp",
+    alt: "Ilustrasi Hukum Menggunakan Bejana Emas dan Perak",
+    ar: "حكم استعمال آنية الذهب والفضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "229cbafd-b929-4276-8597-4c39a259782d": {
+    src: "/images/materi/229cbafd-b929-4276-8597-4c39a259782d.webp",
+    alt: "Ilustrasi Hukum Menggunakan Emas dan Perak pada Pintu-Pintu dan Dinding-Dinding",
+    ar: "حكم استعمال الذهب والفضة  في الأبواب والجدران",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "c601fe98-8831-4446-9262-ac0177acf623": {
+    src: "/images/materi/c601fe98-8831-4446-9262-ac0177acf623.webp",
+    alt: "Ilustrasi Hukum Menggunakan Sesuatu yang Disepuh Emas atau Perak",
+    ar: "حكم استعمال ما كان مموهًا بذهب أو فضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "88ecc299-c0ef-4d46-a0e3-511c43c32421": {
+    src: "/images/materi/88ecc299-c0ef-4d46-a0e3-511c43c32421.webp",
+    alt: "Ilustrasi Hukum Menjadikan Bejana Emas dan Perak sebagai Hiasan",
+    ar: "حكم اتخاذ أواني الذهب والفضة للزينة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "d9bc52b9-9797-47aa-9fdc-aa13ca6afff2": {
+    src: "/images/materi/d9bc52b9-9797-47aa-9fdc-aa13ca6afff2.webp",
+    alt: "Ilustrasi Keharaman Bejana Emas dan Perak",
+    ar: "تحريم آنية الذهب والفضة",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "8675ea65-68f1-4b9c-a7d3-5fd5e8451da0": {
+    src: "/images/materi/8675ea65-68f1-4b9c-a7d3-5fd5e8451da0.webp",
+    alt: "Ilustrasi Makan dan Minum dalam Bejana yang Dilapisi Emas",
+    ar: "الأكل والشرب في الإناء المطلي بالذهب",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "4e46e73a-1c02-40a1-a616-623ba0916518": {
+    src: "/images/materi/4e46e73a-1c02-40a1-a616-623ba0916518.webp",
+    alt: "Ilustrasi Memakan sembelihan non-Muslim dan menggunakan bejana mereka",
+    ar: "أكل ذبائح الكفار واستعمال أوانيهم",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+  "5b1a6b53-d7ae-41c8-a6f7-ba39a4924867": {
+    src: "/images/materi/5b1a6b53-d7ae-41c8-a6f7-ba39a4924867.webp",
+    alt: "Ilustrasi Menggunakan keran dan bejana berlapis emas",
+    ar: "استخدام الصنابير والأواني المطلية بماء الذهب",
+    ...CHATGPT_CREDIT,
+    position: "50% 50%",
+  },
+};
+// MATERIAL_IMAGES:END
+
 /**
  * Foto materi: dipilih deterministik dari pool topiknya berdasarkan hash
  * id materi (materi sama → foto sama di semua permukaan). Topik tak dikenal
@@ -1631,6 +1860,7 @@ function codeForMaterial(m: MaterialSummary): string | null {
  */
 export function imageForMaterial(m?: MaterialSummary | null): TopicImage {
   if (!m) return DEFAULT_IMAGE;
+  if (m.id && MATERIAL_IMAGES[m.id]) return MATERIAL_IMAGES[m.id];
   const code = codeForMaterial(m);
   if (!code) return DEFAULT_IMAGE;
   return poolImageForMaterial(code, m.id);
