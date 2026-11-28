@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import AppIntro from "@/components/AppIntro";
+import InstallApp from "@/components/InstallApp";
 import ReaderShell from "@/components/ReaderShell";
 
 export const metadata: Metadata = {
@@ -28,6 +29,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             lengkapnya di components/AppIntro.tsx — dipasang di layout akar
             agar berjalan sekali per pemuatan dokumen, bukan per halaman. */}
         <AppIntro />
+        {/* Tombol "Unduh Aplikasi" (PWA) + registrasi service worker —
+            tampil di semua halaman publik sampai aplikasi terpasang di HP;
+            logika lengkapnya di components/InstallApp.tsx. */}
+        <InstallApp />
         <ReaderShell>{children}</ReaderShell>
       </body>
     </html>
